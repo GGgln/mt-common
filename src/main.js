@@ -3,9 +3,15 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import mtAlarm from './lib/alarm'
+
+import antDesign from 'ant-design-vue/lib/button'
+import 'ant-design-vue/dist/antd.css'
+
+import MtCommon from './lib/mt-common'
 Vue.config.productionTip = false
-Vue.use(mtAlarm)
+
+Vue.use(antDesign)
+Vue.use(MtCommon)
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
