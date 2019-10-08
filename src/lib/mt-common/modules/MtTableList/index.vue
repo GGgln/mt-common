@@ -1,7 +1,7 @@
 <template>
-  <a-table :columns="form.columns" :dataSource="data" bordered>
+  <a-table :columns="form.columns" :dataSource="form.data" bordered>
     <template slot="operation" slot-scope="test, record">
-      
+      <a-button v-for="(el, index) in form.formButtons">{{ el.name }}</a-button>
     </template>
     <slot name="mtTableOperationBtn" :row="record"></slot>
   </a-table>

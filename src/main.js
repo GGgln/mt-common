@@ -4,11 +4,13 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 
-import antDesign from 'ant-design-vue/lib/button'
+import antDesign from 'ant-design-vue'
 import 'ant-design-vue/dist/antd.css'
 
-import MtCommon from './lib/mt-common'
+import MtCommon from './lib/mt-common/index.js'
 Vue.config.productionTip = false
+
+console.log('mt-common-------', MtCommon)
 
 Vue.use(antDesign)
 Vue.use(MtCommon)
