@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import alarm from '@/components/alarm'
 import log from '@/components/log'
-
+import consumer from '@/components/consumer'
 Vue.use(Router)
 
 export default new Router({
@@ -16,6 +16,11 @@ export default new Router({
       path: '/log',
       name: 'log',
       component: log
+    },
+    {
+      path: '/consumer',
+      name: 'consumer',
+      component: consumer
     }
   ]
 })

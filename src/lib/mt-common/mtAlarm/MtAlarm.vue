@@ -1,6 +1,6 @@
 <template>
     <div id="MtAlarm_component" class="common-container">
-      <mt-table-section :form.sync="form"></mt-table-section>
+      <!-- <mt-table-section :form.sync="form"></mt-table-section> -->
     </div>
 </template>
 <script>
@@ -13,11 +13,29 @@ export default {
       default: ''
     }
   ],
-  data() {
+  data () {
     return {
       form: {
+        listUrl: 'system/getLastCheckTime',
+        columns: [
+          {
+            title: '报警名称',
+            dataIndex: 'alarmName'
+          },
+          {
+            title: '报警等级',
+            dataIndex: 'alarmLevel',
+            scopedSlots: { customRender: 'alarmLevel' }
+
+          },
+          {
+            title: '操作',
+            dataIndex: 'operation',
+            scopedSlots: { customRender: 'operation' }
+          }
+        ],
         formFilterData: [
-          { name: '报警类型', value: 'alarmType', type: 'default'}
+          { name: '报警类型', value: 'alarmType', type: 'default' }
         ]
       }
     }

@@ -9,10 +9,6 @@ import 'ant-design-vue/dist/antd.css'
 
 import MtCommon from './lib/mt-common/index.js'
 Vue.config.productionTip = false
-import axios from 'axios'
-// const axios = axios.create({
-//   baseUrl: ''
-// })
 console.log('mt-common-------', MtCommon)
 
 Vue.use(antDesign)
