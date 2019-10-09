@@ -6,13 +6,6 @@
 <script>
 export default {
   name: 'mt-alarm',
-  props: [
-    {
-      listUrl: '',
-      type: String,
-      default: ''
-    }
-  ],
   data () {
     return {
       form: {

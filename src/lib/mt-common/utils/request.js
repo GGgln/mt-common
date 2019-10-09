@@ -14,14 +14,14 @@ service.interceptors.response.use(
     const res = response.data
     console.log('HTTP >>>>> ', response.request.responseURL, response.request.status, response.data)
     if (res.code !== '0') {
-      return Promise.reject('Error')
+      return Promise.reject(new Error('Error'))
     } else {
       return response.data
     }
   },
   error => {
     console.log('err' + error)// for debug
-    return Promise.reject(error)
+    return Promise.reject(new Error(error))
   }
 )
 
