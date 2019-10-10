@@ -9,37 +9,14 @@
       width: 100%;
       overflow: hidden;
       margin-bottom: 20px;
-      .log-title-module {
-        float: right;
-        margin-right: 10px;
-        .add-btn {
-          float: right;
-          padding: 0 25px;
-        }
-        .add-btn-derive {
-          margin-left: 10px;
-        }
-        .log-caption {
-          color: #333333;
-          // margin: 0 5px;
-        }
-      }
-      .log-select {
-        width: 25%;
-      }
-      .log-picker {
-        width: 30%;
-      }
-      .log-input {
-        width: 20%;
-      }
-      .log-button {
-        width: 15%;
-      }
+.add-btn{
+  float: right;
+  padding: 0 20px;
+}
+.add-btn-derive{
+  margin-left: 15px;
+}
     }
-    th.column-money,
-    td.column-money {
-      text-align: right !important;
-    }
+
   }
 }

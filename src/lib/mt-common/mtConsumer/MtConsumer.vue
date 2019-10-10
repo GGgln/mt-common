@@ -21,8 +21,8 @@
             <a-input placeholder="Basic usage" />
           </p>
         </a-modal>
-      </div>
-      <a-table :pagination="false" :columns="columns" :dataSource="data" bordered>
+      </div >
+      <a-table  :pagination="false" :columns="columns" :dataSource="data" bordered>
         <template slot="action" slot-scope="text, record">
           <a href="javascript:;" @click="handleAdd(record)">
             <i class="iconfont icon-table-edit" />
