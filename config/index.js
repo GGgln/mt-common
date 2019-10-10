@@ -10,7 +10,17 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    proxyTable: {
+      // 保留模板
+      '/mtCommonApi': {
+        target: 'http://192.168.6.232:8890/', // 设置你调用的接口域名和端口号
+        changeOrigin: true,     // 跨域
+        pathRewrite: {
+          '^/mtCommonApi': '/'
+        }
+      },
+
+    },
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST

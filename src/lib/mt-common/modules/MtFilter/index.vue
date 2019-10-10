@@ -7,11 +7,7 @@
     >
       <template v-if="!$slots.default" v-for="(el,index) in form.formFilterData">
         <slot v-if="el.type === 'customAll'" :name="el.key"></slot>
-        <a-form-item
-          v-else
-          :label="`${el.name}:`"
-          :key="index"
-        >
+        <a-form-item v-else :label="`${el.name}:`" :key="index">
           <a-select v-if="el.type === 'select'" v-model="el.value" :placeholder="'请选择' + el.name">
             <a-select-option
               v-for="(optionItem, optionIndex) in el.data"
@@ -36,23 +32,23 @@
 </template>
 <script>
 export default {
-  name: 'mt-filter',
-  props: [ 'form' ],
-  data () {
+  name: "mt-filter",
+  props: ["form"],
+  data() {
     return {
       formData: this.$form.createForm(this)
-    }
+    };
   },
-  mounted () {
-    console.log('form filter data', this)
+  mounted() {
+    console.log("form filter data", this);
   },
   methods: {
-    toSearch () {
-      this.$emit('request-form-list')
+    toSearch() {
+      this.$emit("request-form-list");
     },
-    toReset () {
-      this.$emit('request-form-list')
+    toReset() {
+      this.$emit("request-form-list");
     }
   }
-}
+};
 </script>
