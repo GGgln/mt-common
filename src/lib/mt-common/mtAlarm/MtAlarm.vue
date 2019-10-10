@@ -1,6 +1,6 @@
 <template>
     <div id="MtAlarm_component" class="common-container">
-      <!-- <mt-table-section :form.sync="form"></mt-table-section> -->
+      <mt-filter :form.sync="filterForm" @request-form-list="requestFormList"></mt-filter>
     </div>
 </template>
 <script>
@@ -8,6 +8,9 @@ export default {
   name: 'mt-alarm',
   data () {
     return {
+      filterForm: {
+
+      },
       form: {
         listUrl: 'system/getLastCheckTime',
         columns: [
@@ -37,7 +40,7 @@ export default {
     console.log(this)
   },
   methods: {
-    init () {}
+    requestFormList () {}
   }
 }
 </script>
