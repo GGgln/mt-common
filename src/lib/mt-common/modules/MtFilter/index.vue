@@ -5,11 +5,12 @@
       layout="inline"
       v-if="form.formFilterData && form.formFilterData.length > 0"
     >
-      <template v-if="!$slots.default" v-for="el in form.formFilterData">
+      <template v-if="!$slots.default" v-for="(el,index) in form.formFilterData">
         <slot v-if="el.type === 'customAll'" :name="el.key"></slot>
         <a-form-item
           v-else
           :label="`${el.name}:`"
+          :key="index"
         >
           <a-select v-if="el.type === 'select'" v-model="el.value" :placeholder="'请选择' + el.name">
             <a-select-option
