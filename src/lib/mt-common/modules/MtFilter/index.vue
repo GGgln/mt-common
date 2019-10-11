@@ -32,23 +32,23 @@
 </template>
 <script>
 export default {
-  name: "mt-filter",
-  props: ["form"],
-  data() {
+  name: 'mt-filter',
+  props: ['form'],
+  data () {
     return {
       formData: this.$form.createForm(this)
-    };
+    }
   },
-  mounted() {
-    console.log("form filter data", this);
+  mounted () {
+    console.log('form filter data', this)
   },
   methods: {
-    toSearch() {
-      this.$emit("request-form-list");
+    toSearch () {
+      this.$emit('request-form-list')
     },
-    toReset() {
-      this.$emit("request-form-list");
+    toReset () {
+      this.$emit('request-form-list')
     }
   }
-};
+}
 </script>

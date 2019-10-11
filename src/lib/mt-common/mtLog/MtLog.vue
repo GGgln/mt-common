@@ -4,144 +4,67 @@
       <div class="log-title">
     <a-row>
       <a-col :offset="3" :xs="5"><span class="log-caption">操作类型:</span>
-          <a-select  :defaultValue="logMessages[0]" @change="selectChange">
+          <a-select style="width: 110px;" :value="logbefort" @change="selectChange">
             <a-select-option v-for="log in logMessages" :key="log">{{ log }}</a-select-option>
           </a-select>
           <span class="log-caption">--</span>
-          <a-select  v-model="secondCity">
+          <a-select style="width: 110px;"  v-model="secondCity">
             <a-select-option v-for="detail in details" :key="detail">{{ detail }}</a-select-option>
           </a-select></a-col>
       <a-col :xs="8">   <span class="log-caption">时间段查询:</span>
-            <a-date-picker  placeholder="年/月/日" @change="startTimeChange" />
-            <span class="log-caption">~</span>
-            <a-date-picker  placeholder="年/月/日" @change="endTimeChange" /></a-col>
-      <a-col :xs="5"><a-input  v-model="iptContent" placeholder="搜索日志内容" /></a-col>
-      <a-col :xs="3"> <a-button  class="add-btn add-btn-derive" type="primary">导出</a-button>
-            <a-button @click="seeAbout" class="add-btn" type="primary">查询</a-button></a-col>
+            <a-range-picker :showTime="{ format: 'HH:mm:ss' }"
+      format="YYYY-MM-DD HH:mm:ss"   @change="timeChange" />
+       </a-col>
+      <a-col :xs="4"><a-input  v-model="iptContent" placeholder="搜索日志内容" /></a-col>
+      <a-col :offset="1" :xs="3"> <a-button icon="plus"  class="add-btn add-btn-derive" type="primary">导出日志</a-button>
+            <a-button @click="seeAbout" icon="search" class="add-btn" type="primary">查询日志</a-button></a-col>
     </a-row>
 
         </div>
       </div>
-      <div class="log-table"><a-table :pagination="pageOptions" :columns="columns" :dataSource="data" bordered></a-table></div>
+      <div class="log-table"><a-table :pagination="pageOptions" :columns="columns" :dataSource="data" ></a-table></div>
     </div>
 </template>
 <script>
+import request from '../utils/request'
 const columns = [
   {
     title: '日志时间',
     align: 'center',
-    dataIndex: 'time',
+    dataIndex: 'date',
     width: '12%'
   },
   {
     title: '操作类型',
     align: 'center',
-    dataIndex: 'type',
+    dataIndex: 'operationType',
     width: '12%'
   },
   {
     title: '日志内容',
     align: 'center',
-    dataIndex: 'content',
+    dataIndex: 'logContent',
     width: '61%'
   },
   {
     title: '操作人',
     align: 'center',
-    dataIndex: 'operator',
+    dataIndex: 'operationUser',
     width: '15%'
   }
 ]
-
-const data = [
-  {
-    key: '1',
-    time: '11.11',
-    type: '￥300,000.00',
-    content: 'New York No. 1 Lake Park',
-    operator: 123
-  },
-  {
-    key: '2',
-    time: '22.22',
-    type: '￥1,256,000.00',
-    content: 'London No. 1 Lake Park',
-    operator: 123
-  },
-  {
-    key: '3',
-    time: '33.33',
-    type: '￥120,000.00',
-    content: 'Sidney No. 1 Lake Park',
-    operator: 123
-  },
-  {
-    key: '4',
-    time: '44.44',
-    type: '￥120,000.00',
-    content: 'Sidney No. 1 Lake Park',
-    operator: 123
-  },
-  {
-    key: '5',
-    time: '22.22',
-    type: '￥1,256,000.00',
-    content: 'London No. 1 Lake Park',
-    operator: 123
-  },
-  {
-    key: '6',
-    time: '33.33',
-    type: '￥120,000.00',
-    content: 'Sidney No. 1 Lake Park',
-    operator: 123
-  },
-  {
-    key: '7',
-    time: '44.44',
-    type: '￥120,000.00',
-    content: 'Sidney No. 1 Lake Park',
-    operator: 123
-  },
-  {
-    key: '8',
-    time: '22.22',
-    type: '￥1,256,000.00',
-    content: 'London No. 1 Lake Park',
-    operator: 123
-  },
-  {
-    key: '9',
-    time: '33.33',
-    type: '￥120,000.00',
-    content: 'Sidney No. 1 Lake Park',
-    operator: 123
-  },
-  {
-    key: '10',
-    time: '44.44',
-    type: '￥120,000.00',
-    content: 'Sidney No. 1 Lake Park',
-    operator: 123
-  }
-]
-const logMessages = ['Zhejiang', 'Jiangsu']
-const detailsMessages = {
-  Zhejiang: ['Hangzhou', 'Ningbo', 'Wenzhou'],
-  Jiangsu: ['Nanjing', 'Suzhou', 'Zhenjiang']
-}
 export default {
   name: 'mt-log',
   data () {
     return {
-      data, // table数据
       columns, // table表头
-      logMessages, // 日志数据
-      detailsMessages, // 日志详情数据
-      logData: logMessages[0], // 日志
-      details: detailsMessages[logMessages[0]], // 日志详情信息
-      secondCity: detailsMessages[logMessages[0]][0], // 日志详情默认第一条
-      iptContent: null, // 搜索日志内容
+      data: [], // table数据
+      logbefort: null, // 日志
+      logMessages: [], // 日志数据
+      detailsMessages: '', // 日志详情数据
+      details: null, // 日志详情信息
+      secondCity: null, // 日志详情默认第一条
+      iptContent: null, // 搜索日志关键词
       startTime: null, // 开始日期
       endTime: null, // 结束日期
       pageSize: 10, // 条数
@@ -154,43 +77,86 @@ export default {
         total: 0,
         onShowSizeChange: (current, size) => {
           this.pageSize = size
-          this.page = 1
-          this.init()
+          this.page = current
+          this.initData()
         },
         onChange: (page, pageSize) => {
           // 跳页
           this.page = page
-          this.init()
+          this.initData()
         }
       }
     }
   },
   created () {
-    console.log(this.logMessages)
-    console.log(this.detailsMessages)
+    this.initSelect()
+    this.initData()
   },
 
   methods: {
-    init () {
+    initSelect () {
+      request({
+        url: 'api/dimType/getType',
+        method: 'get'
+      }).then(res => {
+        this.logbefort = res.oneType[0]
+        this.logMessages = res.oneType
+        this.detailsMessages = res.twoType
+        this.details = res.twoType[res.oneType[0]] // 日志详情信息
+        this.secondCity = res.twoType[res.oneType[0]][0] // 日志详情默认第一条
+      }).catch(() => {
+        // alert('error')
+      })
+    },
+    initData () {
+      request({
+        url: 'api/log/selectLog',
+        method: 'post',
+        data: {
+          startTime: this.startTime,
+          endTime: this.endTime,
+          oneType: this.logbefort,
+          twoType: this.secondCity,
+          key: this.iptContent,
+          page: this.page,
+          limit: this.pageSize
+        }
+
+      }).then(res => {
+        this.data = res.result.list
+        this.pageOptions.total = res.result.size
+      }).catch(() => {
+        // alert('error')
+      })
     },
     selectChange (value) {
-      console.log(value)
-      this.logData = value
-      this.details = detailsMessages[value]
-      this.secondCity = detailsMessages[value][0]
+      this.logbefort = value
+      this.details = this.detailsMessages[value]
+      this.secondCity = this.detailsMessages[value][0]
     },
-    startTimeChange (date, dateString) {
+    timeChange (date, dateString) {
       // 开始日期变化
-      this.startTime = dateString
+      this.startTime = dateString[0]
+      this.endTime = dateString[1]
     },
-    endTimeChange (date, dateString) {
-      // 结束日期变化
-      this.endTime = dateString
-    },
+    // timeOk (value) {
+    // },
     seeAbout () {
-      // console.log('日志--'+this.logData+'详情--'+this.secondCity+'开始时间--'+this.startTime+'结束时间--'+this.endTime+'输入框'+this.iptContent)
+      this.initData()
     }
+    // dataTime (timestamp) {
+    //   var date = new Date(timestamp)// 时间戳为10位需*1000，时间戳为13位的话不需乘1000
+    //   var Y = date.getFullYear() + '-'
+    //   var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-'
+    //   var D = (date.getDate() < 10 ? '0' + date.getDate() : date.getDate()) + ' '
+    //   var h = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + ':'
+    //   var m = (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()) + ':'
+    //   var s = (date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds())
+    //   return Y + M + D + h + m + s
+    // }
+
   }
+
 }
 </script>
 <style lang="scss" scoped>
