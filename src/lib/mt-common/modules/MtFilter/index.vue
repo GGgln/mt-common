@@ -37,7 +37,7 @@
 <script>
 export default {
   name: 'mt-filter',
-  props: [ 'form' ],
+  props: ['form'],
   data () {
     return {
       formData: this.$form.createForm(this)

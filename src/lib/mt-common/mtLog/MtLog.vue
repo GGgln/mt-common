@@ -2,138 +2,161 @@
   <div id="mtLog_component" class="container">
     <div class="log-contents">
       <div class="log-title">
-        <div class="log-title-module log-button">
-          <a-button  class="add-btn add-btn-derive" type="primary">导出</a-button>
-          <a-button  class="add-btn" type="primary">查询</a-button>
-        </div>
-        <div class="log-title-module log-input">
-          <a-input v-model="iptContent" placeholder="搜索日志内容" />
-          </div>
-        <div class="log-title-module log-picker">
-          <span class="log-caption">时间段查询:</span>
-          <a-date-picker style="width: 36.5%" placeholder="年/月/日" @change="startTimeChange" />
-          <span class="log-caption">~</span>
-          <a-date-picker style="width: 36.5%" placeholder="年/月/日" @change="endTimeChange" />
-        </div>
-        <div class="log-title-module log-select">
-          <span class="log-caption">操作类型:</span>
-          <a-select v-model="logSelect" style="width: 36%"><a-select-option align="center" value="all">系统日志</a-select-option></a-select>
+    <a-row>
+      <a-col :offset="3" :xs="5"><span class="log-caption">操作类型:</span>
+          <a-select style="width: 110px;" :value="logbefort" @change="selectChange">
+            <a-select-option v-for="log in logMessages" :key="log">{{ log }}</a-select-option>
+          </a-select>
           <span class="log-caption">--</span>
-          <a-select v-model="particularSelect" style="width: 36%"><a-select-option align="center" value="all">全选</a-select-option></a-select>
+          <a-select style="width: 110px;"  v-model="secondCity">
+            <a-select-option v-for="detail in details" :key="detail">{{ detail }}</a-select-option>
+          </a-select></a-col>
+      <a-col :xs="8">   <span class="log-caption">时间段查询:</span>
+            <a-range-picker :showTime="{ format: 'HH:mm:ss' }"
+      format="YYYY-MM-DD HH:mm:ss"   @change="timeChange" />
+       </a-col>
+      <a-col :xs="4"><a-input  v-model="iptContent" placeholder="搜索日志内容" /></a-col>
+      <a-col :offset="1" :xs="3"> <a-button icon="plus"  class="add-btn add-btn-derive" type="primary">导出日志</a-button>
+            <a-button @click="seeAbout" icon="search" class="add-btn" type="primary">查询日志</a-button></a-col>
+    </a-row>
+
         </div>
       </div>
-      <div class="log-table">
-
-      <a-table @change="TableChange" :pagination="false" :columns="columns" :dataSource="data" bordered></a-table>
-      </div>
+      <div class="log-table"><a-table :pagination="pageOptions" :columns="columns" :dataSource="data" ></a-table></div>
     </div>
-  </div>
 </template>
 <script>
+import request from '../utils/request'
 const columns = [
   {
     title: '日志时间',
     align: 'center',
-    dataIndex: 'time',
+    dataIndex: 'date',
     width: '12%'
   },
   {
     title: '操作类型',
     align: 'center',
-    // className: 'column-money',
-    dataIndex: 'type',
+    dataIndex: 'operationType',
     width: '12%'
   },
   {
     title: '日志内容',
     align: 'center',
-    dataIndex: 'content',
+    dataIndex: 'logContent',
     width: '61%'
   },
   {
     title: '操作人',
     align: 'center',
-    dataIndex: 'operator',
+    dataIndex: 'operationUser',
     width: '15%'
-  }
-]
-
-const data = [
-  {
-    key: '1',
-    time: '11.11',
-    type: '￥300,000.00',
-    content: 'New York No. 1 Lake Park',
-    operator: 123
-  },
-  {
-    key: '2',
-    time: '22.22',
-    type: '￥1,256,000.00',
-    content: 'London No. 1 Lake Park',
-    operator: 123
-  },
-  {
-    key: '3',
-    time: '33.33',
-    type: '￥120,000.00',
-    content: 'Sidney No. 1 Lake Park',
-    operator: 123
-  },
-  {
-    key: '4',
-    time: '44.44',
-    type: '￥120,000.00',
-    content: 'Sidney No. 1 Lake Park',
-    operator: 123
   }
 ]
 export default {
   name: 'mt-log',
   data () {
     return {
-      data,
-      columns,
-      iptContent: null, // 搜索日志内容
-      logSelect: null, // 日志状态
-      particularSelect: null, // 详细日志状态
+      columns, // table表头
+      data: [], // table数据
+      logbefort: null, // 日志
+      logMessages: [], // 日志数据
+      detailsMessages: '', // 日志详情数据
+      details: null, // 日志详情信息
+      secondCity: null, // 日志详情默认第一条
+      iptContent: null, // 搜索日志关键词
       startTime: null, // 开始日期
       endTime: null, // 结束日期
-      pageSize: 1,
-      current: 1,
-      pagination: {
-        total: 0,
-        // hideOnSinglePage:true,//只有一页时是否隐藏分页器
-        defaultCurrent: 1,
-        pageSize: 1,
-        // showTotal: total => `共 ${total} 条数据`,
-        showSizeChanger: true,
+      pageSize: 10, // 条数
+      page: 1, // 当前页
+      pageOptions: {
+        defaultPageSize: 10,
         showQuickJumper: true,
-        pageSizeOptions: ['1', '2', '3'],
-        onShowSizeChange: (current, pageSize) => (this.pageSize = pageSize)
+        showSizeChanger: true,
+        pageSizeOptions: ['10', '15', '20'],
+        total: 0,
+        onShowSizeChange: (current, size) => {
+          this.pageSize = size
+          this.page = current
+          this.initData()
+        },
+        onChange: (page, pageSize) => {
+          // 跳页
+          this.page = page
+          this.initData()
+        }
       }
     }
   },
-  // created() {
-  //   this.logSelect;
-  //   this.particularSelect;
-  // },
+  created () {
+    this.initSelect()
+    this.initData()
+  },
 
   methods: {
-    startTimeChange (date, dateString) {
+    initSelect () {
+      request({
+        url: 'api/dimType/getType',
+        method: 'get'
+      }).then(res => {
+        this.logbefort = res.oneType[0]
+        this.logMessages = res.oneType
+        this.detailsMessages = res.twoType
+        this.details = res.twoType[res.oneType[0]] // 日志详情信息
+        this.secondCity = res.twoType[res.oneType[0]][0] // 日志详情默认第一条
+      }).catch(() => {
+        // alert('error')
+      })
+    },
+    initData () {
+      request({
+        url: 'api/log/selectLog',
+        method: 'post',
+        data: {
+          startTime: this.startTime,
+          endTime: this.endTime,
+          oneType: this.logbefort,
+          twoType: this.secondCity,
+          key: this.iptContent,
+          page: this.page,
+          limit: this.pageSize
+        }
+
+      }).then(res => {
+        this.data = res.result.list
+        this.pageOptions.total = res.result.size
+      }).catch(() => {
+        // alert('error')
+      })
+    },
+    selectChange (value) {
+      this.logbefort = value
+      this.details = this.detailsMessages[value]
+      this.secondCity = this.detailsMessages[value][0]
+    },
+    timeChange (date, dateString) {
       // 开始日期变化
-      this.startTime = dateString
-      console.log(this.startTime)
+      this.startTime = dateString[0]
+      this.endTime = dateString[1]
     },
-    endTimeChange (date, dateString) {
-      // 结束日期变化
-      this.endTime = dateString
-      console.log(this.endTime)
-    },
-    TableChange () {
-      alert(this.pageSize)
+    // timeOk (value) {
+    // },
+    seeAbout () {
+      this.initData()
     }
+    // dataTime (timestamp) {
+    //   var date = new Date(timestamp)// 时间戳为10位需*1000，时间戳为13位的话不需乘1000
+    //   var Y = date.getFullYear() + '-'
+    //   var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-'
+    //   var D = (date.getDate() < 10 ? '0' + date.getDate() : date.getDate()) + ' '
+    //   var h = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + ':'
+    //   var m = (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()) + ':'
+    //   var s = (date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds())
+    //   return Y + M + D + h + m + s
+    // }
+
   }
+
 }
 </script>
 <style lang="scss" scoped>
