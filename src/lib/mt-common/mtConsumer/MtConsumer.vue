@@ -3,24 +3,26 @@
     <div class="consumer-contents">
       <div class="consumer-title">
         <a-row>
-          <a-col :offset="16" :xs="4"><a-input v-model="iptContent" placeholder="搜索日志内容" /></a-col>
-          <a-col :offset="1" :xs="3">
-            <a-button icon="plus" class="add-btn add-btn-derive" type="primary" @click="showModal">新建用户</a-button>
-            <a-button icon="search" class="add-btn" type="primary">查询用户</a-button>
+          <a-col :offset="16" :md="4"><a-input style="width:100%;" v-model="iptContent" placeholder="搜索日志内容" /></a-col>
+          <a-col :offset="1" :md="3">
+            <a-row>
+              <a-col :md="11"><a-button icon="search" @click="initData()" class="add-btn" type="primary">查询用户</a-button></a-col>
+              <a-col :offset="2" :md="11"><a-button icon="plus" class="add-btn add-btn-derive" type="primary" @click="showModal">新建用户</a-button></a-col>
+            </a-row>
           </a-col>
         </a-row>
       </div>
       <a-modal title="新建用户" v-model="visible" @cancel="cancelModal" @ok="saveModal" okText="保存" cancelText="关闭">
         <a-form :form="form">
           <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="姓名:" hasFeedback>
-            <a-input id="warning" v-decorator="['name', { rules: [{ required: true, message: '不能为空' }] }]" />
+            <a-input id="warning" v-decorator="['userName', { rules: [{ required: true, message: '不能为空' }] }]" />
           </a-form-item>
           <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="用户名:" hasFeedback>
-            <a-input id="warning" v-decorator="['username', { rules: [{ required: true, message: '不能为空' }] }]" />
+            <a-input id="warning" v-decorator="['userId', { rules: [{ required: true, message: '不能为空' }] }]" />
           </a-form-item>
 
           <a-form-item label="密码" class="stepFormText" :label-col="labelCol" :wrapper-col="wrapperCol" hasFeedback>
-            <a-input type="password" v-decorator="['password', { rules: [{ required: true, message: '请输入密码' }, { validator: handlePass }] }]" name="password" />
+            <a-input type="password" v-decorator="['passWord', { rules: [{ required: true, message: '请输入密码' }, { validator: handlePass }] }]" name="password" />
           </a-form-item>
           <a-form-item label="确认密码" class="stepFormText" :label-col="labelCol" :wrapper-col="wrapperCol" hasFeedback>
             <a-input
@@ -30,138 +32,136 @@
             />
           </a-form-item>
           <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="用户组:" hasFeedback>
-            <a-select v-decorator="['userGroup', { rules: [{ required: true, message: '请选择用户组' }] }]">
-              <a-select-option value="1">Option 1</a-select-option>
-              <a-select-option value="2">Option 2</a-select-option>
-              <a-select-option value="3">Option 3</a-select-option>
+            <a-select v-decorator="['roleTypeId', { rules: [{ required: true, message: '请选择用户组' }] }]">
+              <a-select-option :value="select.roleTypeId" :key="index" v-for="(select,index) in selects">{{select.roleTypeName}}</a-select-option>
             </a-select>
           </a-form-item>
           <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="电话:" hasFeedback>
             <a-input id="warning" v-decorator="['phone', { rules: [{ required: true, message: '不能为空' }, { validator: handIphone }] }]" />
           </a-form-item>
           <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="智信:" hasFeedback>
-            <a-input id="warning" v-decorator="['wisdomLetter', { rules: [{ required: true, message: '不能为空' }] }]" />
+            <a-input id="warning" v-decorator="['zhixin', { rules: [{ required: true, message: '不能为空' }] }]" />
           </a-form-item>
           <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="微信:" hasFeedback>
-            <a-input id="warning" v-decorator="['weChat', { rules: [{ required: true, message: '不能为空' }] }]" />
+            <a-input id="warning" v-decorator="['wechat', { rules: [{ required: true, message: '不能为空' }] }]" />
           </a-form-item>
           <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="钉钉:" hasFeedback>
-            <a-input id="warning" v-decorator="['dingTalk', { rules: [{ required: true, message: '不能为空' }] }]" />
+            <a-input id="warning" v-decorator="['dingDing', { rules: [{ required: true, message: '不能为空' }] }]" />
           </a-form-item>
           <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="邮箱:" hasFeedback>
-            <a-input id="warning" v-decorator="['mailbox', { rules: [{ required: true, message: '不能为空' }] }]" />
+            <a-input id="warning" v-decorator="['mail', { rules: [{
+              type: 'email', message: '请输入正确的邮箱格式',
+            },{ required: true, message: '不能为空' }] }]" />
           </a-form-item>
         </a-form>
       </a-modal>
       <a-table :pagination="pageOptions" :columns="columns" :dataSource="data">
         <template slot="action" slot-scope="text, record">
-          <a href="javascript:;" @click="deleData(record)">删除</a>
-          <a style="margin: 0 20px;" href="javascript:;" @click="compileData(record)">编辑</a>
-          <a href="javascript:;" @click="detailsData(record)">详情</a>
+          <a-row>
+            <a-col :span="8"><a v-if="record.deletFlg" href="javascript:;" @click="deleData(record)">删除</a></a-col>
+            <a-col :span="8"><a href="javascript:;" @click="showModalEdit(record)">编辑</a></a-col>
+            <a-col :span="8"><a href="javascript:;" @click="detailsData(record)">详情</a></a-col>
+          </a-row>
         </template>
       </a-table>
+      <a-modal title="编辑用户" v-model="visibleEdit" @cancel="cancelModalEdit" @ok="saveModalEdit" okText="保存" cancelText="关闭">
+        <a-form :form="formEdit">
+          <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="姓名:" hasFeedback>
+            <a-input id="warning" v-decorator="['userName', { rules: [{ required: true, message: '不能为空' }] }]" />
+          </a-form-item>
+          <a-form-item label="原密码" class="stepFormText" :label-col="labelCol" :wrapper-col="wrapperCol" hasFeedback>
+            <a-input type="password" v-decorator="['oldPassWord', { rules: [{ required: true, message: '请输入原密码' }] }]" name="password" />
+          </a-form-item>
+          <a-form-item label="新密码" class="stepFormText" :label-col="labelCol" :wrapper-col="wrapperCol" hasFeedback>
+            <a-input
+              type="password"
+              v-decorator="['passWord', { rules: [{ required: true, message: '请输入新密码' }] }]"
+              name="confirm_password"
+            />
+          </a-form-item>
+          <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="用户组:" hasFeedback>
+            <a-select v-decorator="['roleTypeId', { rules: [{ required: true, message: '请选择用户组' }] }]">
+              <a-select-option :value="select.roleTypeId" :key="index" v-for="(select,index) in selects">{{select.roleTypeName}}</a-select-option>
+            </a-select>
+          </a-form-item>
+          <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="电话:" hasFeedback>
+            <a-input id="warning" v-decorator="['phone', { rules: [{ required: true, message: '不能为空' }, { validator: handIphone }] }]" />
+          </a-form-item>
+          <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="智信:" hasFeedback>
+            <a-input id="warning" v-decorator="['zhixin', { rules: [{ required: true, message: '不能为空' }] }]" />
+          </a-form-item>
+          <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="微信:" hasFeedback>
+            <a-input id="warning" v-decorator="['wechat', { rules: [{ required: true, message: '不能为空' }] }]" />
+          </a-form-item>
+          <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="钉钉:" hasFeedback>
+            <a-input id="warning" v-decorator="['dingDing', { rules: [{ required: true, message: '不能为空' }] }]" />
+          </a-form-item>
+          <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="邮箱:" hasFeedback>
+            <a-input id="warning" v-decorator="['mail', { rules: [{
+              type: 'email', message: '请输入正确的邮箱格式',
+            },{ required: true, message: '不能为空' }] }]" />
+          </a-form-item>
+        </a-form>
+      </a-modal>
     </div>
   </div>
 </template>
 <script>
+import request from '../utils/request'
 const columns = [
   {
     title: '姓名',
     align: 'center',
-    dataIndex: 'time'
+    dataIndex: 'userName',
+    width: '12%'
   },
   {
     title: '用户名',
     align: 'center',
-    dataIndex: 'type'
+    dataIndex: 'userId',
+    width: '15%'
   },
-  {
-    title: '密码',
-    align: 'center',
-    dataIndex: 'content'
-  },
+
   {
     title: '用户组',
     align: 'center',
-    dataIndex: 'a'
+    dataIndex: 'roleTypeName',
+    width: '15%'
   },
   {
     title: '电话',
     align: 'center',
-    dataIndex: 'b'
+    dataIndex: 'phone',
+    width: '15%'
   },
   {
     title: '创建时间',
     align: 'center',
-    dataIndex: 'c'
+    dataIndex: 'createTime',
+    width: '15%'
   },
   {
     title: '创建者',
     align: 'center',
-    dataIndex: 'd'
+    dataIndex: 'createUser',
+    width: '12%'
   },
   {
     title: '操作',
     align: 'center',
     dataIndex: '',
-    scopedSlots: { customRender: 'action' }
+    scopedSlots: { customRender: 'action' },
+    width: '16%'
   }
 ]
 
-const data = [
-  {
-    key: '1',
-    time: '11.11',
-    type: '￥300,000.00',
-    content: 'New York No. 1 Lake Park',
-    operator: 123,
-    a: '1',
-    b: '1',
-    c: '1',
-    d: '1'
-  },
-  {
-    key: '2',
-    time: '22.22',
-    type: '￥1,256,000.00',
-    content: 'London No. 1 Lake Park',
-    operator: 123,
-    a: '1',
-    b: '1',
-    c: '1',
-    d: '1'
-  },
-  {
-    key: '3',
-    time: '33.33',
-    type: '￥120,000.00',
-    content: 'Sidney No. 1 Lake Park',
-    operator: 123,
-    a: '1',
-    b: '1',
-    c: '1',
-    d: '1'
-  },
-  {
-    key: '4',
-    time: '44.44',
-    type: '￥120,000.00',
-    content: 'Sidney No. 1 Lake Park',
-    operator: 123,
-    a: '1',
-    b: '1',
-    c: '1',
-    d: '1'
-  }
-]
-// import request from './../utils/request'
 export default {
   name: 'mt-consumer-page',
   data () {
     return {
-      // aaaa:{},
-      form: this.$form.createForm(this),
-      password: '',
+      form: this.$form.createForm(this), // 新建form
+      formEdit: this.$form.createForm(this), // 编辑form
+      password: '', // 新建对比密码
       labelCol: {
         xs: { span: 24 },
         sm: { span: 5 }
@@ -171,18 +171,25 @@ export default {
         sm: { span: 15 }
       },
       iptContent: null, // 输入框内容
-      visible: false,
-      data,
+      visible: false, // 新建model
+      visibleEdit: false, // 编辑model
       columns,
+      data: [], // table数据
+      selects: [], // 下拉数据
+      UserId: 'root', // 登录用户
       pageSize: 10, // 条数
       page: 1, // 当前页
-      pageOptions: {
+      details: {}, // 详情数据
+      formNewData: {}, // 新建传输数据
+      formNewDataEdit: {}, // 编辑传输数据
+      receiveEdit: {},
+      pageOptions: {// 分页
         defaultPageSize: 10,
         showQuickJumper: true,
         showSizeChanger: true,
         pageSizeOptions: ['10', '15', '20'],
-        total: 50,
-        onShowSizeChange: (current, size) => {
+        total: 0,
+        onShowSizeChange: (current, size) => { // 每页多少条
           this.pageSize = size
           this.page = current
           this.initData()
@@ -195,25 +202,234 @@ export default {
       }
     }
   },
+  created () {
+    this.initData()
+  },
   methods: {
     initData () {
-      // 数据接口
+      // table数据列表接口
+      request({
+        url: 'Service/API/V1/CHP/user/list',
+        method: 'post',
+        data: {
+          keyWord: this.iptContent,
+          userId: this.UserId,
+          currentPage: this.page,
+          pageNum: this.pageSize
+        }
+      })
+        .then(res => {
+          if (res.code === '0') {
+            this.pageOptions.total = res.data.totalCount
+            this.data = res.data.userJsons
+          }
+        })
+        .catch(() => {
+          // alert('error')
+        })
     },
-    showModal () {
+    selectData () { // 下拉数据
+      request({
+        url: 'Service/API/V1/CHP/role/list/' + this.UserId,
+        method: 'get'
+      })
+        .then(res => {
+          this.selects = res.data
+        })
+        .catch(() => {
+          // alert('error')
+        })
+    },
+
+    saveModal (e) { // 新建保存发送新建信息
+      e.preventDefault()
+      this.form.validateFields((err, values) => {
+        if (!err) {
+          this.formNewData = {createUser: this.UserId}
+          for (let value in values) {
+            if (value !== 'confirm_password') {
+              this.formNewData[value] = values[value]
+            }
+          }
+          request({
+            url: 'Service/API/V1/CHP/user/create',
+            method: 'post',
+            data: this.formNewData
+          })
+            .then(res => {
+              this.visible = false
+              this.initData()
+            })
+            .catch(() => {
+              // alert('error')
+            })
+        }
+      })
+    },
+    saveModalEdit (e) { // 编辑保存发送修改信息
+      console.log(e)
+      e.preventDefault()
+      this.formEdit.validateFields((err, values) => {
+        if (!err) {
+          this.formNewDataEdit = {userId: this.receiveEdit.userId, customerName: values.userName, customerId: this.receiveEdit.customerId}
+          for (let value in values) {
+            this.formNewDataEdit[value] = values[value]
+          }
+
+          request({
+            url: 'Service/API/V1/CHP/user/updateUser',
+            method: 'put',
+            data: this.formNewDataEdit
+          })
+            .then(res => {
+              console.log(res)
+              this.visibleEdit = false
+              this.initData()
+            })
+            .catch(() => {
+              // alert('error')
+            })
+        }
+      })
+    },
+    showModal () { // 新建显示
       this.visible = true
       this.form.resetFields() // 新建重置
-      // this.form.setFieldsValue({//数据
-      //   'username':'123',
-      //   'name':'121'
-      // })
+      this.selectData()
+    },
+    showModalEdit (data) { // 编辑显示
+      this.visibleEdit = true
+      this.formEdit.resetFields() // 修改重置
+      // this.editUserId=data.userId
+      request({
+        url: 'Service/API/V1/CHP/user/detail/' + data.userId,
+        method: 'get'
+      })
+        .then(res => {
+          if (res.code === '0') {
+            this.receiveEdit = res.data
+            setTimeout(() => {
+              this.formEdit.setFieldsValue({// 数据
+                'zhixin': res.data.zhixin,
+                'userName': res.data.customerName,
+                'roleTypeId': res.data.roleTypeId,
+                'phone': res.data.phone,
+                'dingDing': res.data.dingDing,
+                'mail': res.data.mail,
+                'wechat': res.data.wechat
+              })
+            }, 100)
+          }
+        })
+        .catch(() => {
+          // alert('error')
+        })
+
+      this.selectData()// 调用下拉数据
+    },
+    cancelModal () { // 新建model关闭
+      this.visible = false
+    },
+
+    cancelModalEdit () { // 编辑model关闭
+      this.visibleEdit = false
+    },
+    detailsData (data) { // 详情model
+      this.details = {}
+      // 详情框
+      request({
+        url: 'Service/API/V1/CHP/user/detail',
+        method: 'post',
+        data: {
+          custormId: String(data.customerId),
+          userId: data.userId
+        }
+      })
+        .then(res => {
+          if (res.code === '0') {
+            this.details = res.data
+            this.$info({
+              title: '用户详情',
+              // JSX support
+              content: (
+                <div class="detailsConter">
+                  <p>
+                    <span style="width:25%;display:inline-block;text-align: right;margin-right: 20px;">姓名:</span>
+                    {this.details.customerName}
+                  </p>
+                  <p>
+                    <span style="width:25%;display:inline-block;text-align: right;margin-right: 20px;">用户组:</span>
+                    {this.details.roleTypeName}
+                  </p>
+                  <p>
+                    <span style="width:25%;display:inline-block;text-align: right;margin-right: 20px;">电话:</span>
+                    {this.details.phone}
+                  </p>
+                  <p>
+                    <span style="width:25%;display:inline-block;text-align: right;margin-right: 20px;">智信:</span>
+                    {this.details.zhixin}
+                  </p>
+                  <p>
+                    <span style="width:25%;display:inline-block;text-align: right;margin-right: 20px;">微信:</span>
+                    {this.details.wechat}
+                  </p>
+                  <p>
+                    <span style="width:25%;display:inline-block;text-align: right;margin-right: 20px;">钉钉:</span>
+                    {this.details.dingDing}
+                  </p>
+                  <p>
+                    <span style="width:25%;display:inline-block;text-align: right;margin-right: 20px;">邮箱:</span>
+                    {this.details.mail}
+                  </p>
+                </div>
+              ),
+              okText: '关闭',
+              centered: true,
+              width: 500,
+              onOk () {
+              }
+            })
+          }
+        })
+        .catch(() => {
+          // alert('error')
+        })
+    },
+    deleData (data) { // 删除model
+      console.log(data)
+      let thisName = this // 赋值this
+      this.$confirm({
+        title: '删除用户',
+        content: '确定要删除 "' + data.userName + '" ?',
+        okText: '确定',
+        centered: true,
+        width: 500,
+        // iconType: 'exclamation-circle',
+        cancelText: '取消',
+        onOk () {
+          request({
+            url: 'Service/API/V1/CHP/user/delete/' + data.userId,
+            method: 'delete'
+          })
+            .then(res => {
+              thisName.initData()
+            })
+            .catch(() => {
+              // alert('error')
+            })
+        },
+        onCancel () {
+          console.log('Cancel')
+        }
+      })
     },
     handlePass (rule, value, callback) {
-      // 密码
+      // 新建密码验证
       this.password = value
       callback()
     },
     handleConfirmPass (rule, value, callback) {
-      // 新密码
+      // 确认密码验证
       if (this.password && this.password !== value) {
         callback(new Error('两次密码输入不一致!'))
         return
@@ -229,80 +445,7 @@ export default {
         return
       }
       callback()
-    },
-    saveModal (e) {
-      e.preventDefault()
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          console.log(values)
-          this.visible = false
-        }
-      })
-    },
-    cancelModal () {
-      this.visible = false
-    },
-    compileData (data) {
-      // 编辑框
-      console.log(data)
-    },
-    detailsData (data) {
-      // 详情框
-      // const h = this.$createElement
-      console.log(data)
-      // this.aaaa=data
-      this.$info({
-        title: '用户详情',
-        // JSX support
-        content: (
-          <div>
-            <p>{this.pageSize}</p>
-            <p>{this.pageSize}</p>
-            <p>{this.pageSize}</p>
-            <p>{this.pageSize}</p>
-            <p>{this.pageSize}</p>
-            <p>{this.pageSize}</p>
-            <p>{this.pageSize}</p>
-            <p>{this.pageSize}</p>
-          </div>
-        ),
-        okText: '关闭',
-        centered: true,
-        width: 500,
-        onOk () {
-          console.log(data)
-        }
-      })
-    },
-    deleData (data) {
-      // 删除框
-      console.log(data.time)
-      this.$confirm({
-        title: '删除用户',
-        content: '确定要删除 "' + data.time + '" ?',
-        okText: '确定',
-        centered: true,
-        width: 500,
-        // iconType: 'exclamation-circle',
-        cancelText: '取消',
-        onOk () {
-          console.log(data)
-        },
-        onCancel () {
-          console.log('Cancel')
-        }
-      })
     }
-    // init() {
-    //    request({
-    //     url: that.form.listUrl,
-    //     method: 'get'
-    //   }).then(res => {
-    //     //alert('success')
-    //   }).catch(()=>{
-    //     //alert('error')
-    //   })
-    // }
   }
 }
 </script>
