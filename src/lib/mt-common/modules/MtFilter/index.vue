@@ -12,7 +12,7 @@
           :label="`${el.name}:`"
           :key="index"
         >
-          <a-select v-if="el.type === 'select'" v-model="el.value" :placeholder="'请选择' + el.name">
+          <a-select v-if="el.type === 'select'" v-model="el.key" :placeholder="'请选择' + el.name">
             <a-select-option
               v-for="(optionItem, optionIndex) in el.data"
               :key="optionIndex"
@@ -20,7 +20,7 @@
               :label="optionItem.label"
             ></a-select-option>
           </a-select>
-          <a-input v-else v-model="el.value" :placeholder="`请输入${ el.name }`" />
+          <a-input v-else v-model="el.key" :placeholder="`请输入${ el.name }`" />
         </a-form-item>
       </template>
       <slot name="default"></slot>
