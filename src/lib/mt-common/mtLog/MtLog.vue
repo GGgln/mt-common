@@ -75,7 +75,7 @@ export default {
         defaultPageSize: 10,
         showQuickJumper: true,
         showSizeChanger: true,
-        pageSizeOptions: ['10', '15', '20'],
+        pageSizeOptions: ['10', '20', '50'],
         total: 0,
         onShowSizeChange: (current, size) => {
           this.pageSize = size
