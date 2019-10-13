@@ -1,0 +1,27 @@
+.container{
+  padding: 20px;
+}
+.param_btn{
+  text-align: right;
+  margin-bottom: 20px;
+}
+.params_group{
+  overflow: hidden;
+  clear: both;
+  padding-bottom: 20px;
+  border-bottom: #e8e8e8 dashed 1px;
+  &:nth-last-of-type(1){
+    border: none;
+  }
+  margin-bottom: 20px;
+  h3{
+    font-size: 16px;
+  }
+  .param_list{
+    margin-top: 20px;
+    
+  }
+}
+.ant-input {
+  width: 100%;
+}
