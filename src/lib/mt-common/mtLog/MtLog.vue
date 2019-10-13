@@ -2,14 +2,13 @@
   <div id="mtLog_component" class="container">
     <div class="log-contents">
       <div class="log-title">
-    <a-row>
-      <a-col :offset="3" :md="5">
-        <a-row>
-          <a-col :md="4">
+    <a-row type="flex" justify="space-around" align="middle" :gutter="16">
+      <a-col  :md="7">
+        <a-row type="flex" justify="space-around" align="middle">
+          <a-col :md="5">
         <span class="log-caption">操作类型:</span>
-
           </a-col>
-          <a-col :md="8">
+          <a-col :md="9">
           <a-select style="width: 100%;" :value="logbefort" @change="selectChange">
             <a-select-option v-for="log in logMessages" :key="log">{{ log }}</a-select-option>
           </a-select>
@@ -19,7 +18,7 @@
 
           <span class="log-caption">--</span>
           </a-col>
-          <a-col :md="8">
+          <a-col :md="9">
 
           <a-select style="width: 100%;"  v-model="secondCity">
             <a-select-option v-for="detail in details" :key="detail">{{ detail }}</a-select-option>
@@ -28,12 +27,12 @@
         </a-row>
 
           </a-col>
-      <a-col :md="8">
-      <a-row>
-        <a-col :md="3">
+      <a-col :md="9">
+      <a-row type="flex" justify="space-around" align="middle">
+        <a-col :md="5">
         <span  class="log-caption">时间段查询:</span>
         </a-col>
-        <a-col :md="20">
+        <a-col :md="19">
                 <a-range-picker :showTime="{ format: 'HH:mm:ss' }"
           format="YYYY-MM-DD HH:mm:ss"   @change="timeChange" />
         </a-col>
@@ -41,10 +40,9 @@
 
        </a-col>
       <a-col :md="4"><a-input  style="width: 100%;" v-model="iptContent" placeholder="搜索日志内容" /></a-col>
-      <a-col :offset="1" :md="3">
+      <a-col  :md="4">
       <a-row>
         <a-col :md="11">
-
       <a-button @click="seeAbout" icon="search" class="add-btn" type="primary">查询日志</a-button>
         </a-col>
         <a-col :offset="2" :md="11">

@@ -2,9 +2,9 @@
   <div id="MtConsumer_component" class="container">
     <div class="consumer-contents">
       <div class="consumer-title">
-        <a-row>
-          <a-col :offset="16" :md="4"><a-input style="width:100%;" v-model="iptContent" placeholder="搜索日志内容" /></a-col>
-          <a-col :offset="1" :md="3">
+        <a-row :gutter="16" type="flex" justify="space-around" align="middle">
+          <a-col :offset="15" :md="4"><a-input style="width:100%;" v-model="iptContent" placeholder="搜索日志内容" /></a-col>
+          <a-col  :md="5">
             <a-row>
               <a-col :md="11"><a-button icon="search" @click="initData()" class="add-btn" type="primary">查询用户</a-button></a-col>
               <a-col :offset="2" :md="11"><a-button icon="plus" class="add-btn add-btn-derive" type="primary" @click="showModal">新建用户</a-button></a-col>
@@ -267,7 +267,6 @@ export default {
       })
     },
     saveModalEdit (e) { // 编辑保存发送修改信息
-      console.log(e)
       e.preventDefault()
       this.formEdit.validateFields((err, values) => {
         if (!err) {
@@ -283,10 +282,15 @@ export default {
           })
             .then(res => {
               console.log(res)
+
               this.visibleEdit = false
               this.initData()
             })
             .catch(() => {
+              // this.$error({
+              //        title: '错误',
+              //        content: 'some messages...some messages...',
+              //      })
               // alert('error')
             })
         }
@@ -299,7 +303,7 @@ export default {
     },
     showModalEdit (data) { // 编辑显示
       this.visibleEdit = true
-      this.formEdit.resetFields() // 修改重置
+      this.formEdit.resetFields() // 编辑重置
       // this.editUserId=data.userId
       request({
         url: 'Service/API/V1/CHP/user/detail/' + data.userId,
