@@ -286,7 +286,8 @@ export default {
               this.visibleEdit = false
               this.initData()
             })
-            .catch(() => {
+            .catch((error) => {
+              console.log(error)
               // this.$error({
               //        title: '错误',
               //        content: 'some messages...some messages...',
