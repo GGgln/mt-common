@@ -1,8 +1,8 @@
 <template>
   <div id="MtAlarm_component" class="common-container">
-    <a-form :form="formData" layout="inline">
+    <a-form class="filter_box" :form="formData" layout="inline">
       <a-form-item label="报警等级：">
-        <a-select v-decorator="['alarmLevel']" placeholder="请选择报警等级">
+        <a-select v-decorator="['gradeId', {initialValue: 0}]" placeholder="请选择">
           <a-select-option
             v-for="(optionItem, optionIndex) in alarmLevelData"
             :key="optionIndex"
@@ -11,7 +11,7 @@
         </a-select>
       </a-form-item>
       <a-form-item label="报警状态：">
-        <a-select v-decorator="['alarmStatus']" placeholder="请选择报警状态">
+        <a-select v-decorator="['stateId', {initialValue: 0}]" placeholder="请选择">
           <a-select-option
             v-for="(optionItem, optionIndex) in alarmStatusData"
             :key="optionIndex"
@@ -19,8 +19,9 @@
           >{{ optionItem.label }}</a-select-option>
         </a-select>
       </a-form-item>
-      <a-form-item label="时间段：">
+      <a-form-item label="时间段查询：">
         <a-range-picker
+        v-decorator="['alarmTime']"
           :showTime="{
         hideDisabledOptions: true,
         defaultValue: [moment('00:00:00', 'HH:mm:ss'), moment('23:59:59', 'HH:mm:ss')]
@@ -30,37 +31,45 @@
         />
       </a-form-item>
       <a-form-item label="关键字查询：">
-        <a-input v-model="keywords" placeholder="请输入关键字" />
+        <a-input v-decorator="['keyWord']" placeholder="请输入关键字" />
       </a-form-item>
       <a-form-item>
         <a-button type="primary" @click="toSearch">查询</a-button>
         <a-button style="margin-left:20px;" @click="toReset">重置</a-button>
       </a-form-item>
     </a-form>
-    <a-table :columns="columns" :dataSource="data" bordered>
-      <template slot="operation" slot-scope="text, record">
-        <!-- <a-button v-for="(el, index) in form.formButtons">{{ el.name }}</a-button> -->
+    <a-table id="table_blue" :columns="columns" size="small" :dataSource="data" :pagination="pageOptions" bordered rowKey="alarmDesc">
+      <template slot="alarmGradeId" slot-scope="text, record">
+        <span>{{text == 1 ? '一级' : text == 2 ? '二级' : text == 3 ? '三级' : '-'}}</span>
+      </template>
+      <template slot="alarmStatus" slot-scope="text, record">
+        <span>{{text == 1 ? '报警' : text == 2 ? '消警' : text == 3 ? '待复位' : '-'}}</span>
+      </template>
+      <template slot="operate" slot-scope="text, record">
+        <a-button v-if="record.IsManualReset" type="primary" @click="resetAlarm(record)">复位</a-button>
       </template>
     </a-table>
   </div>
 </template>
 <script>
 import moment from 'moment'
+import request from '../utils/request'
 const columns = [
   {
     title: '报警级别',
-    dataIndex: 'alarmLevel',
-    scopedSlots: { customRender: 'alarmLevel' }
+    width: 90,
+    dataIndex: 'alarmGradeId',
+    scopedSlots: { customRender: 'alarmGradeId' }
   },
   {
     title: '部件名称',
-    dataIndex: 'partName',
-    scopedSlots: { customRender: 'partName' }
+    dataIndex: 'partDesc',
+    scopedSlots: { customRender: 'partDesc' }
   },
   {
     title: '报警名称',
-    dataIndex: 'alarmName',
-    scopedSlots: { customRender: 'alarmName' }
+    dataIndex: 'alarmDesc',
+    scopedSlots: { customRender: 'alarmDesc' }
   },
   {
     title: '报警状态',
@@ -69,54 +78,57 @@ const columns = [
   },
   {
     title: '报警时间',
-    dataIndex: 'alarmTime',
-    scopedSlots: { customRender: 'alarmTime' }
+    dataIndex: 'alarmBeginTime',
+    scopedSlots: { customRender: 'alarmBeginTime' }
   },
   {
     title: '报警详情',
-    dataIndex: 'alarmInfo',
-    scopedSlots: { customRender: 'alarmInfo' }
+    dataIndex: 'alarmDetails',
+    scopedSlots: { customRender: 'alarmDetails' }
   },
   {
     title: '消警时间',
-    dataIndex: 'cancelTime',
-    scopedSlots: { customRender: 'cancelTime' }
+    dataIndex: 'alarmEndTime',
+    scopedSlots: { customRender: 'alarmEndTime' }
   },
   {
     title: '相关操作',
-    dataIndex: 'operation',
-    scopedSlots: { customRender: 'operation' }
+    dataIndex: 'operate',
+    scopedSlots: { customRender: 'operate' }
   }
 
 ]
+const requestUrls = {
+  getAlarmLevel: '/Service/API/V1/CPH/alarm/dictionary',
+  getAlarmList: '/Service/API/V1/CPH/alarm/getAlarmInfo'
+}
 export default {
   name: 'mt-alarm',
   data () {
     return {
-      columns,
-      formData: this.$form.createForm(this),
-      rangeTime: [],
-      alarmLevel: '',
-      alarmStatus: '',
-      keywords: '',
-      postData: {
-        rangeTime: [],
-        alarmLevel: '',
-        alarmStatus: '',
-        keywords: '',
-        pageSize: 10,
-        page: 1
-      },
       alarmLevelData: [
+        { label: '全部', value: 0 },
         { label: '一级', value: 1 },
         { label: '二级', value: 2 },
         { label: '三级', value: 3 }
       ],
       alarmStatusData: [
+        { label: '全部', value: 0 },
         { label: '报警', value: 1 },
-        { label: '消警', value: 2 }
+        { label: '消警', value: 2 },
+        { label: '待复位', value: 3 }
       ],
+      columns,
       data: [],
+      formData: this.$form.createForm(this),
+      postData: {
+        alarmTime: [],
+        gradeId: 0,
+        stateId: 0,
+        keyWord: '',
+        pageNum: 10,
+        currentPage: 1
+      },
       pageOptions: {
         defaultPageSize: 10,
         showQuickJumper: true,
@@ -124,32 +136,93 @@ export default {
         pageSizeOptions: ['10', '20', '50'],
         total: 0,
         onShowSizeChange: (current, size) => {
-          this.postData.pageSize = size
-          this.postData.page = 1
+          this.postData.pageNum = size
+          this.postData.currentPage = 1
           this.requestFormList()
         },
         onChange: (page, pageSize) => {
           // 跳页
-          this.postData.page = page
+          this.postData.currentPage = page
           this.requestFormList()
         }
-      }
+      },
+      requestUrls,
     }
   },
   mounted () {
-    console.log(this)
+    this.getAlarmLevel()
+    this.requestFormList()
   },
   methods: {
     moment,
-    requestFormList () {},
-    toSearch () {},
-    toReset () {},
-    changeTime () {}
+    requestFormList () {
+      let that = this
+      let url = this.requestUrls.getAlarmList
+     request({
+        url: url,
+        method: 'post',
+        data: that.postData
+      }).then(res => {
+        // alert('success')
+        that.data = res.data.alarmInfoList
+        that.pageOptions.total = res.data.totalCount
+        that.postData.currentPage = res.data.page
+      }).catch(() => {
+        // alert('error')
+      })
+    },
+    getAlarmLevel () {
+      let url = this.requestUrls.getAlarmLevel
+      request({
+        url: url,
+        method: 'get'
+      }).then(res => {
+        // alert('success')
+      }).catch(() => {
+        // alert('error')
+      })
+    },
+    toSearch () {
+      this.formData.validateFields((err, values) => {
+        console.log(values, err)
+        this.postData = Object.assign(this.postData, values)
+         console.log(this.postData)
+         this.requestFormList()
+
+      })
+    },
+    toReset () {
+      console.log(this.formData)
+      this.formData.resetFields()
+    },
+    changeTime () {
+      console.log(this.alarmTime)
+    },
+    resetAlarm(record) {
+      this.$confirm({
+        title: '确认复位',
+        content: h => <div><p><span>报警名称：</span><span>${record.alarmDesc}</span></p></div>,
+        onOk() {
+          console.log('OK');
+        },
+        onCancel() {
+          console.log('Cancel');
+        },
+        class: 'test',
+      });
+    }
   }
 }
 </script>
-<style scoped>
+<style lang="scss" scoped>
+@import '../style/ant-style-cover.scss';
 form .ant-select {
   min-width: 100px !important;
+}
+.filter_box{
+  text-align: right;
+}
+#table_blue{
+  margin-top: 20px;
 }
 </style>
