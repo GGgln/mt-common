@@ -1,17 +1,12 @@
 <template>
   <div id="MtConsumer_component" class="container">
-    <div class="consumer-contents">
-      <div class="consumer-title">
-        <a-row :gutter="16" type="flex" justify="space-around" align="middle">
-          <a-col :offset="15" :md="4"><a-input style="width:100%;" v-model="iptContent" placeholder="搜索日志内容" /></a-col>
-          <a-col  :md="5">
-            <a-row>
-              <a-col :md="11"><a-button icon="search" @click="initData()" class="add-btn" type="primary">查询用户</a-button></a-col>
-              <a-col :offset="2" :md="11"><a-button icon="plus" class="add-btn add-btn-derive" type="primary" @click="showModal">新建用户</a-button></a-col>
-            </a-row>
-          </a-col>
-        </a-row>
-      </div>
+      <a-form class="filter_box" :form="formData" layout="inline">
+        <a-form-item> <a-input style="width:100%;" v-model="iptContent" placeholder="请输入用户名称" /></a-form-item>
+        <a-form-item>
+     <a-button icon="search" @click="initData()"  type="primary">查询用户</a-button>
+   <a-button icon="plus" style="margin-left:20px;"  type="primary" @click="showModal">新建用户</a-button>
+        </a-form-item>
+      </a-form>
       <a-modal title="新建用户" v-model="visible" @cancel="cancelModal" @ok="saveModal" okText="保存" cancelText="关闭">
         <a-form :form="form">
           <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="姓名:" hasFeedback>
@@ -61,7 +56,7 @@
                     <a-icon :style="{fontSize: '30px' }" :type="expand ? 'caret-up' : 'caret-down'" />
                   </a>
       </a-modal>
-      <a-table :pagination="pageOptions" :columns="columns" :dataSource="data">
+      <a-table id="table_blue" :pagination="pageOptions" :columns="columns" :dataSource="data">
         <template slot="action" slot-scope="text, record">
           <a-row>
             <a-col :span="8"><a v-if="record.deletFlg" href="javascript:;" @click="deleData(record)">删除</a></a-col>
@@ -115,7 +110,6 @@
                  <a-icon :style="{fontSize: '30px' }" :type="expand ? 'caret-up' : 'caret-down'" />
                </a>
       </a-modal>
-    </div>
   </div>
 </template>
 <script>
@@ -171,6 +165,7 @@ export default {
   name: 'mt-consumer-page',
   data () {
     return {
+      formData: this.$form.createForm(this),
       form: this.$form.createForm(this), // 新建form
       formEdit: this.$form.createForm(this), // 编辑form
       password: '', // 新建对比密码
@@ -349,65 +344,7 @@ export default {
     cancelModalEdit () { // 编辑model关闭
       this.visibleEdit = false
     },
-    detailsData (data) { // 详情model
-      this.details = {}
-      // 详情框
-      request({
-        url: 'Service/API/V1/CHP/user/detail',
-        method: 'post',
-        data: {
-          custormId: String(data.customerId),
-          userId: data.userId
-        }
-      })
-        .then(res => {
-          this.details = res.data
-          this.$info({
-            title: '用户详情',
-            // JSX support
-            content: (
-              <div class="detailsConter">
-                <p>
-                  <span style="width:25%;display:inline-block;text-align: right;margin-right: 20px;">姓名:</span>
-                  {this.details.customerName}
-                </p>
-                <p>
-                  <span style="width:25%;display:inline-block;text-align: right;margin-right: 20px;">用户组:</span>
-                  {this.details.roleTypeName}
-                </p>
-                <p>
-                  <span style="width:25%;display:inline-block;text-align: right;margin-right: 20px;">电话:</span>
-                  {this.details.phone}
-                </p>
-                <p>
-                  <span style="width:25%;display:inline-block;text-align: right;margin-right: 20px;">智信:</span>
-                  {this.details.zhixin}
-                </p>
-                <p>
-                  <span style="width:25%;display:inline-block;text-align: right;margin-right: 20px;">微信:</span>
-                  {this.details.wechat}
-                </p>
-                <p>
-                  <span style="width:25%;display:inline-block;text-align: right;margin-right: 20px;">钉钉:</span>
-                  {this.details.dingDing}
-                </p>
-                <p>
-                  <span style="width:25%;display:inline-block;text-align: right;margin-right: 20px;">邮箱:</span>
-                  {this.details.mail}
-                </p>
-              </div>
-            ),
-            okText: '关闭',
-            centered: true,
-            width: 500,
-            onOk () {
-            }
-          })
-        })
-        .catch(() => {
-          // alert('error')
-        })
-    },
+
     deleData (data) { // 删除model
       let thisName = this // 赋值this
       this.$confirm({
@@ -479,10 +416,76 @@ export default {
         return
       }
       callback()
+    },
+    detailsData (data) { // 详情model
+      this.details = {}
+      // 详情框
+      request({
+        url: 'Service/API/V1/CHP/user/detail',
+        method: 'post',
+        data: {
+          custormId: String(data.customerId),
+          userId: data.userId
+        }
+      })
+        .then(res => {
+          this.details = res.data
+          this.$info({
+            title: '用户详情',
+            // JSX support
+            content: (
+              <div class="detailsConter">
+                <p>
+                  <span style="width:25%;display:inline-block;text-align: right;margin-right: 20px;">姓名:</span>
+                  {this.details.customerName}
+                </p>
+                <p>
+                  <span style="width:25%;display:inline-block;text-align: right;margin-right: 20px;">用户组:</span>
+                  {this.details.roleTypeName}
+                </p>
+                <p>
+                  <span style="width:25%;display:inline-block;text-align: right;margin-right: 20px;">电话:</span>
+                  {this.details.phone}
+                </p>
+                <p>
+                  <span style="width:25%;display:inline-block;text-align: right;margin-right: 20px;">智信:</span>
+                  {this.details.zhixin}
+                </p>
+                <p>
+                  <span style="width:25%;display:inline-block;text-align: right;margin-right: 20px;">微信:</span>
+                  {this.details.wechat}
+                </p>
+                <p>
+                  <span style="width:25%;display:inline-block;text-align: right;margin-right: 20px;">钉钉:</span>
+                  {this.details.dingDing}
+                </p>
+                <p>
+                  <span style="width:25%;display:inline-block;text-align: right;margin-right: 20px;">邮箱:</span>
+                  {this.details.mail}
+                </p>
+              </div>
+            ),
+            okText: '关闭',
+            centered: true,
+            width: 500,
+            onOk () {
+            }
+          })
+        })
+        .catch(() => {
+          // alert('error')
+        })
     }
   }
 }
 </script>
 <style lang="scss" scoped>
-@import './style.scss';
+// @import '../style/ant-style-cover.scss';
+.filter_box{
+  text-align: right;
+  margin-bottom: 20px;
+}
+.container {
+  padding:20px;
+}
 </style>

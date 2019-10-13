@@ -54,15 +54,15 @@
   </div>
 </template>
 <script>
-import request from "../utils/request";
+import request from '../utils/request'
 
 export default {
-  name: "mt-param",
-  data() {
+  name: 'mt-param',
+  data () {
     return {
       editStatus: false,
       paramData: {}
-    };
+    }
   },
   props: {
     idParametersClass: {
@@ -90,50 +90,48 @@ export default {
       required: false
     }
   },
-  created() {
-    this.init();
+  created () {
+    this.init()
   },
 
   methods: {
-    init() {
-      let url = `/api/commenParameter/getParameter?idParametersClass=${this.idParametersClass}`;
-      let params = { idParametersClass: this.idParametersClass };
+    init () {
+      let url = `/api/commenParameter/getParameter?idParametersClass=${this.idParametersClass}`
+      let params = { idParametersClass: this.idParametersClass }
       request.get(url, params).then(res => {
-        this.paramData = res.data;
-      });
+        this.paramData = res.data
+      })
     },
-    validatorCustom(el) {
-      let reg = new RegExp(el.regularExpression);
+    validatorCustom (el) {
+      let reg = new RegExp(el.regularExpression)
       return (rule, value, callback) => {
         if (!reg.test(value)) {
-          callback(new Error("错误信息"));
-          return;
+          callback(new Error('错误信息'))
+          return
         }
 
-        callback();
-      };
+        callback()
+      }
     },
-    cancelSave() {
-      this.form.resetFields();
-      this.editStatus = false;
+    cancelSave () {
+      this.form.resetFields()
+      this.editStatus = false
     },
-    save() {
-      let self = this;
-      let url = '/api/commenParameter/updateParameter';
+    save () {
+      let self = this
+      let url = '/api/commenParameter/updateParameter'
       this.form.validateFields((err, value) => {
-        console.log(value, err);
+        console.log(value, err)
         if (!err) {
-          let data = JSON.parse(JSON.stringify(self.paramData));
-          
-          
+          let data = JSON.parse(JSON.stringify(self.paramData))
         }
-      });
+      })
     }
   },
-  beforeCreate() {
-    this.form = this.$form.createForm(this);
+  beforeCreate () {
+    this.form = this.$form.createForm(this)
   }
-};
+}
 </script>
 <style lang="scss" scoped>
 @import "./style.scss";

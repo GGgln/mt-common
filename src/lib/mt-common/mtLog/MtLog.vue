@@ -1,62 +1,26 @@
 <template>
   <div id="mtLog_component" class="container">
-    <div class="log-contents">
-      <div class="log-title">
-    <a-row type="flex" justify="space-around" align="middle" :gutter="16">
-      <a-col  :md="7">
-        <a-row type="flex" justify="space-around" align="middle">
-          <a-col :md="5">
-        <span class="log-caption">操作类型:</span>
-          </a-col>
-          <a-col :md="9">
-          <a-select style="width: 100%;" :value="logbefort" @change="selectChange">
+      <a-form class="filter_box" :form="formData" layout="inline">
+        <a-form-item label="操作类型：">
+          <a-select  :value="logbefort" @change="selectChange">
             <a-select-option v-for="log in logMessages" :key="log">{{ log }}</a-select-option>
           </a-select>
-
-          </a-col>
-          <a-col :md="1">
-
-          <span class="log-caption">--</span>
-          </a-col>
-          <a-col :md="9">
-
-          <a-select style="width: 100%;"  v-model="secondCity">
+        </a-form-item>
+        <a-form-item label="--">
+          <a-select  v-model="secondCity">
             <a-select-option v-for="detail in details" :key="detail">{{ detail }}</a-select-option>
           </a-select>
-          </a-col>
-        </a-row>
+        </a-form-item>
+        <a-form-item label="时间段查询："><a-range-picker :showTime="{ format: 'HH:mm:ss' }" format="YYYY-MM-DD HH:mm:ss" @change="timeChange" /></a-form-item>
+        <a-form-item> <a-input v-model="iptContent" placeholder="请输入日志关键内容" /></a-form-item>
+        <a-form-item>
+          <a-button @click="seeAbout" icon="search"  type="primary">查询日志</a-button>
+          <a-button icon="plus" style="margin-left:20px;"  type="primary">导出日志</a-button>
+        </a-form-item>
+      </a-form>
 
-          </a-col>
-      <a-col :md="9">
-      <a-row type="flex" justify="space-around" align="middle">
-        <a-col :md="5">
-        <span  class="log-caption">时间段查询:</span>
-        </a-col>
-        <a-col :md="19">
-                <a-range-picker :showTime="{ format: 'HH:mm:ss' }"
-          format="YYYY-MM-DD HH:mm:ss"   @change="timeChange" />
-        </a-col>
-      </a-row>
+      <a-table id="table_blue" :pagination="pageOptions" :columns="columns" :dataSource="data"></a-table>
 
-       </a-col>
-      <a-col :md="4"><a-input  style="width: 100%;" v-model="iptContent" placeholder="搜索日志内容" /></a-col>
-      <a-col  :md="4">
-      <a-row>
-        <a-col :md="11">
-      <a-button @click="seeAbout" icon="search" class="add-btn" type="primary">查询日志</a-button>
-        </a-col>
-        <a-col :offset="2" :md="11">
-      <a-button icon="plus"  class="add-btn" type="primary">导出日志</a-button>
-
-        </a-col>
-      </a-row>
-
-        </a-col>
-    </a-row>
-
-        </div>
-      <div class="log-table"><a-table :pagination="pageOptions" :columns="columns" :dataSource="data" ></a-table></div>
-      </div>
     </div>
 </template>
 <script>
@@ -91,6 +55,7 @@ export default {
   name: 'mt-log',
   data () {
     return {
+      formData: this.$form.createForm(this),
       columns, // table表头
       data: [], // table数据
       logbefort: null, // 日志
@@ -132,15 +97,17 @@ export default {
       request({
         url: 'api/dimType/getType',
         method: 'get'
-      }).then(res => {
-        this.logbefort = res.oneType[0]
-        this.logMessages = res.oneType
-        this.detailsMessages = res.twoType
-        this.details = res.twoType[res.oneType[0]] // 日志详情信息
-        this.secondCity = res.twoType[res.oneType[0]][0] // 日志详情默认第一条
-      }).catch(() => {
-        // alert('error')
       })
+        .then(res => {
+          this.logbefort = res.oneType[0]
+          this.logMessages = res.oneType
+          this.detailsMessages = res.twoType
+          this.details = res.twoType[res.oneType[0]] // 日志详情信息
+          this.secondCity = res.twoType[res.oneType[0]][0] // 日志详情默认第一条
+        })
+        .catch(() => {
+          // alert('error')
+        })
     },
     initData () {
       request({
@@ -155,13 +122,14 @@ export default {
           page: this.page,
           limit: this.pageSize
         }
-
-      }).then(res => {
-        this.data = res.result.list
-        this.pageOptions.total = res.result.size
-      }).catch(() => {
-        // alert('error')
       })
+        .then(res => {
+          this.data = res.result.list
+          this.pageOptions.total = res.result.size
+        })
+        .catch(() => {
+          // alert('error')
+        })
     },
     selectChange (value) {
       this.logbefort = value
@@ -178,21 +146,21 @@ export default {
     seeAbout () {
       this.initData()
     }
-    // dataTime (timestamp) {
-    //   var date = new Date(timestamp)// 时间戳为10位需*1000，时间戳为13位的话不需乘1000
-    //   var Y = date.getFullYear() + '-'
-    //   var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-'
-    //   var D = (date.getDate() < 10 ? '0' + date.getDate() : date.getDate()) + ' '
-    //   var h = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + ':'
-    //   var m = (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()) + ':'
-    //   var s = (date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds())
-    //   return Y + M + D + h + m + s
-    // }
 
   }
-
 }
 </script>
 <style lang="scss" scoped>
-@import './style.scss';
+  // @import '../style/ant-style-cover.scss';
+form .ant-select {
+  min-width: 100px !important;
+}
+.filter_box{
+  text-align: right;
+  margin-bottom: 20px;
+}
+.container {
+  padding:20px;
+}
+
 </style>
