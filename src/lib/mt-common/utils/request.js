@@ -14,7 +14,7 @@ service.interceptors.response.use(
     const res = response.data
     console.log('HTTP >>>>> ', response.request.responseURL, response.request.status, response.data)
     if (res.code !== '0') {
-      return Promise.reject(new Error('Error'))
+      return Promise.reject(new Error(res))
     } else {
       return response.data
     }
