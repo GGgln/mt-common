@@ -6,7 +6,10 @@
             <a-select-option v-for="log in logMessages" :key="log">{{ log }}</a-select-option>
           </a-select>
         </a-form-item>
-        <a-form-item label="--">
+        <a-form-item>
+      --
+        </a-form-item>
+        <a-form-item>
           <a-select  v-model="secondCity">
             <a-select-option v-for="detail in details" :key="detail">{{ detail }}</a-select-option>
           </a-select>
@@ -19,7 +22,7 @@
         </a-form-item>
       </a-form>
 
-      <a-table id="table_blue" :pagination="pageOptions" :columns="columns" :dataSource="data"></a-table>
+      <a-table id="table_color" :pagination="pageOptions" :columns="columns" :dataSource="data"></a-table>
 
     </div>
 </template>
@@ -151,7 +154,6 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  // @import '../style/ant-style-cover.scss';
 form .ant-select {
   min-width: 100px !important;
 }
