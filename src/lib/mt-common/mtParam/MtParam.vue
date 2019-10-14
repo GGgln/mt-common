@@ -22,7 +22,8 @@
               <a-form-item
                 :label-col="{span:labelCol}"
                 :wrapper-col="{span:wrapperCol}"
-                :label="param.parameterDesc"
+                :label="retureLabel(param)"
+                :title="param.tips"
               >
                 <a-select
                   v-if="param.parameterTypeID == 3"
@@ -54,15 +55,15 @@
   </div>
 </template>
 <script>
-import request from '../utils/request'
+import request from "../utils/request";
 
 export default {
-  name: 'mt-param',
-  data () {
+  name: "mt-param",
+  data() {
     return {
       editStatus: false,
       paramData: {}
-    }
+    };
   },
   props: {
     idParametersClass: {
@@ -90,48 +91,62 @@ export default {
       required: false
     }
   },
-  created () {
-    this.init()
+  created() {
+    this.init();
   },
 
   methods: {
-    init () {
-      let url = `/api/commenParameter/getParameter?idParametersClass=${this.idParametersClass}`
-      let params = { idParametersClass: this.idParametersClass }
+    init() {
+      let url = `/api/commenParameter/getParameter?idParametersClass=${this.idParametersClass}`;
+      let params = { idParametersClass: this.idParametersClass };
       request.get(url, params).then(res => {
-        this.paramData = res.data
-      })
+        this.paramData = res.data;
+      });
     },
-    validatorCustom (el) {
-      let reg = new RegExp(el.regularExpression)
-      return (rule, value, callback) => {
-        if (!reg.test(value)) {
-          callback(new Error('错误信息'))
-          return
-        }
-
-        callback()
+    retureLabel(param) {
+      if (param.unit) {
+        return `${param.parameterDesc}/${param.unit}`;
+      } else {
+        return param.parameterDesc;
       }
     },
-    cancelSave () {
-      this.form.resetFields()
-      this.editStatus = false
-    },
-    save () {
-      let self = this
-      let url = '/api/commenParameter/updateParameter'
-      this.form.validateFields((err, value) => {
-        console.log(value, err)
-        if (!err) {
-          let data = JSON.parse(JSON.stringify(self.paramData))
+    validatorCustom(el) {
+      let reg = new RegExp("^\\+?[0-9]d*$");
+      return (rule, value, callback) => {
+        console.log(reg.test(value), reg);
+        if (value && !reg.test(value)) {
+          callback(new Error(el.ruleDesc));
+          return;
         }
-      })
+
+        callback();
+      };
+    },
+    cancelSave() {
+      this.form.resetFields();
+      this.editStatus = false;
+    },
+    save() {
+      let self = this;
+      let url = "/api/commenParameter/updateParameter";
+      this.form.validateFields((err, value) => {
+        if (!err) {
+          let data = JSON.parse(JSON.stringify(self.paramData));
+          data.children.map(group => {
+            group.commenParameters.map(el => {
+              el.parameterValue = value[el.id];
+              return el;
+            });
+          });
+          console.log(value, err, data);
+        }
+      });
     }
   },
-  beforeCreate () {
-    this.form = this.$form.createForm(this)
+  beforeCreate() {
+    this.form = this.$form.createForm(this);
   }
-}
+};
 </script>
 <style lang="scss" scoped>
 @import "./style.scss";
