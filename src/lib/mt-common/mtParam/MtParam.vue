@@ -22,8 +22,8 @@
               <a-form-item
                 :label-col="{span:labelCol}"
                 :wrapper-col="{span:wrapperCol}"
-                :label='retureLabel(param)'
-                :title = 'param.tips'
+                :label="retureLabel(param)"
+                :title="param.tips"
               >
                 <a-select
                   v-if="param.parameterTypeID == 3"
@@ -103,17 +103,17 @@ export default {
         this.paramData = res.data;
       });
     },
-    retureLabel(param){
-      if(param.unit){
-        return `${param.parameterDesc}/${param.unit}`
-      } else{
-        return param.parameterDesc
+    retureLabel(param) {
+      if (param.unit) {
+        return `${param.parameterDesc}/${param.unit}`;
+      } else {
+        return param.parameterDesc;
       }
     },
     validatorCustom(el) {
-      let reg = new RegExp('^\\+?[0-9]\d*$');
+      let reg = new RegExp("^\\+?[0-9]d*$");
       return (rule, value, callback) => {
-        console.log(reg.test(value),reg)
+        console.log(reg.test(value), reg);
         if (value && !reg.test(value)) {
           callback(new Error(el.ruleDesc));
           return;
@@ -128,22 +128,17 @@ export default {
     },
     save() {
       let self = this;
-      let url = '/api/commenParameter/updateParameter';
+      let url = "/api/commenParameter/updateParameter";
       this.form.validateFields((err, value) => {
-        
         if (!err) {
           let data = JSON.parse(JSON.stringify(self.paramData));
-          data.children.map(group=>{
-            group.commenParameters.map(el=>{
-              el.parameterValue = value[el.id]
-              return el
-            })
-          })
-          console.log(value, err,data);
-          request.post(url,data).then(res=>{
-
-          })
-          
+          data.children.map(group => {
+            group.commenParameters.map(el => {
+              el.parameterValue = value[el.id];
+              return el;
+            });
+          });
+          console.log(value, err, data);
         }
       });
     }
