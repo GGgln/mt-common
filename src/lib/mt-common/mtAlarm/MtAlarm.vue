@@ -100,7 +100,8 @@ const columns = [
 ]
 const requestUrls = {
   getAlarmLevel: '/Service/API/V1/CPH/alarm/dictionary',
-  getAlarmList: '/Service/API/V1/CPH/alarm/getAlarmInfo'
+  getAlarmList: '/Service/API/V1/CPH/alarm/getAlarmInfo',
+  setAlarm: '/Service/API/V1/CPH/alarm/resetAlarm'
 }
 export default {
   name: 'mt-alarm',
@@ -146,7 +147,7 @@ export default {
           this.requestFormList()
         }
       },
-      requestUrls,
+      requestUrls
     }
   },
   mounted () {
@@ -158,7 +159,7 @@ export default {
     requestFormList () {
       let that = this
       let url = this.requestUrls.getAlarmList
-     request({
+      request({
         url: url,
         method: 'post',
         data: that.postData
@@ -184,32 +185,38 @@ export default {
     },
     toSearch () {
       this.formData.validateFields((err, values) => {
-        console.log(values, err)
-        this.postData = Object.assign(this.postData, values)
-         console.log(this.postData)
-         this.requestFormList()
-
+        if (!err) {
+          this.postData = Object.assign(this.postData, values)
+          this.requestFormList()
+        }
       })
     },
     toReset () {
-      console.log(this.formData)
       this.formData.resetFields()
     },
-    changeTime () {
-      console.log(this.alarmTime)
-    },
-    resetAlarm(record) {
+    changeTime () {},
+    resetAlarm (record) {
+      let that = this
       this.$confirm({
         title: '确认复位',
-        content: h => <div><p><span>报警名称：</span><span>${record.alarmDesc}</span></p></div>,
-        onOk() {
-          console.log('OK');
+        content: h => <div><p><span>报警名称：</span><span style="font-size:14px;font-weight:bold;">{record.alarmDesc}</span></p><p><span>判断标准：</span><span style="font-size:14px;font-weight:bold;">{record.decisionRules}</span></p><p>是否确认复位硬件?</p></div>,
+        onOk () {
+          let url = that.requestUrls.setAlarm
+          request({
+            url: url,
+            method: 'post',
+            data: { alarmId: record.alarmId }
+          }).then(res => {
+            that.requestFormList()
+          }).catch(() => {
+            // alert('error')
+          })
         },
-        onCancel() {
-          console.log('Cancel');
+        onCancel () {
+          console.log('Cancel')
         },
-        class: 'test',
-      });
+        class: 'test'
+      })
     }
   }
 }
