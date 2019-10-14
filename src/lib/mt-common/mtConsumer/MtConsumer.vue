@@ -56,7 +56,7 @@
                     <a-icon :style="{fontSize: '30px' }" :type="expand ? 'caret-up' : 'caret-down'" />
                   </a>
       </a-modal>
-      <a-table id="table_color" :pagination="pageOptions" :columns="columns" :dataSource="data">
+      <a-table id="table_blue" :pagination="pageOptions" :columns="columns" :dataSource="data">
         <template slot="action" slot-scope="text, record">
           <a-row>
             <a-col :span="8"><a v-if="record.deletFlg" href="javascript:;" @click="deleData(record)">删除</a></a-col>
