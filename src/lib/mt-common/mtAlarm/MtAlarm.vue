@@ -193,6 +193,7 @@ export default {
     },
     toReset () {
       this.formData.resetFields()
+      this.requestFormList()
     },
     changeTime () {},
     resetAlarm (record) {

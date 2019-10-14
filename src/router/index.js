@@ -3,6 +3,12 @@ import Router from 'vue-router'
 import alarm from '@/components/alarm'
 import log from '@/components/log'
 import consumer from '@/components/consumer'
+import param from '@/components/param'
+// <<<<<<< HEAD
+import login from '@/components/login'
+// =======
+import _class from '@/components/class'
+// >>>>>>> 8b0d576906d8a233108430a1f96cb2490864ee8f
 Vue.use(Router)
 
 export default new Router({
@@ -21,6 +27,24 @@ export default new Router({
       path: '/consumer',
       name: 'consumer',
       component: consumer
+    },
+    {
+      path: '/param',
+      name: 'param',
+      component: param
+    },
+    {
+// <<<<<<< HEAD
+      path: '/login',
+      name: 'login',
+      component: login
+      },
+      {
+// =======
+      path: '/class',
+      name: 'class',
+      component: _class
+// >>>>>>> 8b0d576906d8a233108430a1f96cb2490864ee8f
     }
   ]
 })
