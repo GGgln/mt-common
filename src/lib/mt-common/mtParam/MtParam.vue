@@ -1,6 +1,6 @@
 <template>
   <div id="mtParam_component" class="container">
-    <div class="param_contents">
+  <div class="param_contents">
       <div class="param_btn">
         <a-button type="primary" @click="editStatus = true" v-if="!editStatus">编辑</a-button>
         <div v-else>

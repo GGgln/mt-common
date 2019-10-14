@@ -13,7 +13,7 @@ module.exports = {
     proxyTable: {
       // 保留模板
       '/mtCommonApi': {
-        target: 'http://192.168.15.183:60001/',
+        target: 'http://192.168.6.254:60001/',
         changeOrigin: true, // 跨域
         pathRewrite: {
           '^/mtCommonApi': '/'

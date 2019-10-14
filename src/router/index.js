@@ -4,6 +4,7 @@ import alarm from '@/components/alarm'
 import log from '@/components/log'
 import consumer from '@/components/consumer'
 import param from '@/components/param'
+import login from '@/components/login'
 Vue.use(Router)
 
 export default new Router({
@@ -27,6 +28,11 @@ export default new Router({
       path: '/param',
       name: 'param',
       component: param
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: login
     }
   ]
 })
