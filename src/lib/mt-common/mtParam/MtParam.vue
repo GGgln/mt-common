@@ -22,7 +22,8 @@
               <a-form-item
                 :label-col="{span:labelCol}"
                 :wrapper-col="{span:wrapperCol}"
-                :label="param.parameterDesc"
+                :label='retureLabel(param)'
+                :title = 'param.tips'
               >
                 <a-select
                   v-if="param.parameterTypeID == 3"
@@ -102,11 +103,19 @@ export default {
         this.paramData = res.data;
       });
     },
+    retureLabel(param){
+      if(param.unit){
+        return `${param.parameterDesc}/${param.unit}`
+      } else{
+        return param.parameterDesc
+      }
+    },
     validatorCustom(el) {
-      let reg = new RegExp(el.regularExpression);
+      let reg = new RegExp('^\\+?[0-9]\d*$');
       return (rule, value, callback) => {
-        if (!reg.test(value)) {
-          callback(new Error("错误信息"));
+        console.log(reg.test(value),reg)
+        if (value && !reg.test(value)) {
+          callback(new Error(el.ruleDesc));
           return;
         }
 
@@ -121,10 +130,19 @@ export default {
       let self = this;
       let url = '/api/commenParameter/updateParameter';
       this.form.validateFields((err, value) => {
-        console.log(value, err);
+        
         if (!err) {
           let data = JSON.parse(JSON.stringify(self.paramData));
-          
+          data.children.map(group=>{
+            group.commenParameters.map(el=>{
+              el.parameterValue = value[el.id]
+              return el
+            })
+          })
+          console.log(value, err,data);
+          request.post(url,data).then(res=>{
+
+          })
           
         }
       });

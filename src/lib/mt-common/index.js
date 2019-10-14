@@ -2,6 +2,7 @@ import mtLog from './mtLog/MtLog'
 import mtAlarm from './mtAlarm/MtAlarm'
 import mtConsumer from './mtConsumer/MtConsumer'
 import mtParam from './mtParam/MtParam'
+import mtClass from './mtClass/MtClass'
 import moduleComponents from './modules'
 
 let { MtFilter, MtTableList, MtTableSection } = moduleComponents
@@ -12,7 +13,8 @@ const components = [
   mtLog,
   mtAlarm,
   mtConsumer,
-  mtParam
+  mtParam,
+  mtClass
   
 ]
 

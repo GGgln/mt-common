@@ -1,0 +1,41 @@
+#MtClass_component {
+  .class_content {
+    border  : 1px solid #2c9ae6;
+    position: relative;
+    margin: 100px auto;
+    padding: 30px;
+    width: 800px;
+    border-radius: 8px;
+    h2 {
+      color   : #2c9ae6;
+      display: inline-block;
+      background: #fff;
+      padding: 0 15px;
+      position: absolute;
+      left: 30px;
+      top: -15px;
+      font-size: 21px;
+      font-weight: 600;
+    }
+  }
+  .row_title{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    p{
+      text-align: center;
+      font-size: 16px;
+    }
+  }
+  .row{
+    margin-bottom: 25px;
+    i{
+      font-size: 25px;
+      color: #2c9ae6;
+      line-height: 40px;
+    }
+  }
+}
+.param_btn {
+  text-align   : right;
+  margin-bottom: 20px;
+}
