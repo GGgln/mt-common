@@ -84,7 +84,7 @@
             </div>
             <div class="no_data" v-else>暂无班组排班</div>
           </div>
-          <div class="btn_add">
+          <div class="btn_add" v-if="editStatus">
             <a-button type="primary" icon="plus" @click="openModal">添加班组</a-button>
           </div>
         </a-form>
@@ -105,8 +105,8 @@
         :pagination="false"
         rowKey="groupId"
       >
-        <div slot="operation" slot-scope="text,record">
-          <a-button type="primary" @click="addClass(record)" size="small">恢复</a-button>
+        <div slot="operation" slot-scope="text,record,index">
+          <a-button type="primary" @click="renewClass(index,record)" size="small">恢复</a-button>
           <a-popconfirm title="确定要删除吗?" @confirm="() => removeClass(record)">
             <a-button size="small">删除</a-button>
           </a-popconfirm>
@@ -220,19 +220,28 @@ export default {
       this.form.resetFields();
       this.editStatus = false;
     },
+    renewClass(i,data){
+      this.classList.splice(i,1)
+      this.addClass(data)
+    },
     save() {
       let self = this;
-      let url = "/api/commenParameter/updateParameter";
+      let url = "/Service/API/V1/CHP/Group/updateGroupInfo";
       this.form.validateFields((err, value) => {
         console.log(value, err);
         if (!err) {
           let data = JSON.parse(JSON.stringify(self.scheduleList));
           data = data.map((item,i)=>{
-            item = Object.assign({},item,value.scheduleList[i])
+            let newItem = value.scheduleList[i]
+            item = Object.assign({},item,newItem,{startTimeStr:util.formatTime(newItem.startTimeStr._d).timeToH})
+           
             return item;
           })
+          console.log(data)
           request.post(url,data).then(res=>{
             self.$message.success('更新成功')
+            this.initClassSchedule()
+            this.initClassList()
             self.editStatus = false;
           })
         }
@@ -258,9 +267,10 @@ export default {
         } else {
           list[i].startTimeStr = null;
         }
+        
       }
-      this.scheduleList = list;
-      console.log(list);
+      this.scheduleList = list
+      
     },
     changeStartTime(e) {
       this.updateScheduleList();
@@ -274,10 +284,11 @@ export default {
         let data = [];
         if (formData.scheduleList.length > 1) {
           data = formData.scheduleList.map((item, i) => {
-            let startTimeStr = item.startTimeStr
+            console.log(typeof(item.startTimeStr))
+            let startTimeStr = item.startTimeStr && typeof('object')
               ? util.formatTime(item.startTimeStr._d).timeToH
               : null;
-            item = Object.assign({}, item, { startTimeStr });
+            item = Object.assign({}, this.scheduleList[i], item, { startTimeStr });
             return item;
           });
           this.setClassListTime(data);
