@@ -3,58 +3,73 @@
     <div class="content">
       <div class="login-con">
         <p>密码登录</p>
-            <span class="hint">{{hint}}</span>
+        <span class="hint">{{hint}}</span>
         <a-form class="filter_box" :form="formLogin">
-          <a-form-item >
-            <a-input  placeholder="请输入用户名"  v-decorator="['userId', { rules: [{ required: true, message: '不能为空' }] }]" ><img class="img-ipt" slot="prefix"  src="./user.png" alt=""></a-input>
+          <a-form-item>
+            <a-input
+              placeholder="请输入用户名"
+              v-decorator="['userId', { rules: [{ required: true, message: '不能为空' }] }]"
+            >
+              <img class="img-ipt" slot="prefix" src="./user.png" alt />
+            </a-input>
           </a-form-item>
-          <a-form-item >
-            <a-input  type="password" placeholder="请输入密码"   v-decorator="['passWord', { rules: [{ required: true, message: '不能为空' }] }]"><img class="img-ipt" slot="prefix"  src="./psw.png" alt=""></a-input>
+          <a-form-item>
+            <a-input
+              type="password"
+              placeholder="请输入密码"
+              v-decorator="['passWord', { rules: [{ required: true, message: '不能为空' }] }]"
+            >
+              <img class="img-ipt" slot="prefix" src="./psw.png" alt />
+            </a-input>
           </a-form-item>
-          <a-form-item><a-button class="login-btn" @click="login" type="primary">登录</a-button></a-form-item>
+          <a-form-item>
+            <a-button class="login-btn" @click="login" type="primary">登录</a-button>
+          </a-form-item>
         </a-form>
       </div>
     </div>
-    <footer><p>Copyright©2017.Tianjin Meiteng Technology Co.,ltd All rights reserved. 津ICP备17001059号-1</p></footer>
+    <footer>
+      <p>Copyright©2017.Tianjin Meiteng Technology Co.,ltd All rights reserved. 津ICP备17001059号-1</p>
+    </footer>
   </div>
 </template>
 <script>
-import request from '../utils/request'
+import request from "../utils/request";
 export default {
-
-  name: 'mt-login',
-  data () {
+  name: "mt-login",
+  data() {
     return {
       formLogin: this.$form.createForm(this), // 新建form
       form: {},
-      hint: ''
-    }
+      hint: ""
+    };
   },
   methods: {
-    login (e) {
-      e.preventDefault()
+    login(e) {
+      e.preventDefault();
       this.formLogin.validateFields((err, values) => {
         if (!err) {
           for (let value in values) {
-            this.form[value] = values[value]
+            this.form[value] = values[value];
           }
           request({
-            url: 'Service/API/V1/CPH/login',
-            method: 'post',
+            url: "Service/API/V1/CPH/login",
+            method: "post",
             data: this.form
           })
             .then(res => {
-              this.hint = ''
+              this.hint = "";
+              this.$emit('loginToNext',res)
             })
-            .catch((error) => {
+            .catch(error => {
               // alert('error')
-              this.hint = error.msg
-            })
+              this.hint = error.msg;
+            });
         }
-      })
+      });
     }
   }
-}
+};
 </script>
 <style lang="scss" scoped>
 .login {
@@ -91,21 +106,27 @@ export default {
         letter-spacing: 2px;
         margin-bottom: 1px;
       }
-      .hint{
-        height: 20px;display: block; font-size: 15px;line-height: 20px;width: 100%;color: red;
+      .hint {
+        height: 20px;
+        display: block;
+        font-size: 15px;
+        line-height: 20px;
+        width: 100%;
+        color: red;
       }
       .login-btn {
         width: 100%;
         font-size: 20px;
         text-align: center;
         letter-spacing: 20px;
-        text-indent:15px;
+        text-indent: 15px;
         background-color: #2c9ae6;
       }
-      #userId,#passWord{
+      #userId,
+      #passWord {
         padding-right: 50px !important;
       }
-      .img-ipt{
+      .img-ipt {
         width: 16px;
       }
     }
