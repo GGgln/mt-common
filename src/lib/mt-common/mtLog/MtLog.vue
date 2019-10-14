@@ -22,7 +22,7 @@
         </a-form-item>
       </a-form>
 
-      <a-table id="table_color" :pagination="pageOptions" :columns="columns" :dataSource="data"></a-table>
+      <a-table id="table_blue" :pagination="pageOptions" :columns="columns" :dataSource="data"></a-table>
 
     </div>
 </template>
