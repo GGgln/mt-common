@@ -98,8 +98,7 @@ export default {
   methods: {
     init() {
       let url = `/api/commenParameter/getParameter?idParametersClass=${this.idParametersClass}`;
-      let params = { idParametersClass: this.idParametersClass };
-      request.get(url, params).then(res => {
+      request.get(url).then(res => {
         this.paramData = res.data;
       });
     },
@@ -138,7 +137,10 @@ export default {
               return el;
             });
           });
-          console.log(value, err, data);
+          request.post(url,data).then(res=>{
+            this.$message.success('更新成功')
+            this.editStatus = false
+          })
         }
       });
     }
