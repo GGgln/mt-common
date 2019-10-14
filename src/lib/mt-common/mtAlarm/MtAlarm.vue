@@ -146,7 +146,7 @@ export default {
           this.requestFormList()
         }
       },
-      requestUrls,
+      requestUrls
     }
   },
   mounted () {
@@ -158,7 +158,7 @@ export default {
     requestFormList () {
       let that = this
       let url = this.requestUrls.getAlarmList
-     request({
+      request({
         url: url,
         method: 'post',
         data: that.postData
@@ -186,9 +186,8 @@ export default {
       this.formData.validateFields((err, values) => {
         console.log(values, err)
         this.postData = Object.assign(this.postData, values)
-         console.log(this.postData)
-         this.requestFormList()
-
+        console.log(this.postData)
+        this.requestFormList()
       })
     },
     toReset () {
@@ -198,18 +197,18 @@ export default {
     changeTime () {
       console.log(this.alarmTime)
     },
-    resetAlarm(record) {
+    resetAlarm (record) {
       this.$confirm({
         title: '确认复位',
         content: h => <div><p><span>报警名称：</span><span>${record.alarmDesc}</span></p></div>,
-        onOk() {
-          console.log('OK');
+        onOk () {
+          console.log('OK')
         },
-        onCancel() {
-          console.log('Cancel');
+        onCancel () {
+          console.log('Cancel')
         },
-        class: 'test',
-      });
+        class: 'test'
+      })
     }
   }
 }

@@ -7,9 +7,9 @@
 export default {
   data () {
     return {
-      idParametersClass:1
+      idParametersClass: 1
     }
   },
   mounted () {}
-};
+}
 </script>
