@@ -14,7 +14,7 @@ module.exports = {
       // 保留模板
       '/mtCommonApi': {
         // target: 'http://192.168.15.183:60001/',//李旭
-        target: 'http://192.168.12.215:60001/',//峰
+        target: 'http://192.168.6.16:60001/',//峰
         changeOrigin: true, // 跨域
         pathRewrite: {
           '^/mtCommonApi': '/'

@@ -1,6 +1,6 @@
 <template>
   <div id="MtClass_component" class="common-container">
-    <div class="param_btn" v-if="scheduleList.length>0">
+    <div class="param_btn">
       <a-button type="primary" @click="editStatus = true" v-if="!editStatus">编辑</a-button>
       <div v-else>
         <a-button @click="cancelSave">取消</a-button>
@@ -10,7 +10,7 @@
     <div class="class_content">
       <h2 class="title">班组排班</h2>
       <div class="class_container">
-        <a-form :form="form" ref="form" >
+        <a-form :form="form" ref="form">
           <div class="item_class">
             <a-row :gutter="20" class="row_title">
               <a-col :span="5">
@@ -74,11 +74,7 @@
                   </a-form-item>
                 </a-col>
                 <a-col :span="1">
-                  <a-icon
-                    type="minus-circle"
-                    v-if="editStatus && i>0"
-                    @click="removeLoopClass(i,el)"
-                  />
+                  <a-icon type="minus-circle" v-if="editStatus" @click="removeLoopClass(i,el)" />
                 </a-col>
               </a-row>
             </div>
@@ -121,11 +117,6 @@ import util from "../utils/util";
 import moment from "moment";
 const columns = [
   {
-    title: "班组ID",
-    dataIndex: "groupId",
-    scopedSlots: { customRender: "groupId" }
-  },
-  {
     title: "班组名称",
     dataIndex: "groupDesc",
     scopedSlots: { customRender: "groupDesc" }
@@ -133,10 +124,16 @@ const columns = [
   {
     title: "操作",
     dataIndex: "operation",
-    scopedSlots: { customRender: "operation" }
+    scopedSlots: { customRender: "operation" },
+    width: "120px"
   }
 ];
-
+const dataClass = {
+  groupDesc: "",
+  startTimeStr: null,
+  continueHours: "",
+  restHours: ""
+};
 export default {
   name: "mt-class",
   data() {
@@ -145,13 +142,7 @@ export default {
       editStatus: false,
       scheduleList: [],
       classList: [],
-      modalVisible: false,
-      dataClass: {
-        groupDesc: "",
-        startTimeStr: null,
-        continueHours: "",
-        restHours: ""
-      }
+      modalVisible: false
     };
   },
   beforeCreate() {
@@ -168,6 +159,7 @@ export default {
       let url = `/Service/API/V1/CHP/Group/getGroupInfoList`;
       request.get(url).then(res => {
         this.scheduleList = res.data;
+        this.$forceUpdate();
       });
     },
     // 获取班组列表
@@ -178,16 +170,10 @@ export default {
       });
     },
     removeLoopClass(index, el) {
-      if (el.groupLoopId) {
-        let url = `/Service/API/V1/CHP/Group/delete/${el.groupLoopId}`;
-        request.delete(url).then(res => {
-          this.$message.success("删除成功");
-          this.initClassSchedule();
-          this.initClassList();
-        });
-      } else {
-        this.scheduleList.splice(index, 1);
-      }
+      let scheduleList = this.form.getFieldValue("scheduleList");
+      scheduleList.splice(index, 1);
+      this.scheduleList.splice(index, 1);
+      this.form.setFieldsValue({ scheduleList });
       this.updateScheduleList();
     },
     removeClass(data) {
@@ -198,10 +184,11 @@ export default {
     },
     insertClass(data) {
       if (data) {
-        let insertData = Object.assign({}, this.dataClass, data);
+        let insertData = Object.assign({}, dataClass, data);
         this.scheduleList.push(insertData);
       } else {
-        this.scheduleList.push(this.dataClass);
+        let insertData = util.deepClone(dataClass);
+        this.scheduleList.push(insertData);
       }
       this.updateScheduleList();
     },
@@ -218,11 +205,13 @@ export default {
     },
     cancelSave() {
       this.form.resetFields();
+      this.initClassList();
+      this.initClassSchedule();
       this.editStatus = false;
     },
-    renewClass(i,data){
-      this.classList.splice(i,1)
-      this.addClass(data)
+    renewClass(i, data) {
+      this.classList.splice(i, 1);
+      this.addClass(data);
     },
     save() {
       let self = this;
@@ -231,19 +220,20 @@ export default {
         console.log(value, err);
         if (!err) {
           let data = JSON.parse(JSON.stringify(self.scheduleList));
-          data = data.map((item,i)=>{
-            let newItem = value.scheduleList[i]
-            item = Object.assign({},item,newItem,{startTimeStr:util.formatTime(newItem.startTimeStr._d).timeToH})
-           
+          data = data.map((item, i) => {
+            let newItem = value.scheduleList[i];
+            item = Object.assign({}, item, newItem, {
+              startTimeStr: util.formatTime(newItem.startTimeStr._d).timeToS
+            });
+
             return item;
-          })
-          console.log(data)
-          request.post(url,data).then(res=>{
-            self.$message.success('更新成功')
-            this.initClassSchedule()
-            this.initClassList()
+          });
+          request.post(url, data).then(res => {
+            self.$message.success("更新成功");
+            this.initClassSchedule();
+            this.initClassList();
             self.editStatus = false;
-          })
+          });
         }
       });
     },
@@ -254,9 +244,6 @@ export default {
     },
     setClassListTime(list) {
       let self = this;
-      if (list.length <= 1) {
-        return;
-      }
       for (let i = 1; i < list.length; i++) {
         let preClass = list[i - 1];
         if (preClass.continueHours && preClass.startTimeStr) {
@@ -267,10 +254,8 @@ export default {
         } else {
           list[i].startTimeStr = null;
         }
-        
       }
-      this.scheduleList = list
-      
+      this.scheduleList = list;
     },
     changeStartTime(e) {
       this.updateScheduleList();
@@ -282,15 +267,18 @@ export default {
       this.$nextTick(() => {
         let formData = this.form.getFieldsValue();
         let data = [];
-        if (formData.scheduleList.length > 1) {
+        if (formData.scheduleList && formData.scheduleList.length > 1) {
           data = formData.scheduleList.map((item, i) => {
-            console.log(typeof(item.startTimeStr))
-            let startTimeStr = item.startTimeStr && typeof('object')
-              ? util.formatTime(item.startTimeStr._d).timeToH
-              : null;
-            item = Object.assign({}, this.scheduleList[i], item, { startTimeStr });
+            let startTimeStr =
+              item.startTimeStr && typeof "object"
+                ? util.formatTime(item.startTimeStr._d).timeToH
+                : null;
+            item = Object.assign({}, this.scheduleList[i], item, {
+              startTimeStr
+            });
             return item;
           });
+
           this.setClassListTime(data);
         }
       });
