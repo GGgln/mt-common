@@ -38,8 +38,7 @@ const columns = [
   {
     title: '日志时间',
     dataIndex: 'date',
-    width: '20%'
-
+    width:150
   },
   {
     title: '操作类型',

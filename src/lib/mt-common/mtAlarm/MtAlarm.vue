@@ -97,7 +97,6 @@ const columns = [
     dataIndex: 'operate',
     scopedSlots: { customRender: 'operate' }
   }
-
 ]
 const requestUrls = {
   getAlarmLevel: '/Service/API/V1/CPH/alarm/dictionary',
