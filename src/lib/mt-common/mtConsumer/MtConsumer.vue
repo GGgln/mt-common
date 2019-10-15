@@ -163,6 +163,7 @@ const columns = [
 
 export default {
   name: 'mt-consumer-page',
+  props: ['baseUrl'],
   data () {
     return {
       formData: this.$form.createForm(this),
@@ -219,8 +220,9 @@ export default {
     },
     initData () {
       // table数据列表接口
+      let this_ = this
       request({
-        url: 'Service/API/V1/CHP/user/list',
+        url: `${this_.baseUrl}/Service/API/V1/CHP/user/list`,
         method: 'post',
         data: {
           keyWord: this.iptContent,
@@ -238,8 +240,9 @@ export default {
         })
     },
     selectData () { // 下拉数据
+      let this_ = this
       request({
-        url: 'Service/API/V1/CHP/role/list/' + this.UserId,
+        url: `${this_.baseUrl}/Service/API/V1/CHP/role/list/${this_.UserId}`,
         method: 'get'
       })
         .then(res => {
@@ -252,6 +255,7 @@ export default {
 
     saveModal (e) { // 新建保存发送新建信息
       e.preventDefault()
+      let this_ = this
       this.form.validateFields((err, values) => {
         if (!err) {
           this.formNewData = {createUser: this.UserId}
@@ -261,7 +265,7 @@ export default {
             }
           }
           request({
-            url: 'Service/API/V1/CHP/user/create',
+            url: `${this_.baseUrl}/Service/API/V1/CHP/user/create`,
             method: 'post',
             data: this.formNewData
           })
@@ -277,6 +281,7 @@ export default {
     },
     saveModalEdit (e) { // 编辑保存发送修改信息
       e.preventDefault()
+      let this_ = this
       this.formEdit.validateFields((err, values) => {
         if (!err) {
           this.formNewDataEdit = {userId: this.receiveEdit.userId, customerName: values.userName, customerId: this.receiveEdit.customerId}
@@ -285,7 +290,7 @@ export default {
           }
 
           request({
-            url: 'Service/API/V1/CHP/user/updateUser',
+            url: `${this_.baseUrl}/Service/API/V1/CHP/user/updateUser`,
             method: 'put',
             data: this.formNewDataEdit
           })
@@ -309,12 +314,13 @@ export default {
       this.selectData()
     },
     showModalEdit (data) { // 编辑显示
+      let this_ = this
       this.visibleEdit = true
       this.expand = false
       this.formEdit.resetFields() // 编辑重置
       // this.editUserId=data.userId
       request({
-        url: 'Service/API/V1/CHP/user/detail/' + data.userId,
+        url: `${this_.baseUrl}/Service/API/V1/CHP/user/detail/${data.userId}`,
         method: 'get'
       })
         .then(res => {
@@ -357,7 +363,7 @@ export default {
         cancelText: '取消',
         onOk () {
           request({
-            url: 'Service/API/V1/CHP/user/delete/' + data.userId,
+            url: `${thisName.baseUrl}/Service/API/V1/CHP/user/delete/${ data.userId}`,
             method: 'delete'
           })
             .then(res => {
@@ -418,10 +424,11 @@ export default {
       callback()
     },
     detailsData (data) { // 详情model
+      let this_ = this
       this.details = {}
       // 详情框
       request({
-        url: 'Service/API/V1/CHP/user/detail',
+        url: `${this_.baseUrl}/Service/API/V1/CHP/user/detail`,
         method: 'post',
         data: {
           custormId: String(data.customerId),

@@ -136,6 +136,7 @@ const dataClass = {
 };
 export default {
   name: "mt-class",
+  props: ['baseUrl'],
   data() {
     return {
       columns,

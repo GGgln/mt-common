@@ -22,9 +22,9 @@ function deepClone (obj) {
 }
 
 function formatTime (date) {
-  let getDate;
+  let getDate
   let u = navigator.userAgent
-  let isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+  let isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/) //ios终端
   if (date instanceof Date) {
     getDate = new Date(date)
   } else {
