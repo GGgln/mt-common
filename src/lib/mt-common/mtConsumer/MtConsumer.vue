@@ -61,7 +61,15 @@
           <a-row>
             <a-col :span="8"><a href="javascript:;" @click="showModalEdit(record)">编辑</a></a-col>
             <a-col :span="8"><a href="javascript:;" @click="detailsData(record)">详情</a></a-col>
-            <a-col :span="8"><a v-if="record.deletFlg" href="javascript:;" @click="deleData(record)">删除</a></a-col>
+
+            <a-col :span="8"> <a-popconfirm
+                title="确定要删除该用户吗？"
+                @confirm="deleData(record)"
+                placement="top"
+                okText="确定"
+                cancelText="取消"
+              ><a v-if="record.deletFlg" href="javascript:;" >删除</a> </a-popconfirm></a-col>
+
           </a-row>
         </template>
       </a-table>
@@ -117,44 +125,37 @@ import request from '../utils/request'
 const columns = [
   {
     title: '姓名',
-    align: 'center',
     dataIndex: 'userName',
     width: '12%'
   },
   {
     title: '用户名',
-    align: 'center',
     dataIndex: 'userId',
     width: '15%'
   },
 
   {
     title: '用户组',
-    align: 'center',
     dataIndex: 'roleTypeName',
     width: '15%'
   },
   {
     title: '电话',
-    align: 'center',
     dataIndex: 'phone',
     width: '15%'
   },
   {
     title: '创建时间',
-    align: 'center',
     dataIndex: 'createTime',
     width: '15%'
   },
   {
     title: '创建者',
-    align: 'center',
     dataIndex: 'createUser',
     width: '12%'
   },
   {
     title: '操作',
-    align: 'center',
     dataIndex: '',
     scopedSlots: { customRender: 'action' },
     width: '16%'
@@ -163,7 +164,12 @@ const columns = [
 
 export default {
   name: 'mt-consumer-page',
-  props: ['baseUrl'],
+  props: {
+    baseUrl: {
+      type: String,
+      default: '/mtCommonApi'
+    }
+  },
   data () {
     return {
       formData: this.$form.createForm(this),
@@ -352,30 +358,18 @@ export default {
     },
 
     deleData (data) { // 删除model
+    console.log(data)
       let thisName = this // 赋值this
-      this.$confirm({
-        title: '删除用户',
-        content: '确定要删除 "' + data.userName + '" ?',
-        okText: '确定',
-        centered: true,
-        width: 500,
-        // iconType: 'exclamation-circle',
-        cancelText: '取消',
-        onOk () {
-          request({
-            url: `${thisName.baseUrl}/Service/API/V1/CHP/user/delete/${ data.userId}`,
-            method: 'delete'
-          })
-            .then(res => {
-              thisName.initData()
-            })
-            .catch(() => {
-              // alert('error')
-            })
-        },
-        onCancel () {
-        }
+      request({
+        url: `${thisName.baseUrl}/Service/API/V1/CHP/user/delete/${data.userId}`,
+        method: 'delete'
       })
+        .then(res => {
+          thisName.initData()
+        })
+        .catch(() => {
+          // alert('error')
+        })
     },
     handlePassEdit (rule, value, callback) {
       // 新密码验证

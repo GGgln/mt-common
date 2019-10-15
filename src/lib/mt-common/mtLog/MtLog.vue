@@ -37,27 +37,23 @@ import request from '../utils/request'
 const columns = [
   {
     title: '日志时间',
-    align: 'center',
     dataIndex: 'date',
     width: '20%'
 
   },
   {
     title: '操作类型',
-    align: 'center',
     dataIndex: 'operationType',
     width: '12%'
   },
   {
     title: '日志内容',
-    align: 'left',
     dataIndex: 'logContent',
     width: '53%'
 
   },
   {
     title: '操作人',
-    align: 'center',
     dataIndex: 'operationUser',
     width: '15%'
   }
