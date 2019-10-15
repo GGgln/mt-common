@@ -358,7 +358,6 @@ export default {
     },
 
     deleData (data) { // 删除model
-    console.log(data)
       let thisName = this // 赋值this
       request({
         url: `${thisName.baseUrl}/Service/API/V1/CHP/user/delete/${data.userId}`,
