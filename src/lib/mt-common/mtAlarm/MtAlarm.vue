@@ -47,7 +47,7 @@
         <span>{{text == 1 ? '报警' : text == 2 ? '消警' : text == 3 ? '待复位' : '-'}}</span>
       </template>
       <template slot="operate" slot-scope="text, record">
-        <a-button v-if="record.IsManualReset" type="primary" @click="resetAlarm(record)">复位</a-button>
+        <a v-if="record.IsManualReset" @click="resetAlarm(record)">复位</a>
       </template>
     </a-table>
   </div>
