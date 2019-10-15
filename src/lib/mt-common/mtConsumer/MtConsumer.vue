@@ -35,18 +35,18 @@
             <a-input id="warning" v-decorator="['phone', { rules: [{ required: true, message: '不能为空' }, { validator: handIphone }] }]" />
           </a-form-item>
           <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="智信:" hasFeedback>
-            <a-input id="warning" v-decorator="['zhixin', { rules: [{ required: true, message: '不能为空' }] }]" />
+            <a-input id="warning" v-decorator="['zhixin']" />
           </a-form-item>
           <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="微信:" hasFeedback :style="{ display: expand ? 'block' : 'none' }">
-            <a-input id="warning" v-decorator="['wechat', { rules: [{ required: true, message: '不能为空' }] }]" />
+            <a-input id="warning" v-decorator="['wechat']" />
           </a-form-item>
           <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="钉钉:" hasFeedback :style="{ display: expand ? 'block' : 'none' }">
-            <a-input id="warning" v-decorator="['dingDing', { rules: [{ required: true, message: '不能为空' }] }]" />
+            <a-input id="warning" v-decorator="['dingDing']" />
           </a-form-item>
           <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="邮箱:" hasFeedback :style="{ display: expand ? 'block' : 'none' }">
             <a-input id="warning" v-decorator="['mail', { rules: [{
               type: 'email', message: '请输入正确的邮箱格式',
-            },{ required: true, message: '不能为空' }] }]" />
+            }] }]" />
           </a-form-item>
         </a-form>
            <a
@@ -89,18 +89,18 @@
             <a-input id="warning" v-decorator="['phone', { rules: [{ required: true, message: '不能为空' }, { validator: handIphone }] }]" />
           </a-form-item>
           <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="智信:" hasFeedback>
-            <a-input id="warning" v-decorator="['zhixin', { rules: [{ required: true, message: '不能为空' }] }]" />
+            <a-input id="warning" v-decorator="['zhixin']" />
           </a-form-item>
           <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="微信:" hasFeedback :style="{ display: expand ? 'block' : 'none' }">
-            <a-input id="warning" v-decorator="['wechat', { rules: [{ required: true, message: '不能为空' }] }]" />
+            <a-input id="warning" v-decorator="['wechat']" />
           </a-form-item>
           <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="钉钉:" hasFeedback :style="{ display: expand ? 'block' : 'none' }">
-            <a-input id="warning" v-decorator="['dingDing', { rules: [{ required: true, message: '不能为空' }] }]" />
+            <a-input id="warning" v-decorator="['dingDing']" />
           </a-form-item>
           <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="邮箱:" hasFeedback :style="{ display: expand ? 'block' : 'none' }">
             <a-input id="warning" v-decorator="['mail', { rules: [{
               type: 'email', message: '请输入正确的邮箱格式',
-            },{ required: true, message: '不能为空' }] }]" />
+            }] }]" />
           </a-form-item>
         </a-form>
         <a
