@@ -39,7 +39,7 @@
         <a-button style="margin-left:20px;" @click="toReset">重置</a-button>
       </a-form-item>
     </a-form>
-    <a-table id="table_blue" :columns="columns" size="small" :dataSource="data" :pagination="pageOptions" rowKey="alarmId">
+    <a-table id="table_blue" :columns="columns" :dataSource="data" :pagination="pageOptions" rowKey="alarmId">
       <template slot="alarmGradeId" slot-scope="text, record">
         <span>{{text == 1 ? '一级' : text == 2 ? '二级' : text == 3 ? '三级' : '-'}}</span>
       </template>
