@@ -20,7 +20,8 @@
         </a-select>
       </a-form-item>
       <a-form-item label="时间段查询：">
-        <a-range-picker
+        <a-range-picker 
+        style="text-align:left"
         v-decorator="['alarmTime']"
           :showTime="{
         hideDisabledOptions: true,

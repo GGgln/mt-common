@@ -136,7 +136,6 @@ const dataClass = {
 };
 export default {
   name: "mt-class",
-  props: ['baseUrl'],
   data() {
     return {
       columns,
@@ -145,6 +144,13 @@ export default {
       classList: [],
       modalVisible: false
     };
+  },
+  props: {
+    baseUrl: {
+      type: String,
+      default: "/mtCommonApi"
+    },
+ 
   },
   beforeCreate() {
     this.form = this.$form.createForm(this);
@@ -157,7 +163,7 @@ export default {
     moment,
     // 获取排班列表
     initClassSchedule() {
-      let url = `/Service/API/V1/CHP/Group/getGroupInfoList`;
+      let url = `${this.baseUrl}/Service/API/V1/CHP/Group/getGroupInfoList`;
       request.get(url).then(res => {
         this.scheduleList = res.data;
         this.$forceUpdate();
@@ -165,7 +171,7 @@ export default {
     },
     // 获取班组列表
     initClassList() {
-      let url = `/Service/API/V1/CHP/Group/getClassGroupList`;
+      let url = `${this.baseUrl}/Service/API/V1/CHP/Group/getClassGroupList`;
       request.get(url).then(res => {
         this.classList = res.data;
       });
@@ -178,7 +184,7 @@ export default {
       this.updateScheduleList();
     },
     removeClass(data) {
-      let url = `/Service/API/V1/CHP/Group/deleteClassGroup`;
+      let url = `${this.baseUrl}/Service/API/V1/CHP/Group/deleteClassGroup`;
       request.post(url, data).then(res => {
         this.initClassList();
       });
@@ -216,9 +222,18 @@ export default {
     },
     save() {
       let self = this;
-      let url = "/Service/API/V1/CHP/Group/updateGroupInfo";
+      let userInfo = null
+      if(sessionStorage.getItem('userInfo')){
+        userInfo = sessionStorage.getItem('userInfo')
+      } else{
+        this.$message.warn('当前状态未登录，请先登录')
+        this.$router.push('/login')
+        return
+      }
+      let url = `${this.baseUrl}/Service/API/V1/CHP/Group/updateGroupInfo?username=${JSON.parse(userInfo).userId}`;
+      // let url = `${this.baseUrl}/Service/API/V1/CHP/Group/updateGroupInfo?username=zwj`;
       this.form.validateFields((err, value) => {
-        console.log(value, err);
+        
         if (!err) {
           let data = JSON.parse(JSON.stringify(self.scheduleList));
           data = data.map((item, i) => {
@@ -229,6 +244,7 @@ export default {
 
             return item;
           });
+         
           request.post(url, data).then(res => {
             self.$message.success("更新成功");
             this.initClassSchedule();
