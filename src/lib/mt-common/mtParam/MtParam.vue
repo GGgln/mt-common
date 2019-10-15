@@ -66,6 +66,10 @@ export default {
     }
   },
   props: {
+    baseUrl: {
+      type: String,
+      default: ''
+    },
     idParametersClass: {
       type: [String, Number],
       required: true
@@ -96,7 +100,7 @@ export default {
   },
   methods: {
     init () {
-      let url = `/api/commenParameter/getParameter?idParametersClass=${this.idParametersClass}`
+      let url = `${this.baseUrl}/api/commenParameter/getParameter?idParametersClass=${this.idParametersClass}`
       request.get(url).then(res => {
         this.paramData = res.data
       })
@@ -124,7 +128,7 @@ export default {
     },
     save () {
       let self = this
-      let url = '/api/commenParameter/updateParameter'
+      let url = `${this.baseUrl}/api/commenParameter/updateParameter`
       this.form.validateFields((err, value) => {
         if (!err) {
           let data = JSON.parse(JSON.stringify(self.paramData))

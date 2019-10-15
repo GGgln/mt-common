@@ -56,6 +56,7 @@ const columns = [
 ]
 export default {
   name: 'mt-log',
+  props: ['baseUrl'],
   data () {
     return {
       formData: this.$form.createForm(this),
@@ -97,8 +98,9 @@ export default {
 
   methods: {
     initSelect () {
+      let this_ = this
       request({
-        url: 'api/dimType/getType',
+        url: `${this_.baseUrl}/api/dimType/getType`,
         method: 'get'
       })
         .then(res => {
@@ -113,8 +115,9 @@ export default {
         })
     },
     initData () {
+      let this_ = this
       request({
-        url: 'api/log/selectLog',
+        url: `${this_.baseUrl}/api/log/selectLog`,
         method: 'post',
         data: {
           startTime: this.startTime,

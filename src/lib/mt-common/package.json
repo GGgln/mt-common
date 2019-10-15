@@ -1,14 +1,22 @@
 {
-  "name": "mt-alarm-test",
-  "version": "0.1.0",
-  "description": "测试npm提交",
+  "name": "mt-common",
+  "version": "1.1.1",
+  "description": "报警，日志，班组，登录，参数等公共组件",
   "main": "index.js",
-  "directories": {
-    "lib": "lib"
-  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "GGgln",
-  "license": "ISC"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GGgln/mt-common.git"
+  },
+  "keywords": [
+    "公共组件"
+  ],
+  "author": "gln zwj",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GGgln/mt-common/issues"
+  },
+  "homepage": "https://github.com/GGgln/mt-common#readme"
 }
