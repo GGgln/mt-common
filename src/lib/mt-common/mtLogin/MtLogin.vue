@@ -37,6 +37,7 @@
 import request from "../utils/request";
 export default {
   name: "mt-login",
+  props: ['baseUrl'],
   data() {
     return {
       formLogin: this.$form.createForm(this), // 新建form
@@ -47,13 +48,14 @@ export default {
   methods: {
     login(e) {
       e.preventDefault();
+      let this_ = this
       this.formLogin.validateFields((err, values) => {
         if (!err) {
           for (let value in values) {
             this.form[value] = values[value];
           }
           request({
-            url: "Service/API/V1/CPH/login",
+            url: `${this_.baseUrl}/Service/API/V1/CPH/login`,
             method: "post",
             data: this.form
           })

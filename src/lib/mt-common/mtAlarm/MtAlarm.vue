@@ -20,7 +20,8 @@
         </a-select>
       </a-form-item>
       <a-form-item label="时间段查询：">
-        <a-range-picker
+        <a-range-picker 
+        style="text-align:left"
         v-decorator="['alarmTime']"
           :showTime="{
         hideDisabledOptions: true,
@@ -38,7 +39,7 @@
         <a-button style="margin-left:20px;" @click="toReset">重置</a-button>
       </a-form-item>
     </a-form>
-    <a-table id="table_blue" :columns="columns" size="small" :dataSource="data" :pagination="pageOptions" bordered rowKey="alarmDesc">
+    <a-table id="table_blue" :columns="columns" :dataSource="data" :pagination="pageOptions" rowKey="alarmId">
       <template slot="alarmGradeId" slot-scope="text, record">
         <span>{{text == 1 ? '一级' : text == 2 ? '二级' : text == 3 ? '三级' : '-'}}</span>
       </template>
@@ -105,6 +106,7 @@ const requestUrls = {
 }
 export default {
   name: 'mt-alarm',
+  props: ['baseUrl'], // 格式： /baseUrl
   data () {
     return {
       alarmLevelData: [
@@ -158,7 +160,7 @@ export default {
     moment,
     requestFormList () {
       let that = this
-      let url = this.requestUrls.getAlarmList
+      let url = `${this.baseUrl}${this.requestUrls.getAlarmList}`
       request({
         url: url,
         method: 'post',

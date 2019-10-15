@@ -1,6 +1,6 @@
 <template>
   <div id="mtParam_component" class="container">
-  <div class="param_contents">
+    <div class="param_contents">
       <div class="param_btn">
         <a-button type="primary" @click="editStatus = true" v-if="!editStatus">编辑</a-button>
         <div v-else>
@@ -55,17 +55,21 @@
   </div>
 </template>
 <script>
-import request from '../utils/request'
+import request from "../utils/request";
 
 export default {
-  name: 'mt-param',
-  data () {
+  name: "mt-param",
+  data() {
     return {
       editStatus: false,
       paramData: {}
-    }
+    };
   },
   props: {
+    baseUrl: {
+      type: String,
+      default: ""
+    },
     idParametersClass: {
       type: [String, Number],
       required: true
@@ -91,61 +95,67 @@ export default {
       required: false
     }
   },
-  created () {
-    this.init()
+  created() {
+    this.init();
   },
   methods: {
-    init () {
-      let url = `/api/commenParameter/getParameter?idParametersClass=${this.idParametersClass}`
+    init() {
+      let url = `${this.baseUrl}/api/commenParameter/getParameter?idParametersClass=${this.idParametersClass}`;
       request.get(url).then(res => {
-        this.paramData = res.data
-      })
+        this.paramData = res.data;
+      });
     },
-    retureLabel (param) {
+    retureLabel(param) {
       if (param.unit) {
-        return `${param.parameterDesc}/${param.unit}`
+        return `${param.parameterDesc}/${param.unit}`;
       } else {
-        return param.parameterDesc
+        return param.parameterDesc;
       }
     },
-    validatorCustom (el) {
-      let reg = new RegExp('^\\+?[0-9]d*$')
-      return (rule, value, callback) => {
-        if (value && !reg.test(value)) {
-          callback(new Error(el.ruleDesc))
-          return
-        }
-        callback()
+    validatorCustom(el) {
+      if (el.regularExpression) {
+        let reg = new RegExp(el.regularExpression);
+        return (rule, value, callback) => {
+          if (value && !reg.test(value)) {
+            callback(new Error(el.ruleDesc));
+            return;
+          }
+          callback();
+        };
+      } else {
+        return (rule, value, callback) => {
+          callback();
+        };
       }
     },
-    cancelSave () {
-      this.form.resetFields()
-      this.editStatus = false
+    cancelSave() {
+      this.form.resetFields();
+      this.editStatus = false;
     },
-    save () {
-      let self = this
-      let url = '/api/commenParameter/updateParameter'
+    save() {
+      let self = this;
+      let url = `${this.baseUrl}/api/commenParameter/updateParameter`;
       this.form.validateFields((err, value) => {
         if (!err) {
-          let data = JSON.parse(JSON.stringify(self.paramData))
+          let data = JSON.parse(JSON.stringify(self.paramData));
           data.children.map(group => {
             group.commenParameters.map(el => {
-              el.parameterValue = value[el.id]
-              return el
-            })
-          })
+              el.parameterValue = value[el.id];
+              return el;
+            });
+          });
           request.post(url, data).then(res => {
-            this.$message.success('更新成功')
-            this.editStatus = false
-          })
+            this.$message.success("更新成功");
+            this.editStatus = false;
+          });
         }
-      })
+      });
     }
   },
-  beforeCreate () {
-    this.form = this.$form.createForm(this)
+  beforeCreate() {
+    this.form = this.$form.createForm(this);
   }
-}
+};
 </script>
 <style lang="scss" scoped>
 @import "./style.scss";

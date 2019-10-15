@@ -15,13 +15,8 @@ const components = [
   mtAlarm,
   mtConsumer,
   mtParam,
-// <<<<<<< HEAD
   mtLogin,
-
-// =======
   mtClass
-  
-// >>>>>>> 8b0d576906d8a233108430a1f96cb2490864ee8f
 ]
 
 export default {

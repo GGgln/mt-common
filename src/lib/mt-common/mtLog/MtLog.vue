@@ -1,30 +1,36 @@
 <template>
   <div id="mtLog_component" class="container">
-      <a-form class="filter_box" :form="formData" layout="inline">
-        <a-form-item label="操作类型：">
-          <a-select  :value="logbefort" @change="selectChange">
-            <a-select-option v-for="log in logMessages" :key="log">{{ log }}</a-select-option>
-          </a-select>
-        </a-form-item>
-        <a-form-item>
-      --
-        </a-form-item>
-        <a-form-item>
-          <a-select  v-model="secondCity">
-            <a-select-option v-for="detail in details" :key="detail">{{ detail }}</a-select-option>
-          </a-select>
-        </a-form-item>
-        <a-form-item label="时间段查询："><a-range-picker :showTime="{ format: 'HH:mm:ss' }" format="YYYY-MM-DD HH:mm:ss" @change="timeChange" /></a-form-item>
-        <a-form-item> <a-input v-model="iptContent" placeholder="请输入日志关键内容" /></a-form-item>
-        <a-form-item>
-          <a-button @click="seeAbout" icon="search"  type="primary">查询日志</a-button>
-          <a-button icon="plus" style="margin-left:20px;"  type="primary">导出日志</a-button>
-        </a-form-item>
-      </a-form>
+    <a-form class="filter_box" :form="formData" layout="inline">
+      <a-form-item label="操作类型：">
+        <a-select :value="logbefort" @change="selectChange">
+          <a-select-option v-for="log in logMessages" :key="log">{{ log }}</a-select-option>
+        </a-select>
+      </a-form-item>
+      <a-form-item>--</a-form-item>
+      <a-form-item>
+        <a-select v-model="secondCity">
+          <a-select-option v-for="detail in details" :key="detail">{{ detail }}</a-select-option>
+        </a-select>
+      </a-form-item>
+      <a-form-item label="时间段查询：">
+        <a-range-picker
+          style="text-align:left"
+          :showTime="{ format: 'HH:mm:ss' }"
+          format="YYYY-MM-DD HH:mm:ss"
+          @change="timeChange"
+        />
+      </a-form-item>
+      <a-form-item>
+        <a-input v-model="iptContent" placeholder="请输入日志关键内容" />
+      </a-form-item>
+      <a-form-item>
+        <a-button @click="seeAbout" icon="search" type="primary">查询日志</a-button>
+        <a-button icon="plus" style="margin-left:20px;" type="primary">导出日志</a-button>
+      </a-form-item>
+    </a-form>
 
-      <a-table id="table_blue" :pagination="pageOptions" :columns="columns" :dataSource="data"></a-table>
-
-    </div>
+    <a-table id="table_blue" :pagination="pageOptions" :columns="columns" :dataSource="data"></a-table>
+  </div>
 </template>
 <script>
 import request from '../utils/request'
@@ -34,6 +40,7 @@ const columns = [
     align: 'center',
     dataIndex: 'date',
     width: '20%'
+
   },
   {
     title: '操作类型',
@@ -46,6 +53,7 @@ const columns = [
     align: 'left',
     dataIndex: 'logContent',
     width: '53%'
+
   },
   {
     title: '操作人',
@@ -56,6 +64,7 @@ const columns = [
 ]
 export default {
   name: 'mt-log',
+  props: ['baseUrl'],
   data () {
     return {
       formData: this.$form.createForm(this),
@@ -97,8 +106,9 @@ export default {
 
   methods: {
     initSelect () {
+      let this_ = this
       request({
-        url: 'api/dimType/getType',
+        url: `${this_.baseUrl}/api/dimType/getType`,
         method: 'get'
       })
         .then(res => {
@@ -113,8 +123,9 @@ export default {
         })
     },
     initData () {
+      let this_ = this
       request({
-        url: 'api/log/selectLog',
+        url: `${this_.baseUrl}/api/log/selectLog`,
         method: 'post',
         data: {
           startTime: this.startTime,
@@ -149,7 +160,6 @@ export default {
     seeAbout () {
       this.initData()
     }
-
   }
 }
 </script>
@@ -157,12 +167,11 @@ export default {
 form .ant-select {
   min-width: 100px !important;
 }
-.filter_box{
+.filter_box {
   text-align: right;
   margin-bottom: 20px;
 }
 .container {
-  padding:20px;
+  padding: 20px;
 }
-
 </style>
