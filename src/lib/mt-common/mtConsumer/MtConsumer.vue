@@ -1,7 +1,7 @@
 <template>
   <div id="MtConsumer_component" class="container">
       <a-form class="filter_box" :form="formData" layout="inline">
-        <a-form-item> <a-input style="width:100%;" v-model="iptContent" placeholder="请输入用户名称" /></a-form-item>
+        <a-form-item> <a-input style="width:100%;" v-model="iptContent" placeholder="请输入姓名" /></a-form-item>
         <a-form-item>
      <a-button icon="search" @click="initData()"  type="primary">查询用户</a-button>
    <a-button icon="plus" style="margin-left:20px;"  type="primary" @click="showModal">新建用户</a-button>
@@ -59,9 +59,9 @@
       <a-table id="table_blue" :pagination="pageOptions" :columns="columns" :dataSource="data">
         <template slot="action" slot-scope="text, record">
           <a-row>
-            <a-col :span="8"><a v-if="record.deletFlg" href="javascript:;" @click="deleData(record)">删除</a></a-col>
             <a-col :span="8"><a href="javascript:;" @click="showModalEdit(record)">编辑</a></a-col>
             <a-col :span="8"><a href="javascript:;" @click="detailsData(record)">详情</a></a-col>
+            <a-col :span="8"><a v-if="record.deletFlg" href="javascript:;" @click="deleData(record)">删除</a></a-col>
           </a-row>
         </template>
       </a-table>
@@ -70,7 +70,7 @@
           <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="姓名:" hasFeedback>
             <a-input id="warning" v-decorator="['userName', { rules: [{ required: true, message: '不能为空' }] }]" />
           </a-form-item>
-          <a-form-item label="原密码" class="stepFormText" :label-col="labelCol" :wrapper-col="wrapperCol" hasFeedback>
+          <a-form-item label="原密码" class="stepFormText" :label-col="labelCol" :wrapper-col="wrapperCol" >
             <a-input type="password" v-decorator="['oldPassWord', { rules: [{ required: true, message: '请输入原密码' }] }]" name="password" />
           </a-form-item>
           <a-form-item label="新密码" class="stepFormText" :label-col="labelCol" :wrapper-col="wrapperCol" hasFeedback>

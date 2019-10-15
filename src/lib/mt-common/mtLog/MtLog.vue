@@ -33,7 +33,7 @@ const columns = [
     title: '日志时间',
     align: 'center',
     dataIndex: 'date',
-    width: '12%'
+    width: '20%'
   },
   {
     title: '操作类型',
@@ -43,9 +43,9 @@ const columns = [
   },
   {
     title: '日志内容',
-    align: 'center',
+    align: 'left',
     dataIndex: 'logContent',
-    width: '61%'
+    width: '53%'
   },
   {
     title: '操作人',
