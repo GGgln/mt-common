@@ -261,18 +261,21 @@ export default {
     },
     setClassListTime(list) {
       let self = this;
-      for (let i = 1; i < list.length; i++) {
-        let preClass = list[i - 1];
+      let scheduleList = this.form.getFieldValue("scheduleList");
+      for (let i = 1; i < scheduleList.length; i++) {
+        let preClass = scheduleList[i - 1];
         if (preClass.continueHours && preClass.startTimeStr) {
-          list[i].startTimeStr = self.computeDate(
+          scheduleList[i].startTimeStr = this.moment(self.computeDate(
             preClass.startTimeStr,
             preClass.continueHours
-          );
+          ))
         } else {
-          list[i].startTimeStr = null;
+          scheduleList[i].startTimeStr = null;
         }
       }
-      this.scheduleList = list;
+      
+      this.form.setFieldsValue({ scheduleList });
+      console.log(scheduleList)
     },
     changeStartTime(e) {
       this.updateScheduleList();
@@ -285,18 +288,7 @@ export default {
         let formData = this.form.getFieldsValue();
         let data = [];
         if (formData.scheduleList && formData.scheduleList.length > 1) {
-          data = formData.scheduleList.map((item, i) => {
-            let startTimeStr =
-              item.startTimeStr && typeof "object"
-                ? util.formatTime(item.startTimeStr._d).timeToH
-                : null;
-            item = Object.assign({}, this.scheduleList[i], item, {
-              startTimeStr
-            });
-            return item;
-          });
-
-          this.setClassListTime(data);
+           this.setClassListTime();
         }
       });
     }

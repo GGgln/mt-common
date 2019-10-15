@@ -90,15 +90,14 @@ export default {
     height: calc(100% - 80px);
     overflow: hidden;
     .login-con {
-      width: 350px;
-      height: 330px;
+      width: 400px;
+      height: 380px;
       background-color: white;
       float: right;
-      margin-right: 9%;
+      margin-right: 8%;
       margin-top: 12%;
       padding: 30px 40px 40px;
-      // margin-right: 8%;
-      // padding: 50px 40px;
+
       -webkit-box-sizing: border-box;
       -moz-box-sizing: border-box;
       box-sizing: border-box;
