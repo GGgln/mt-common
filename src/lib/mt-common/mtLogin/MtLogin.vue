@@ -34,44 +34,44 @@
   </div>
 </template>
 <script>
-import request from "../utils/request";
+import request from '../utils/request'
 export default {
-  name: "mt-login",
+  name: 'mt-login',
   props: ['baseUrl'],
-  data() {
+  data () {
     return {
       formLogin: this.$form.createForm(this), // 新建form
       form: {},
-      hint: ""
-    };
+      hint: ''
+    }
   },
   methods: {
-    login(e) {
-      e.preventDefault();
+    login (e) {
+      e.preventDefault()
       let this_ = this
       this.formLogin.validateFields((err, values) => {
         if (!err) {
           for (let value in values) {
-            this.form[value] = values[value];
+            this.form[value] = values[value]
           }
           request({
             url: `${this_.baseUrl}/Service/API/V1/CPH/login`,
-            method: "post",
+            method: 'post',
             data: this.form
           })
             .then(res => {
-              this.hint = "";
-              this.$emit('loginToNext',res)
+              this.hint = ''
+              this.$emit('loginToNext', res)
             })
             .catch(error => {
               // alert('error')
-              this.hint = error.msg;
-            });
+              this.hint = error.msg
+            })
         }
-      });
+      })
     }
   }
-};
+}
 </script>
 <style lang="scss" scoped>
 .login {
