@@ -78,7 +78,6 @@ export default {
             })
             .catch(error => {
               // alert('error')
-              this.hint = error.msg
             })
         }
       })
