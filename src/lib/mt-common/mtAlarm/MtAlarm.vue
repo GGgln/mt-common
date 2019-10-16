@@ -105,7 +105,12 @@ const requestUrls = {
 }
 export default {
   name: 'mt-alarm',
-  props: ['baseUrl'], // 格式： /baseUrl
+  props: {
+      baseUrl: {
+        type: String,
+        default: '/mtCommonApi'
+      }
+  }, // 格式： /baseUrl
   data () {
     return {
       alarmLevelData: [
@@ -174,7 +179,7 @@ export default {
       })
     },
     getAlarmLevel () {
-      let url = this.requestUrls.getAlarmLevel
+      let url = `${this.baseUrl}${this.requestUrls.getAlarmLevel}`
       request({
         url: url,
         method: 'get'
@@ -203,7 +208,7 @@ export default {
         title: '确认复位',
         content: h => <div><p><span>报警名称：</span><span style="font-size:14px;font-weight:bold;">{record.alarmDesc}</span></p><p><span>判断标准：</span><span style="font-size:14px;font-weight:bold;">{record.decisionRules}</span></p><p>是否确认复位硬件?</p></div>,
         onOk () {
-          let url = that.requestUrls.setAlarm
+          let url = `${that.baseUrl}${that.requestUrls.setAlarm}`
           request({
             url: url,
             method: 'post',
