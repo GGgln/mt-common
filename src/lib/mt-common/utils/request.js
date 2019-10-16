@@ -12,8 +12,8 @@ service.interceptors.request.use(config => {
   if(user){
       config.headers['userId'] = user.userId;
      //  config.headers['userName'] = URLEncoder.encode(user.userName, "UTF-8");
-      return config;
   }
+  return config;
  // if (config.url.indexOf('login') == -1) {
  //     var uuid = sessionStorage.getItem("uuid");
  //     if (!uuid) {
