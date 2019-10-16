@@ -237,61 +237,61 @@
   </div>
 </template>
 <script>
-import request from "../utils/request";
+import request from '../utils/request'
 const columns = [
   {
-    title: "姓名",
-    dataIndex: "userName",
-    width: "12%"
+    title: '姓名',
+    dataIndex: 'userName',
+    width: '12%'
   },
   {
-    title: "用户名",
-    dataIndex: "userId",
-    width: "15%"
+    title: '用户名',
+    dataIndex: 'userId',
+    width: '15%'
   },
 
   {
-    title: "用户组",
-    dataIndex: "roleTypeName",
-    width: "15%"
+    title: '用户组',
+    dataIndex: 'roleTypeName',
+    width: '15%'
   },
   {
-    title: "电话",
-    dataIndex: "phone",
-    width: "15%"
+    title: '电话',
+    dataIndex: 'phone',
+    width: '15%'
   },
   {
-    title: "创建时间",
-    dataIndex: "createTime",
-    width: "15%"
+    title: '创建时间',
+    dataIndex: 'createTime',
+    width: '15%'
   },
   {
-    title: "创建者",
-    dataIndex: "createUser",
-    width: "12%"
+    title: '创建者',
+    dataIndex: 'createUser',
+    width: '12%'
   },
   {
-    title: "操作",
-    dataIndex: "",
-    scopedSlots: { customRender: "action" },
-    width: "16%"
+    title: '操作',
+    dataIndex: '',
+    scopedSlots: { customRender: 'action' },
+    width: '16%'
   }
-];
+]
 
 export default {
-  name: "mt-consumer-page",
+  name: 'mt-consumer-page',
   props: {
     baseUrl: {
       type: String,
-      default: "/mtCommonApi"
+      default: '/mtCommonApi'
     }
   },
-  data() {
+  data () {
     return {
       formData: this.$form.createForm(this),
       form: this.$form.createForm(this), // 新建form
       formEdit: this.$form.createForm(this), // 编辑form
-      password: "", // 新建对比密码
+      password: '', // 新建对比密码
       labelCol: {
         xs: { span: 24 },
         sm: { span: 5 }
@@ -307,7 +307,7 @@ export default {
       columns,
       data: [], // table数据
       selects: [], // 下拉数据
-      UserId: "", // 登录用户
+      UserId: '', // 登录用户
       pageSize: 10, // 条数
       page: 1, // 当前页
       details: {}, // 详情数据
@@ -319,42 +319,42 @@ export default {
         defaultPageSize: 10,
         showQuickJumper: true,
         showSizeChanger: true,
-        pageSizeOptions: ["10", "20", "50"],
+        pageSizeOptions: ['10', '20', '50'],
         total: 0,
         onShowSizeChange: (current, size) => {
           // 每页多少条
-          this.pageSize = size;
-          this.page = current;
-          this.initData();
+          this.pageSize = size
+          this.page = current
+          this.initData()
         },
         onChange: (page, pageSize) => {
           // 跳页
-          this.page = page;
-          this.initData();
+          this.page = page
+          this.initData()
         }
       }
-    };
+    }
   },
-  created() {
-    this.initData();
-    // if (sessionStorage.getItem("userInfo")) {
-    //   this.UserId = JSON.parse(sessionStorage.getItem("userInfo")).userId;
-    // } else {
-    //   this.$message.warn("当前状态未登录，请先登录");
-    //   this.$router.push("/login");
-    // }
+  created () {
+    this.initData()
+    if (sessionStorage.getItem('userInfo')) {
+      this.UserId = JSON.parse(sessionStorage.getItem('userInfo')).userId
+    } else {
+      this.$message.warn('当前状态未登录，请先登录')
+      this.$router.push('/login')
+    }
   },
   methods: {
-    toggle() {
+    toggle () {
       // 改变图标状态
-      this.expand = !this.expand;
+      this.expand = !this.expand
     },
-    initData() {
+    initData () {
       // table数据列表接口
-      let this_ = this;
+      let this_ = this
       request({
         url: `${this_.baseUrl}/Service/API/V1/CHP/user/list`,
-        method: "post",
+        method: 'post',
         data: {
           keyWord: this.iptContent,
           userId: this.UserId,
@@ -363,108 +363,107 @@ export default {
         }
       })
         .then(res => {
-          this.pageOptions.total = res.data.totalCount;
-          this.data = res.data.userJsons;
+          this.pageOptions.total = res.data.totalCount
+          this.data = res.data.userJsons
         })
         .catch(() => {
           // alert('error')
-        });
+        })
     },
-    selectData() {
+    selectData () {
       // 下拉数据
-      let this_ = this;
+      let this_ = this
       request({
         url: `${this_.baseUrl}/Service/API/V1/CHP/role/list/${this_.UserId}`,
-        method: "get"
+        method: 'get'
       })
         .then(res => {
-          this.selects = res.data;
+          this.selects = res.data
         })
         .catch(() => {
+          this.$message.error('获取下拉列表失败')
           // alert('error')
-        });
+        })
     },
 
-    saveModal(e) {
+    saveModal (e) {
       // 新建保存发送新建信息
-      e.preventDefault();
-      let this_ = this;
+      e.preventDefault()
+      let this_ = this
       this.form.validateFields((err, values) => {
         if (!err) {
-          this.formNewData = { createUser: this.UserId };
           for (let value in values) {
-            if (value !== "confirm_password") {
-              this.formNewData[value] = values[value];
+            if (value !== 'confirm_password') {
+              this.formNewData[value] = values[value]
             }
           }
           request({
             url: `${this_.baseUrl}/Service/API/V1/CHP/user/create`,
-            method: "post",
+            method: 'post',
             data: this.formNewData
           })
             .then(res => {
-              this.$message.success("新建用户成功");
-              this.visible = false;
-              this.initData();
+              this.$message.success('新建用户成功')
+              this.visible = false
+              this.initData()
             })
             .catch(error => {
-              this.$message.error(error.msg);
+              this.$message.error(error.msg)
               // alert('error')
-            });
+            })
         }
-      });
+      })
     },
-    saveModalEdit(e) {
+    saveModalEdit (e) {
       // 编辑保存发送修改信息
-      e.preventDefault();
-      let this_ = this;
+      e.preventDefault()
+      let this_ = this
       this.formEdit.validateFields((err, values) => {
         if (!err) {
           this.formNewDataEdit = {
             userId: this.receiveEdit.userId,
             customerName: values.userName,
-            customerId: this.receiveEdit.customerId,
-            loginUserId: this.UserId
-          };
+            customerId: this.receiveEdit.customerId
+          }
           for (let value in values) {
-            this.formNewDataEdit[value] = values[value];
+            this.formNewDataEdit[value] = values[value]
           }
 
           request({
             url: `${this_.baseUrl}/Service/API/V1/CHP/user/updateUser`,
-            method: "put",
+            method: 'put',
             data: this.formNewDataEdit
           })
             .then(res => {
-              this.$message.success("修改成功");
-              this.visibleEdit = false;
-              this.initData();
+              this.$message.success('修改成功')
+              this.visibleEdit = false
+              this.initData()
             })
             .catch(error => {
-              this.$message.error(error.msg);
-            });
+              this.$message.error(error.msg)
+            })
         }
-      });
+      })
     },
-    showModal() {
+    showModal () {
       // 新建显示
-      this.form.resetFields(); // 新建重置
-      this.visible = true;
-      this.expand = false;
-      this.selectData();
+      this.form.resetFields() // 新建重置
+      this.visible = true
+      this.expand = false
+      this.selectData()
     },
-    showModalEdit(data) {
+    showModalEdit (data) {
       // 编辑显示
-      this.formEdit.resetFields(); // 编辑重置
-      let this_ = this;
-      this.visibleEdit = true;
-      this.expand = false;
+      this.formEdit.resetFields() // 编辑重置
+      let this_ = this
+      this.visibleEdit = true
+      this.expand = false
       request({
         url: `${this_.baseUrl}/Service/API/V1/CHP/user/detail/${data.userId}`,
-        method: "get"
+        method: 'get'
       })
         .then(res => {
-          this.receiveEdit = res.data;
+          this.receiveEdit = res.data
           setTimeout(() => {
             this.formEdit.setFieldsValue({
               // 数据
@@ -475,108 +474,108 @@ export default {
               dingDing: res.data.dingDing,
               mail: res.data.mail,
               wechat: res.data.wechat
-            });
-          }, 100);
+            })
+          }, 100)
         })
         .catch(() => {
           // alert('error')
-        });
+        })
 
-      this.selectData(); // 调用下拉数据
+      this.selectData() // 调用下拉数据
     },
-    cancelModal() {
+    cancelModal () {
       // 新建model关闭
-      this.visible = false;
+      this.visible = false
     },
 
-    cancelModalEdit() {
+    cancelModalEdit () {
       // 编辑model关闭
-      this.visibleEdit = false;
+      this.visibleEdit = false
     },
 
-    deleData(data) {
+    deleData (data) {
       // 删除model
-      let thisName = this; // 赋值this
+      let thisName = this // 赋值this
       request({
         url: `${thisName.baseUrl}/Service/API/V1/CHP/user/delete/${data.userId}`,
-        method: "delete"
+        method: 'delete'
       })
         .then(res => {
-          this.$message.success("删除成功");
+          this.$message.success('删除成功')
 
-          thisName.initData();
+          thisName.initData()
         })
         .catch(() => {
-          // alert('error')
-        });
+          this.$message.error('删除失败')
+        })
     },
-    handlePassEdit(rule, value, callback) {
+    handlePassEdit (rule, value, callback) {
       // 新密码验证
-      var mPasswordEdit = /^[!-~]{8,14}$/;
+      var mPasswordEdit = /^[!-~]{8,14}$/
       if (value && !value.match(mPasswordEdit)) {
         callback(
-          new Error("长度为8-14个字符，支持数字、大小写字母和特殊字符！")
-        );
-        return;
+          new Error('长度为8-14个字符，支持数字、大小写字母和特殊字符！')
+        )
+        return
       }
-      callback();
+      callback()
     },
-    handleUserId(rule, value, callback) {
+    handleUserId (rule, value, callback) {
       // 用户名验证
-      var mUserId = /^[\u4e00-\u9fa5]{1,7}$|^[\dA-Za-z_]{1,14}$/;
+      var mUserId = /^[\u4e00-\u9fa5]{1,7}$|^[\dA-Za-z_]{1,14}$/
       if (value && !value.match(mUserId)) {
-        callback(new Error("中英文均可，最长14个英文或者7个汉字！"));
-        return;
+        callback(new Error('中英文均可，最长14个英文或者7个汉字！'))
+        return
       }
-      callback();
+      callback()
     },
-    handlePass(rule, value, callback) {
+    handlePass (rule, value, callback) {
       // 新建密码验证
-      this.password = value;
-      var mPassword = /^[!-~]{8,14}$/;
+      this.password = value
+      var mPassword = /^[!-~]{8,14}$/
       if (value && !value.match(mPassword)) {
         callback(
-          new Error("长度为8-14个字符，支持数字、大小写字母和特殊字符！")
-        );
-        return;
+          new Error('长度为8-14个字符，支持数字、大小写字母和特殊字符！')
+        )
+        return
       }
-      callback();
+      callback()
     },
-    handleConfirmPass(rule, value, callback) {
+    handleConfirmPass (rule, value, callback) {
       // 确认密码验证
       if (value && this.password !== value) {
-        callback(new Error("两次密码输入不一致!"));
-        return;
+        callback(new Error('两次密码输入不一致!'))
+        return
       }
       // Note: 必须总是返回一个 callback，否则 validateFieldsAndScroll 无法响应
-      callback();
+      callback()
     },
-    handIphone(rule, value, callback) {
+    handIphone (rule, value, callback) {
       // 电话验证
-      var mPattern = /^1[2|3|4|5|6|7|8|9]\d{9}$/;
+      var mPattern = /^1[2|3|4|5|6|7|8|9]\d{9}$/
       if (value && !value.match(mPattern)) {
-        callback(new Error("请输入正确电话号码!"));
-        return;
+        callback(new Error('请输入正确电话号码!'))
+        return
       }
-      callback();
+      callback()
     },
-    detailsData(data) {
+    detailsData (data) {
       // 详情model
-      let this_ = this;
-      this.details = {};
+      let this_ = this
+      this.details = {}
       // 详情框
       request({
         url: `${this_.baseUrl}/Service/API/V1/CHP/user/detail`,
-        method: "post",
+        method: 'post',
         data: {
           custormId: String(data.customerId),
           userId: data.userId
         }
       })
         .then(res => {
-          this.details = res.data;
+          this.details = res.data
           this.$info({
-            title: "用户详情",
+            title: '用户详情',
             // JSX support
             content: (
               <div class="detailsConter">
@@ -624,18 +623,18 @@ export default {
                 </p>
               </div>
             ),
-            okText: "关闭",
+            okText: '关闭',
             centered: true,
             width: 400,
-            onOk() {}
-          });
+            onOk () {}
+          })
         })
         .catch(() => {
           // alert('error')
-        });
+        })
     }
   }
-};
+}
 </script>
 <style lang="scss" scoped>
 .filter_box {
