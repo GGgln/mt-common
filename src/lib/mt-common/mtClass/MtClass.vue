@@ -149,8 +149,7 @@ export default {
     baseUrl: {
       type: String,
       default: "/mtCommonApi"
-    },
- 
+    }
   },
   beforeCreate() {
     this.form = this.$form.createForm(this);
@@ -222,18 +221,15 @@ export default {
     },
     save() {
       let self = this;
-      let userInfo = null
-      if(sessionStorage.getItem('userInfo')){
-        userInfo = sessionStorage.getItem('userInfo')
-      } else{
-        this.$message.warn('当前状态未登录，请先登录')
-        this.$router.push('/login')
-        return
+      let userInfo = sessionStorage.getItem("userInfo");
+      if (!userInfo) {
+        this.$message.warn("当前状态未登录，请先登录");
+        this.$router.push("/login");
+        return;
       }
       let url = `${this.baseUrl}/Service/API/V1/CHP/Group/updateGroupInfo?username=${JSON.parse(userInfo).userId}`;
       // let url = `${this.baseUrl}/Service/API/V1/CHP/Group/updateGroupInfo?username=zwj`;
       this.form.validateFields((err, value) => {
-        
         if (!err) {
           let data = JSON.parse(JSON.stringify(self.scheduleList));
           data = data.map((item, i) => {
@@ -244,7 +240,7 @@ export default {
 
             return item;
           });
-         
+
           request.post(url, data).then(res => {
             self.$message.success("更新成功");
             this.initClassSchedule();
@@ -265,17 +261,16 @@ export default {
       for (let i = 1; i < scheduleList.length; i++) {
         let preClass = scheduleList[i - 1];
         if (preClass.continueHours && preClass.startTimeStr) {
-          scheduleList[i].startTimeStr = this.moment(self.computeDate(
-            preClass.startTimeStr,
-            preClass.continueHours
-          ))
+          scheduleList[i].startTimeStr = this.moment(
+            self.computeDate(preClass.startTimeStr, preClass.continueHours)
+          );
         } else {
           scheduleList[i].startTimeStr = null;
         }
       }
-      
+
       this.form.setFieldsValue({ scheduleList });
-      console.log(scheduleList)
+      console.log(scheduleList);
     },
     changeStartTime(e) {
       this.updateScheduleList();
@@ -288,7 +283,7 @@ export default {
         let formData = this.form.getFieldsValue();
         let data = [];
         if (formData.scheduleList && formData.scheduleList.length > 1) {
-           this.setClassListTime();
+          this.setClassListTime();
         }
       });
     }
