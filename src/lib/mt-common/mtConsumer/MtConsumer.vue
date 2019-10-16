@@ -10,10 +10,10 @@
       <a-modal title="新建用户" v-model="visible" @cancel="cancelModal" @ok="saveModal" okText="保存" cancelText="关闭">
         <a-form :form="form">
           <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="姓名:" >
-            <a-input id="warning" v-decorator="['userName', { rules: [{ required: true, message: '姓名不能为空' }] }]" />
+            <a-input  v-decorator="['userName', { rules: [{ required: true, message: '姓名不能为空' }] }]" />
           </a-form-item>
           <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="用户名:" >
-            <a-input id="warning" v-decorator="['userId', { rules: [{ required: true, message: '用户名不能为空' }, { validator: handleUserId}] }]" />
+            <a-input  v-decorator="['userId', { rules: [{ required: true, message: '用户名不能为空' }, { validator: handleUserId}] }]" />
           </a-form-item>
 
           <a-form-item label="密码" class="stepFormText" :label-col="labelCol" :wrapper-col="wrapperCol" >
@@ -32,19 +32,19 @@
             </a-select>
           </a-form-item>
           <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="电话:" >
-            <a-input id="warning" v-decorator="['phone', { rules: [{ required: true, message: '电话不能为空' }, { validator: handIphone }] }]" />
+            <a-input  v-decorator="['phone', { rules: [{ required: true, message: '电话不能为空' }, { validator: handIphone }] }]" />
           </a-form-item>
           <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="智信:" >
-            <a-input id="warning" v-decorator="['zhixin']" />
+            <a-input  v-decorator="['zhixin']" />
           </a-form-item>
           <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="微信:"  :style="{ display: expand ? 'block' : 'none' }">
-            <a-input id="warning" v-decorator="['wechat']" />
+            <a-input  v-decorator="['wechat']" />
           </a-form-item>
           <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="钉钉:"  :style="{ display: expand ? 'block' : 'none' }">
-            <a-input id="warning" v-decorator="['dingDing']" />
+            <a-input  v-decorator="['dingDing']" />
           </a-form-item>
           <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="邮箱:"  :style="{ display: expand ? 'block' : 'none' }">
-            <a-input id="warning" v-decorator="['mail', { rules: [{
+            <a-input  v-decorator="['mail', { rules: [{
               type: 'email', message: '请输入正确的邮箱格式',
             }] }]" />
           </a-form-item>
@@ -76,7 +76,7 @@
       <a-modal title="编辑用户" v-model="visibleEdit" @cancel="cancelModalEdit" @ok="saveModalEdit" okText="保存" cancelText="关闭">
         <a-form :form="formEdit">
           <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="姓名:" >
-            <a-input id="warning" v-decorator="['userName', { rules: [{ required: true, message: '姓名不能为空' }] }]" />
+            <a-input  v-decorator="['userName', { rules: [{ required: true, message: '姓名不能为空' }] }]" />
           </a-form-item>
           <template v-if="UserId ==='root'|| UserId ==='admin'">
   <a-form-item label="重置密码" class="stepFormText" :label-col="labelCol" :wrapper-col="wrapperCol" >
@@ -102,8 +102,6 @@
                 />
                 </a-form-item>
 
-
-
             </template>
           <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="用户组:" >
             <a-select  v-decorator="['roleTypeId', { rules: [{ required: true, message: '请选择用户组' }] }]">
@@ -111,19 +109,19 @@
             </a-select>
           </a-form-item>
           <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="电话:" >
-            <a-input id="warning" v-decorator="['phone', { rules: [{ required: true, message: '电话不能为空' }, { validator: handIphone }] }]" />
+            <a-input  v-decorator="['phone', { rules: [{ required: true, message: '电话不能为空' }, { validator: handIphone }] }]" />
           </a-form-item>
           <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="智信:" >
-            <a-input id="warning" v-decorator="['zhixin']" />
+            <a-input  v-decorator="['zhixin']" />
           </a-form-item>
           <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="微信:"  :style="{ display: expand ? 'block' : 'none' }">
-            <a-input id="warning" v-decorator="['wechat']" />
+            <a-input  v-decorator="['wechat']" />
           </a-form-item>
           <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="钉钉:"  :style="{ display: expand ? 'block' : 'none' }">
-            <a-input id="warning" v-decorator="['dingDing']" />
+            <a-input  v-decorator="['dingDing']" />
           </a-form-item>
           <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="邮箱:"  :style="{ display: expand ? 'block' : 'none' }">
-            <a-input id="warning" v-decorator="['mail', { rules: [{
+            <a-input  v-decorator="['mail', { rules: [{
               type: 'email', message: '请输入正确的邮箱格式',
             }] }]" />
           </a-form-item>
@@ -208,7 +206,7 @@ export default {
       columns,
       data: [], // table数据
       selects: [], // 下拉数据
-      UserId: null, // 登录用户
+      UserId: 'root', // 登录用户
       pageSize: 10, // 条数
       page: 1, // 当前页
       details: {}, // 详情数据
@@ -243,7 +241,6 @@ export default {
     //   this.$router.push('/login')
     //   return
     // }
-
   },
   methods: {
     toggle  () { // 改变图标状态
@@ -301,7 +298,7 @@ export default {
             data: this.formNewData
           })
             .then(res => {
-               this.$message.success('新建用户成功')
+              this.$message.success('新建用户成功')
               this.visible = false
               this.initData()
             })
@@ -387,7 +384,7 @@ export default {
         method: 'delete'
       })
         .then(res => {
- this.$message.success('删除成功')
+          this.$message.success('删除成功')
 
           thisName.initData()
         })
@@ -459,7 +456,7 @@ export default {
             title: '用户详情',
             // JSX support
             content: (
-              <div  class="detailsConter">
+              <div class="detailsConter">
                 <p style="margin-top：50px;">
                   <span style="width:25%;display:inline-block;text-align: right;margin-right: 20px;">姓名:</span>
                   {this.details.customerName}
