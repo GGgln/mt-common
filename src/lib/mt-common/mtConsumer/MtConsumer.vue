@@ -89,7 +89,7 @@
             />
           </a-form-item>
           <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="用户组:" hasFeedback>
-            <a-select v-decorator="['roleTypeId', { rules: [{ required: true, message: '请选择用户组' }] }]">
+            <a-select  v-decorator="['roleTypeId', { rules: [{ required: true, message: '请选择用户组' }] }]">
               <a-select-option :value="select.roleTypeId" :key="index" v-for="(select,index) in selects">{{select.roleTypeName}}</a-select-option>
             </a-select>
           </a-form-item>
@@ -306,7 +306,8 @@ export default {
             })
             .catch((error) => {
               this.$error({
-                title: '修改信息错误',
+                title: '错误信息',
+                okText: '确定',
                 content: error.msg
               })
             })
@@ -335,7 +336,7 @@ export default {
             this.formEdit.setFieldsValue({// 数据
               'zhixin': res.data.zhixin,
               'userName': res.data.customerName,
-              'roleTypeId': res.data.roleTypeId,
+              'roleTypeId': Number(res.data.roleTypeId),
               'phone': res.data.phone,
               'dingDing': res.data.dingDing,
               'mail': res.data.mail,

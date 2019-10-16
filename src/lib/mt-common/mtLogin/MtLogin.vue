@@ -2,10 +2,9 @@
   <div id="MtLogin_component" class="login">
     <div class="content">
       <div class="login-con">
-        <p>密码登录</p>
-        <span class="hint">{{hint}}</span>
-        <a-form class="filter_box" :form="formLogin">
-          <a-form-item>
+        <p>欢迎登录</p>
+        <a-form  class="filter_box" :form="formLogin">
+          <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="账号">
             <a-input
               placeholder="请输入用户名"
               v-decorator="['userId', { rules: [{ required: true, message: '不能为空' }] }]"
@@ -13,7 +12,7 @@
               <img class="img-ipt" slot="prefix" src="./user.png" alt />
             </a-input>
           </a-form-item>
-          <a-form-item>
+          <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="密码">
             <a-input
               type="password"
               placeholder="请输入密码"
@@ -28,9 +27,6 @@
         </a-form>
       </div>
     </div>
-    <footer>
-      <p>Copyright©2017.Tianjin Meiteng Technology Co.,ltd All rights reserved. 津ICP备17001059号-1</p>
-    </footer>
   </div>
 </template>
 <script>
@@ -42,15 +38,33 @@ export default {
     return {
       formLogin: this.$form.createForm(this), // 新建form
       form: {},
-      hint: ''
+      labelCol: {
+        xs: { span: 24 },
+        sm: { span: 5 }
+      },
+      wrapperCol: {
+        xs: { span: 24 },
+        sm: { span: 19 }
+      },
     }
   },
   methods: {
     login (e) {
       e.preventDefault()
+
       let this_ = this
       this.formLogin.validateFields((err, values) => {
         if (!err) {
+          // this.formLogin.setFields({
+          //   userId: {
+          //     value: values.userId,
+          //     errors: ['error']
+          //   },
+          //   passWord: {
+          //     value: values.userId,
+          //     errors: ['error']
+          //   }
+          // })
           for (let value in values) {
             this.form[value] = values[value]
           }
@@ -60,7 +74,6 @@ export default {
             data: this.form
           })
             .then(res => {
-              this.hint = ''
               this.$emit('loginToNext', res)
             })
             .catch(error => {
@@ -87,16 +100,15 @@ export default {
   background-size: cover;
   .content {
     width: 100%;
-    height: calc(100% - 80px);
+    height: 100%;
     overflow: hidden;
     .login-con {
-      width: 400px;
-      height: 380px;
+      width: 28%;
       background-color: white;
       float: right;
       margin-right: 8%;
       margin-top: 12%;
-      padding: 30px 40px 40px;
+      padding: 30px 40px;
 
       -webkit-box-sizing: border-box;
       -moz-box-sizing: border-box;
@@ -116,6 +128,7 @@ export default {
         color: red;
       }
       .login-btn {
+        margin-top: 20px;
         width: 100%;
         font-size: 20px;
         text-align: center;
@@ -123,24 +136,9 @@ export default {
         text-indent: 15px;
         background-color: #2c9ae6;
       }
-      #userId,
-      #passWord {
-        padding-right: 50px !important;
-      }
       .img-ipt {
         width: 16px;
       }
-    }
-  }
-  footer {
-    width: 100%;
-    height: 80px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    p {
-      color: #2c9ae6;
-      font-size: 20px;
     }
   }
 }
