@@ -208,7 +208,7 @@ export default {
       columns,
       data: [], // table数据
       selects: [], // 下拉数据
-      UserId: 'root', // 登录用户
+      UserId: null, // 登录用户
       pageSize: 10, // 条数
       page: 1, // 当前页
       details: {}, // 详情数据
@@ -236,7 +236,14 @@ export default {
   },
   created () {
     this.initData()
-    // console.log(JSON.parse(sessionStorage.getItem('userInfo')).userId)
+    // if(sessionStorage.getItem('userInfo')){
+    // this.UserId=JSON.parse(sessionStorage.getItem('userInfo')).userId
+    // } else{
+    //   this.$message.warn('当前状态未登录，请先登录')
+    //   this.$router.push('/login')
+    //   return
+    // }
+
   },
   methods: {
     toggle  () { // 改变图标状态
