@@ -82,7 +82,7 @@
   <a-form-item label="重置密码" class="stepFormText" :label-col="labelCol" :wrapper-col="wrapperCol" >
               <a-input
                 type="password"
-                v-decorator="['passWord', { rules: [{ required: true, message: '请输入重置密码' }, { validator: handlePassEdit }] }]"
+                v-decorator="['passWord']"
                 name="confirm_password"
               />
               </a-form-item>
@@ -97,7 +97,7 @@
               <a-form-item label="新密码" class="stepFormText" :label-col="labelCol" :wrapper-col="wrapperCol" >
                 <a-input
                   type="password"
-                  v-decorator="['passWord', { rules: [{ required: true, message: '请输入新密码' }, { validator: handlePassEdit }] }]"
+                  v-decorator="['passWord']"
                   name="confirm_password"
                 />
                 </a-form-item>
