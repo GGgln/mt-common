@@ -1,30 +1,32 @@
 <template>
   <div id="MtLogin_component" class="login">
     <div class="content">
-      <div class="login-con">
-        <p>欢迎登录</p>
-        <a-form class="filter_box" :form="formLogin">
-          <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="账号">
-            <a-input
-              placeholder="请输入用户名"
-              v-decorator="['userId', { rules: [{ required: true, message: '不能为空' }] }]"
-            >
-              <img class="img-ipt" slot="prefix" src="./user.png" alt />
-            </a-input>
-          </a-form-item>
-          <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="密码">
-            <a-input
-              type="password"
-              placeholder="请输入密码"
-              v-decorator="['passWord', { rules: [{ required: true, message: '不能为空' }] }]"
-            >
-              <img class="img-ipt" slot="prefix" src="./psw.png" alt />
-            </a-input>
-          </a-form-item>
-          <a-form-item>
-            <a-button class="login-btn" @click="login" type="primary">登录</a-button>
-          </a-form-item>
-        </a-form>
+      <div class="login_wrap">
+        <div class="login-con">
+          <p>欢迎登录</p>
+          <a-form class="filter_box" :form="formLogin">
+            <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="账号">
+              <a-input
+                placeholder="请输入用户名"
+                v-decorator="['userId', { rules: [{ required: true, message: '请输入用户名' }] }]"
+              >
+                <img class="img-ipt" slot="prefix" src="./user.png" alt />
+              </a-input>
+            </a-form-item>
+            <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="密码">
+              <a-input
+                type="password"
+                placeholder="请输入密码"
+                v-decorator="['passWord', { rules: [{ required: true, message: '请输入密码' }] }]"
+              >
+                <img class="img-ipt" slot="prefix" src="./psw.png" alt />
+              </a-input>
+            </a-form-item>
+            <a-form-item>
+              <a-button class="login-btn" @click="login" type="primary">登录</a-button>
+            </a-form-item>
+          </a-form>
+        </div>
       </div>
     </div>
   </div>
@@ -44,7 +46,7 @@ export default {
       },
       wrapperCol: {
         xs: { span: 24 },
-        sm: { span: 19 }
+        sm: { span: 17 }
       }
     };
   },
@@ -64,11 +66,11 @@ export default {
             data: this.form
           })
             .then(res => {
-              this.$message.success('登录成功')
+              this.$message.success("登录成功");
               this.$emit("loginToNext", res);
             })
             .catch(error => {
-               this.$message.warn(error.msg)
+              this.$message.warn(error.msg);
             });
         }
       });
@@ -87,17 +89,21 @@ export default {
   margin: auto;
   box-sizing: border-box;
   background: url(./login.png) no-repeat;
-  background-size: cover;
+  background-size: 100%;
   .content {
     width: 100%;
     height: 100%;
     overflow: hidden;
-    .login-con {
+    .login_wrap {
       width: 28%;
-      background-color: white;
+      margin-top: 14%;
       float: right;
-      margin-right: 8%;
-      margin-top: 12%;
+      margin-right: 9%;
+    }
+    .login-con {
+      width: 420px;
+      background-color: white;
+      margin: 0 auto;
       padding: 30px 40px;
 
       -webkit-box-sizing: border-box;
@@ -105,9 +111,9 @@ export default {
       box-sizing: border-box;
       p {
         color: #2c9ae6;
-        font-size: 28px;
+        font-size: 22px;
         letter-spacing: 2px;
-        margin-bottom: 1px;
+        margin-bottom: 30px;
       }
       .hint {
         height: 20px;
@@ -118,12 +124,14 @@ export default {
         color: red;
       }
       .login-btn {
-        margin-top: 20px;
-        width: 100%;
-        font-size: 20px;
+        width: 85%;
+        height: 40px;
+        display: block;
+        margin: 0 auto;
+        margin-top: 10px;
+        font-size: 18px;
         text-align: center;
-        letter-spacing: 20px;
-        text-indent: 15px;
+        letter-spacing: 4px;
         background-color: #2c9ae6;
       }
       .img-ipt {
