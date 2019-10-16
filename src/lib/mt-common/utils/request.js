@@ -7,7 +7,7 @@ const service = axios.create({
   timeout: 30000 // 请求超时时间
 })
 
-Axios.interceptors.request.use(config => {
+service.interceptors.request.use(config => {
   let user = sessionStorage.getItem('userInfo')
   if(user){
       config.headers['userId'] = user.userId;
