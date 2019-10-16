@@ -13,8 +13,6 @@ service.interceptors.request.use(config => {
       config.headers['userId'] = user.userId;
      //  config.headers['userName'] = URLEncoder.encode(user.userName, "UTF-8");
       return config;
-  } else{
-      router.push('/login')
   }
  // if (config.url.indexOf('login') == -1) {
  //     var uuid = sessionStorage.getItem("uuid");
@@ -44,7 +42,7 @@ service.interceptors.response.use(
     }
   },
   error => {
-    console.log('err' + error)// for debug
+    console.log('err---' + error)// for debug
     return Promise.reject(new Error(error))
   }
 )
