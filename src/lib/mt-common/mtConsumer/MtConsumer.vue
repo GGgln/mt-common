@@ -7,7 +7,7 @@
    <a-button icon="plus" style="margin-left:20px;"  type="primary" @click="showModal">新建用户</a-button>
         </a-form-item>
       </a-form>
-      <a-modal title="新建用户" v-model="visible" @cancel="cancelModal" @ok="saveModal" okText="保存" cancelText="关闭">
+      <a-modal :maskClosable=false title="新建用户" v-model="visible" @cancel="cancelModal" @ok="saveModal" okText="保存" cancelText="关闭">
         <a-form :form="form">
           <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="姓名:" >
             <a-input  v-decorator="['userName', { rules: [{ required: true, message: '姓名不能为空' }] }]" />
@@ -73,7 +73,7 @@
           </a-row>
         </template>
       </a-table>
-      <a-modal title="编辑用户" v-model="visibleEdit" @cancel="cancelModalEdit" @ok="saveModalEdit" okText="保存" cancelText="关闭">
+      <a-modal :maskClosable=false title="编辑用户" v-model="visibleEdit" @cancel="cancelModalEdit" @ok="saveModalEdit" okText="保存" cancelText="关闭">
         <a-form :form="formEdit">
           <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="姓名:" >
             <a-input  v-decorator="['userName', { rules: [{ required: true, message: '姓名不能为空' }] }]" />
@@ -82,7 +82,7 @@
   <a-form-item label="重置密码" class="stepFormText" :label-col="labelCol" :wrapper-col="wrapperCol" >
               <a-input
                 type="password"
-                v-decorator="['passWord']"
+                v-decorator="['passWord', { rules: [ { validator: handlePassEdit }] }]"
                 name="confirm_password"
               />
               </a-form-item>
@@ -97,7 +97,7 @@
               <a-form-item label="新密码" class="stepFormText" :label-col="labelCol" :wrapper-col="wrapperCol" >
                 <a-input
                   type="password"
-                  v-decorator="['passWord']"
+                  v-decorator="['passWord', { rules: [ { validator: handlePassEdit }] }]"
                   name="confirm_password"
                 />
                 </a-form-item>
@@ -234,12 +234,11 @@ export default {
   },
   created () {
     this.initData()
-    if(sessionStorage.getItem('userInfo')){
-    this.UserId=JSON.parse(sessionStorage.getItem('userInfo')).userId
-    } else{
+    if (sessionStorage.getItem('userInfo')) {
+      this.UserId = JSON.parse(sessionStorage.getItem('userInfo')).userId
+    } else {
       this.$message.warn('当前状态未登录，请先登录')
       this.$router.push('/login')
-      return
     }
   },
   methods: {
@@ -302,7 +301,8 @@ export default {
               this.visible = false
               this.initData()
             })
-            .catch(() => {
+            .catch((error) => {
+              this.$message.error(error.msg)
               // alert('error')
             })
         }
@@ -335,16 +335,16 @@ export default {
       })
     },
     showModal () { // 新建显示
+      this.form.resetFields() // 新建重置
       this.visible = true
       this.expand = false
-      this.form.resetFields() // 新建重置
       this.selectData()
     },
     showModalEdit (data) { // 编辑显示
+      this.formEdit.resetFields() // 编辑重置
       let this_ = this
       this.visibleEdit = true
       this.expand = false
-      this.formEdit.resetFields() // 编辑重置
       request({
         url: `${this_.baseUrl}/Service/API/V1/CHP/user/detail/${data.userId}`,
         method: 'get'
@@ -422,7 +422,7 @@ export default {
     },
     handleConfirmPass (rule, value, callback) {
       // 确认密码验证
-      if (value && this.password && this.password !== value) {
+      if (value && this.password !== value) {
         callback(new Error('两次密码输入不一致!'))
         return
       }
