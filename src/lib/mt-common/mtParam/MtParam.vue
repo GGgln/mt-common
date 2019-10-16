@@ -68,7 +68,7 @@ export default {
   props: {
     baseUrl: {
       type: String,
-      default: ""
+      default: "/classCommonApi"
     },
     idParametersClass: {
       type: [String, Number],
@@ -107,13 +107,14 @@ export default {
     },
     retureLabel(param) {
       if (param.unit) {
-        return `${param.parameterDesc}/${param.unit}`;
+        return `${param.parameterDesc}(${param.unit})`;
       } else {
         return param.parameterDesc;
       }
     },
     validatorCustom(el) {
       if (el.regularExpression) {
+        // let reg = new RegExp('^\\+?[0-9]\d*$');
         let reg = new RegExp(el.regularExpression);
         return (rule, value, callback) => {
           if (value && !reg.test(value)) {

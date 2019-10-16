@@ -82,7 +82,7 @@
   <a-form-item label="重置密码" class="stepFormText" :label-col="labelCol" :wrapper-col="wrapperCol" >
               <a-input
                 type="password"
-                v-decorator="['passWord', { rules: [{ required: true, message: '请输入重置密码' }, { validator: handlePassEdit }] }]"
+                v-decorator="['passWord']"
                 name="confirm_password"
               />
               </a-form-item>
@@ -97,7 +97,7 @@
               <a-form-item label="新密码" class="stepFormText" :label-col="labelCol" :wrapper-col="wrapperCol" >
                 <a-input
                   type="password"
-                  v-decorator="['passWord', { rules: [{ required: true, message: '请输入新密码' }, { validator: handlePassEdit }] }]"
+                  v-decorator="['passWord']"
                   name="confirm_password"
                 />
                 </a-form-item>
@@ -206,7 +206,7 @@ export default {
       columns,
       data: [], // table数据
       selects: [], // 下拉数据
-      UserId: 'root', // 登录用户
+      UserId: '', // 登录用户
       pageSize: 10, // 条数
       page: 1, // 当前页
       details: {}, // 详情数据
@@ -234,13 +234,13 @@ export default {
   },
   created () {
     this.initData()
-    // if(sessionStorage.getItem('userInfo')){
-    // this.UserId=JSON.parse(sessionStorage.getItem('userInfo')).userId
-    // } else{
-    //   this.$message.warn('当前状态未登录，请先登录')
-    //   this.$router.push('/login')
-    //   return
-    // }
+    if(sessionStorage.getItem('userInfo')){
+    this.UserId=JSON.parse(sessionStorage.getItem('userInfo')).userId
+    } else{
+      this.$message.warn('当前状态未登录，请先登录')
+      this.$router.push('/login')
+      return
+    }
   },
   methods: {
     toggle  () { // 改变图标状态
@@ -395,7 +395,7 @@ export default {
     handlePassEdit (rule, value, callback) {
       // 新密码验证
       var mPasswordEdit = /^[!-~]{8,14}$/
-      if (!value.match(mPasswordEdit)) {
+      if (value && !value.match(mPasswordEdit)) {
         callback(new Error('长度为8-14个字符，支持数字、大小写字母和特殊字符！'))
         return
       }
@@ -404,7 +404,7 @@ export default {
     handleUserId (rule, value, callback) {
       // 用户名验证
       var mUserId = /^[\u4e00-\u9fa5]{1,7}$|^[\dA-Za-z_]{1,14}$/
-      if (!value.match(mUserId)) {
+      if (value && !value.match(mUserId)) {
         callback(new Error('中英文均可，最长14个英文或者7个汉字！'))
         return
       }
@@ -414,7 +414,7 @@ export default {
       // 新建密码验证
       this.password = value
       var mPassword = /^[!-~]{8,14}$/
-      if (!value.match(mPassword)) {
+      if (value && !value.match(mPassword)) {
         callback(new Error('长度为8-14个字符，支持数字、大小写字母和特殊字符！'))
         return
       }
@@ -422,7 +422,7 @@ export default {
     },
     handleConfirmPass (rule, value, callback) {
       // 确认密码验证
-      if (this.password && this.password !== value) {
+      if (value && this.password && this.password !== value) {
         callback(new Error('两次密码输入不一致!'))
         return
       }
@@ -431,8 +431,8 @@ export default {
     },
     handIphone (rule, value, callback) {
       // 电话验证
-      var mPattern = /^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,5-9]))\d{8}$/
-      if (!value.match(mPattern)) {
+      var mPattern = /^1[2|3|4|5|6|7|8|9]\d{9}$/
+      if (value && !value.match(mPattern)) {
         callback(new Error('请输入正确电话号码!'))
         return
       }
