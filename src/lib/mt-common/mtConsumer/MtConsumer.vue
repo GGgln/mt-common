@@ -9,41 +9,41 @@
       </a-form>
       <a-modal title="新建用户" v-model="visible" @cancel="cancelModal" @ok="saveModal" okText="保存" cancelText="关闭">
         <a-form :form="form">
-          <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="姓名:" hasFeedback>
-            <a-input id="warning" v-decorator="['userName', { rules: [{ required: true, message: '不能为空' }] }]" />
+          <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="姓名:" >
+            <a-input id="warning" v-decorator="['userName', { rules: [{ required: true, message: '姓名不能为空' }] }]" />
           </a-form-item>
-          <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="用户名:" hasFeedback>
-            <a-input id="warning" v-decorator="['userId', { rules: [{ required: true, message: '不能为空' }, { validator: handleUserId}] }]" />
+          <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="用户名:" >
+            <a-input id="warning" v-decorator="['userId', { rules: [{ required: true, message: '用户名不能为空' }, { validator: handleUserId}] }]" />
           </a-form-item>
 
-          <a-form-item label="密码" class="stepFormText" :label-col="labelCol" :wrapper-col="wrapperCol" hasFeedback>
+          <a-form-item label="密码" class="stepFormText" :label-col="labelCol" :wrapper-col="wrapperCol" >
             <a-input type="password" v-decorator="['passWord', { rules: [{ required: true, message: '请输入密码' }, { validator: handlePass }] }]" name="password" />
           </a-form-item>
-          <a-form-item label="确认密码" class="stepFormText" :label-col="labelCol" :wrapper-col="wrapperCol" hasFeedback>
+          <a-form-item label="确认密码" class="stepFormText" :label-col="labelCol" :wrapper-col="wrapperCol" >
             <a-input
               type="password"
               v-decorator="['confirm_password', { rules: [{ required: true, message: '请输入确认密码' }, { validator: handleConfirmPass }] }]"
               name="confirm_password"
             />
           </a-form-item>
-          <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="用户组:" hasFeedback>
+          <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="用户组:" >
             <a-select v-decorator="['roleTypeId', { rules: [{ required: true, message: '请选择用户组' }] }]">
-              <a-select-option :value="select.roleTypeId" :key="index" v-for="(select,index) in selects">{{select.roleTypeName}}</a-select-option>
+              <a-select-option :value="select.RoleTypeCode" :key="index" v-for="(select,index) in selects">{{select.roleTypeName}}</a-select-option>
             </a-select>
           </a-form-item>
-          <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="电话:" hasFeedback>
-            <a-input id="warning" v-decorator="['phone', { rules: [{ required: true, message: '不能为空' }, { validator: handIphone }] }]" />
+          <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="电话:" >
+            <a-input id="warning" v-decorator="['phone', { rules: [{ required: true, message: '电话不能为空' }, { validator: handIphone }] }]" />
           </a-form-item>
-          <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="智信:" hasFeedback>
+          <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="智信:" >
             <a-input id="warning" v-decorator="['zhixin']" />
           </a-form-item>
-          <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="微信:" hasFeedback :style="{ display: expand ? 'block' : 'none' }">
+          <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="微信:"  :style="{ display: expand ? 'block' : 'none' }">
             <a-input id="warning" v-decorator="['wechat']" />
           </a-form-item>
-          <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="钉钉:" hasFeedback :style="{ display: expand ? 'block' : 'none' }">
+          <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="钉钉:"  :style="{ display: expand ? 'block' : 'none' }">
             <a-input id="warning" v-decorator="['dingDing']" />
           </a-form-item>
-          <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="邮箱:" hasFeedback :style="{ display: expand ? 'block' : 'none' }">
+          <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="邮箱:"  :style="{ display: expand ? 'block' : 'none' }">
             <a-input id="warning" v-decorator="['mail', { rules: [{
               type: 'email', message: '请输入正确的邮箱格式',
             }] }]" />
@@ -75,37 +75,54 @@
       </a-table>
       <a-modal title="编辑用户" v-model="visibleEdit" @cancel="cancelModalEdit" @ok="saveModalEdit" okText="保存" cancelText="关闭">
         <a-form :form="formEdit">
-          <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="姓名:" hasFeedback>
-            <a-input id="warning" v-decorator="['userName', { rules: [{ required: true, message: '不能为空' }] }]" />
+          <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="姓名:" >
+            <a-input id="warning" v-decorator="['userName', { rules: [{ required: true, message: '姓名不能为空' }] }]" />
           </a-form-item>
-          <a-form-item label="原密码" class="stepFormText" :label-col="labelCol" :wrapper-col="wrapperCol" >
-            <a-input type="password" v-decorator="['oldPassWord', { rules: [{ required: true, message: '请输入原密码' }] }]" name="password" />
-          </a-form-item>
-          <a-form-item label="新密码" class="stepFormText" :label-col="labelCol" :wrapper-col="wrapperCol" hasFeedback>
-            <a-input
-              type="password"
-              v-decorator="['passWord', { rules: [{ required: true, message: '请输入新密码' }, { validator: handlePassEdit }] }]"
-              name="confirm_password"
-            />
-          </a-form-item>
-          <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="用户组:" hasFeedback>
+          <template v-if="UserId ==='root'|| UserId ==='admin'">
+  <a-form-item label="重置密码" class="stepFormText" :label-col="labelCol" :wrapper-col="wrapperCol" >
+              <a-input
+                type="password"
+                v-decorator="['passWord', { rules: [{ required: true, message: '请输入重置密码' }, { validator: handlePassEdit }] }]"
+                name="confirm_password"
+              />
+              </a-form-item>
+
+          </template>
+
+            <template v-else>
+
+              <a-form-item label="原密码" class="stepFormText" :label-col="labelCol" :wrapper-col="wrapperCol" >
+                <a-input type="password" v-decorator="['oldPassWord', { rules: [{ required: true, message: '请输入原密码' }] }]" name="password" />
+              </a-form-item>
+              <a-form-item label="新密码" class="stepFormText" :label-col="labelCol" :wrapper-col="wrapperCol" >
+                <a-input
+                  type="password"
+                  v-decorator="['passWord', { rules: [{ required: true, message: '请输入新密码' }, { validator: handlePassEdit }] }]"
+                  name="confirm_password"
+                />
+                </a-form-item>
+
+
+
+            </template>
+          <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="用户组:" >
             <a-select  v-decorator="['roleTypeId', { rules: [{ required: true, message: '请选择用户组' }] }]">
-              <a-select-option :value="select.roleTypeId" :key="index" v-for="(select,index) in selects">{{select.roleTypeName}}</a-select-option>
+              <a-select-option :value="select.RoleTypeCode" :key="index" v-for="(select,index) in selects">{{select.roleTypeName}}</a-select-option>
             </a-select>
           </a-form-item>
-          <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="电话:" hasFeedback>
-            <a-input id="warning" v-decorator="['phone', { rules: [{ required: true, message: '不能为空' }, { validator: handIphone }] }]" />
+          <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="电话:" >
+            <a-input id="warning" v-decorator="['phone', { rules: [{ required: true, message: '电话不能为空' }, { validator: handIphone }] }]" />
           </a-form-item>
-          <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="智信:" hasFeedback>
+          <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="智信:" >
             <a-input id="warning" v-decorator="['zhixin']" />
           </a-form-item>
-          <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="微信:" hasFeedback :style="{ display: expand ? 'block' : 'none' }">
+          <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="微信:"  :style="{ display: expand ? 'block' : 'none' }">
             <a-input id="warning" v-decorator="['wechat']" />
           </a-form-item>
-          <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="钉钉:" hasFeedback :style="{ display: expand ? 'block' : 'none' }">
+          <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="钉钉:"  :style="{ display: expand ? 'block' : 'none' }">
             <a-input id="warning" v-decorator="['dingDing']" />
           </a-form-item>
-          <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="邮箱:" hasFeedback :style="{ display: expand ? 'block' : 'none' }">
+          <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="邮箱:"  :style="{ display: expand ? 'block' : 'none' }">
             <a-input id="warning" v-decorator="['mail', { rules: [{
               type: 'email', message: '请输入正确的邮箱格式',
             }] }]" />
@@ -219,6 +236,7 @@ export default {
   },
   created () {
     this.initData()
+    // console.log(JSON.parse(sessionStorage.getItem('userInfo')).userId)
   },
   methods: {
     toggle  () { // 改变图标状态
@@ -276,6 +294,7 @@ export default {
             data: this.formNewData
           })
             .then(res => {
+               this.$message.success('新建用户成功')
               this.visible = false
               this.initData()
             })
@@ -290,7 +309,7 @@ export default {
       let this_ = this
       this.formEdit.validateFields((err, values) => {
         if (!err) {
-          this.formNewDataEdit = {userId: this.receiveEdit.userId, customerName: values.userName, customerId: this.receiveEdit.customerId}
+          this.formNewDataEdit = {userId: this.receiveEdit.userId, customerName: values.userName, customerId: this.receiveEdit.customerId, loginUserId: this.UserId}
           for (let value in values) {
             this.formNewDataEdit[value] = values[value]
           }
@@ -301,15 +320,12 @@ export default {
             data: this.formNewDataEdit
           })
             .then(res => {
+              this.$message.success('修改成功')
               this.visibleEdit = false
               this.initData()
             })
             .catch((error) => {
-              this.$error({
-                title: '错误信息',
-                okText: '确定',
-                content: error.msg
-              })
+              this.$message.error(error.msg)
             })
         }
       })
@@ -325,7 +341,6 @@ export default {
       this.visibleEdit = true
       this.expand = false
       this.formEdit.resetFields() // 编辑重置
-      // this.editUserId=data.userId
       request({
         url: `${this_.baseUrl}/Service/API/V1/CHP/user/detail/${data.userId}`,
         method: 'get'
@@ -336,7 +351,7 @@ export default {
             this.formEdit.setFieldsValue({// 数据
               'zhixin': res.data.zhixin,
               'userName': res.data.customerName,
-              'roleTypeId': Number(res.data.roleTypeId),
+              'roleTypeId': res.data.roleTypeId,
               'phone': res.data.phone,
               'dingDing': res.data.dingDing,
               'mail': res.data.mail,
@@ -365,6 +380,8 @@ export default {
         method: 'delete'
       })
         .then(res => {
+ this.$message.success('删除成功')
+
           thisName.initData()
         })
         .catch(() => {
@@ -435,8 +452,8 @@ export default {
             title: '用户详情',
             // JSX support
             content: (
-              <div class="detailsConter">
-                <p>
+              <div  class="detailsConter">
+                <p style="margin-top：50px;">
                   <span style="width:25%;display:inline-block;text-align: right;margin-right: 20px;">姓名:</span>
                   {this.details.customerName}
                 </p>
@@ -468,7 +485,7 @@ export default {
             ),
             okText: '关闭',
             centered: true,
-            width: 500,
+            width: 400,
             onOk () {
             }
           })
