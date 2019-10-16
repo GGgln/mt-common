@@ -221,14 +221,7 @@ export default {
     },
     save() {
       let self = this;
-      let userInfo = sessionStorage.getItem("userInfo");
-      if (!userInfo) {
-        this.$message.warn("当前状态未登录，请先登录");
-        this.$router.push("/login");
-        return;
-      }
-      let url = `${this.baseUrl}/Service/API/V1/CHP/Group/updateGroupInfo?username=${JSON.parse(userInfo).userId}`;
-      // let url = `${this.baseUrl}/Service/API/V1/CHP/Group/updateGroupInfo?username=zwj`;
+      let url = `${this.baseUrl}/Service/API/V1/CHP/Group/updateGroupInfo`;
       this.form.validateFields((err, value) => {
         if (!err) {
           let data = JSON.parse(JSON.stringify(self.scheduleList));

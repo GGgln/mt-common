@@ -1,26 +1,33 @@
 <template>
   <div id="MtLogin_component" class="login">
-    <div class="content">
-      <div class="login_wrap">
-        <div class="login-con">
-          <p>欢迎登录</p>
+    <div class="login_con">
+      <div class="con_l">
+        <h4>{{title}}</h4>
+        <p>{{slogan }}</p>
+        <img src="./login.png" alt />
+      </div>
+      <div class="con_r">
+        <h5>Hello!</h5>
+        <p>
+          欢迎登录
+          <span>{{itemName}}</span>
+        </p>
+        <div class="form_div">
           <a-form class="filter_box" :form="formLogin">
-            <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="账号">
+            <a-form-item label="账号" has-feedback>
               <a-input
                 placeholder="请输入用户名"
+                style="height:44px;backgroud:#f2f2f2"
                 v-decorator="['userId', { rules: [{ required: true, message: '请输入用户名' }] }]"
-              >
-                <img class="img-ipt" slot="prefix" src="./user.png" alt />
-              </a-input>
+              ></a-input>
             </a-form-item>
-            <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="密码">
+            <a-form-item label="密码" has-feedback>
               <a-input
                 type="password"
+                style="height:44px"
                 placeholder="请输入密码"
                 v-decorator="['passWord', { rules: [{ required: true, message: '请输入密码' }] }]"
-              >
-                <img class="img-ipt" slot="prefix" src="./psw.png" alt />
-              </a-input>
+              ></a-input>
             </a-form-item>
             <a-form-item>
               <a-button class="login-btn" @click="login" type="primary">登录</a-button>
@@ -35,25 +42,36 @@
 import request from "../utils/request";
 export default {
   name: "mt-login",
-  props: ["baseUrl"],
+  props: {
+    baseUrl: {
+      type: String,
+      default: "/mtComonApi"
+    },
+    title: {
+      type: String,
+      default: "我们帮助优秀组织创造更大的影响"
+    },
+    slogan: {
+      type: String,
+      default:
+        "我们将智慧与技术融合在一起，帮助企业在数字化、自动化转型时代成长。引领工矿业迈入智能化时代，成为行业的创新者与领导者！"
+    },
+    itemName: {
+      type: String,
+      required: true
+    },
+    logo: {
+      type: String,
+      required: true
+    }
+  },
   data() {
     return {
-      formLogin: this.$form.createForm(this), // 新建form
-      form: {},
-      labelCol: {
-        xs: { span: 24 },
-        sm: { span: 5 }
-      },
-      wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 17 }
-      }
+      formLogin: this.$form.createForm(this) // 新建form
     };
   },
   methods: {
     login(e) {
-      e.preventDefault();
-
       let this_ = this;
       this.formLogin.validateFields((err, values) => {
         if (!err) {
@@ -79,64 +97,96 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.ant-form-item-label label {
+  font-size: 16px !important;
+  color: #6e7172;
+}
 .login {
-  height: 100%;
   width: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  margin: auto;
-  box-sizing: border-box;
-  background: url(./login.png) no-repeat;
-  background-size: 100%;
-  .content {
-    width: 100%;
-    height: 100%;
+  height: 100vh;
+  position: relative;
+  .login_con {
+    width: 828px;
+    height: 546px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
     overflow: hidden;
-    .login_wrap {
-      width: 28%;
-      margin-top: 14%;
-      float: right;
-      margin-right: 9%;
+  }
+  .con_l {
+    width: 368px;
+    height: 546px;
+    box-sizing: border-box;
+    padding: 35px;
+    background: url(./bg_l.png) no-repeat center;
+    float: left;
+    color: #fff;
+    position: relative;
+    h4 {
+      font-size: 28px;
+      color: #fff;
+      width: 260px;
+      letter-spacing: 3px;
+      margin-top: 30px;
+      line-height: 1.9;
     }
-    .login-con {
-      width: 420px;
-      background-color: white;
-      margin: 0 auto;
-      padding: 30px 40px;
+    p {
+      font-size: 16px;
+      line-height: 1.8;
+      margin-top: 66px;
+      text-align: justify;
+    }
+    img {
+      position: absolute;
+      left: 30px;
+      bottom: 38px;
+    }
+  }
+  .con_r {
+    width: 460px;
+    height: 546px;
+    background: #fff;
+    float: left;
+    text-align: center;
+    h5 {
+      font-size: 30px;
+      color: #35444f;
+      line-height: 42px;
+      margin-top: 46px;
+      margin-bottom: 15px;
+    }
+    p {
+      font-size: 18px;
+      color: #6e7172;
+    }
+    span {
+      color: #2c9ae6;
+    }
+  }
+  .form_div {
+    width: 340px;
+    margin: 40px auto;
+    text-align: left;
 
-      -webkit-box-sizing: border-box;
-      -moz-box-sizing: border-box;
-      box-sizing: border-box;
-      p {
-        color: #2c9ae6;
-        font-size: 22px;
-        letter-spacing: 2px;
-        margin-bottom: 30px;
-      }
-      .hint {
-        height: 20px;
-        display: block;
-        font-size: 15px;
-        line-height: 20px;
-        width: 100%;
-        color: red;
-      }
-      .login-btn {
-        width: 85%;
-        height: 40px;
-        display: block;
-        margin: 0 auto;
-        margin-top: 10px;
-        font-size: 18px;
-        text-align: center;
-        letter-spacing: 4px;
-        background-color: #2c9ae6;
-      }
-      .img-ipt {
-        width: 16px;
-      }
+    .ant-form-item-control {
+      height: 48px;
+      line-height: 48px;
+    }
+    input {
+      background: rgba(248, 249, 253, 1);
+      line-height: 48px;
+    }
+    .ant-form-explain {
+      margin-top: 4px;
+    }
+    .login-btn {
+      width: 100%;
+      height: 48px;
+      font-size: 18px;
+      margin-top: 20px;
     }
   }
 }
