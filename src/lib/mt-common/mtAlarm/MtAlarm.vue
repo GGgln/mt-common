@@ -190,6 +190,7 @@ export default {
       })
     },
     toSearch () {
+      this.currentPage = 1
       this.formData.validateFields((err, values) => {
         if (!err) {
           this.postData = Object.assign(this.postData, values)
@@ -198,6 +199,7 @@ export default {
       })
     },
     toReset () {
+      this.currentPage = 1
       this.formData.resetFields()
       this.requestFormList()
     },
