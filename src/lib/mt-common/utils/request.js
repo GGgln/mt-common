@@ -7,6 +7,30 @@ const service = axios.create({
   timeout: 30000 // 请求超时时间
 })
 
+Axios.interceptors.request.use(config => {
+  let user = sessionStorage.getItem('userInfo')
+  if(user){
+      config.headers['userId'] = user.userId;
+     //  config.headers['userName'] = URLEncoder.encode(user.userName, "UTF-8");
+      return config;
+  } else{
+      router.push('/login')
+  }
+ // if (config.url.indexOf('login') == -1) {
+ //     var uuid = sessionStorage.getItem("uuid");
+ //     if (!uuid) {
+ //         router.push('/login');
+ //         return;
+ //     }
+ //     config.headers['uuid'] = uuid;
+ // }
+
+
+}, error => {  //请求错误处理
+
+ Promise.reject(error)
+});
+
 // respone拦截器
 service.interceptors.response.use(
   response => {
