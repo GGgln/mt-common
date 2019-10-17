@@ -1,5 +1,5 @@
 <template>
-  <div id="MtAlarm_component" class="common-container">
+  <div calss="MtAlarm_component" class="common-container">
     <a-form class="filter_box" :form="formData" layout="inline">
       <a-form-item label="报警等级：">
         <a-select v-decorator="['gradeId', {initialValue: 0}]" placeholder="请选择">
@@ -7,7 +7,7 @@
             v-for="(optionItem, optionIndex) in alarmLevelData"
             :key="optionIndex"
             :value="optionItem.value"
-          >{{optionItem.label}}</a-select-option>
+          >{{optionItem.label}} <span :class="['status', optionItem.value == 3 ? 'level3': optionItem.value == 2? 'level2' : optionItem.value == 1? 'level1': '']"></span> </a-select-option>
         </a-select>
       </a-form-item>
       <a-form-item label="报警状态：">
@@ -41,7 +41,8 @@
     </a-form>
     <a-table id="table_blue" :columns="columns" :dataSource="data" :pagination="pageOptions" rowKey="alarmId">
       <template slot="alarmGradeId" slot-scope="text, record">
-        <span>{{text == 1 ? '一级' : text == 2 ? '二级' : text == 3 ? '三级' : '-'}}</span>
+        <!-- <span>{{text == 1 ? '一级' : text == 2 ? '二级' : text == 3 ? '三级' : '-'}}</span> -->
+        <span :class="['status', text == 3 ? 'level3': text? 'level2' :text == 1? 'level1': '']"></span>
       </template>
       <template slot="alarmStatus" slot-scope="text, record">
         <span>{{text == 1 ? '报警' : text == 2 ? '消警' : text == 3 ? '待复位' : '-'}}</span>
@@ -240,5 +241,24 @@ form .ant-select {
 }
 #table_blue{
   margin-top: 20px;
+}
+.status{
+  width:12px;
+  height:12px;
+  display: inline-block;
+  border-radius: 50%;
+  &.level1{
+    background-color: #afe4ff;
+  }
+  &.level2{
+    background-color: #FEF100;
+  }
+  &.level3{
+    background-color: #EB94FE;
+  }
+}
+.ant-select-dropdown-menu-item{
+  display: flex !important;
+  align-items: center !important;
 }
 </style>
