@@ -139,6 +139,7 @@ export default {
         currentPage: 1
       },
       pageOptions: {
+        current: 1,
         defaultPageSize: 10,
         showQuickJumper: true,
         showSizeChanger: true,
@@ -176,6 +177,7 @@ export default {
         that.data = res.data.alarmInfoList
         that.pageOptions.total = res.data.totalCount
         that.postData.currentPage = res.data.page
+        that.current = res.data.page
       }).catch(() => {
         // alert('error')
       })
