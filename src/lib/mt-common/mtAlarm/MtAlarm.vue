@@ -177,7 +177,7 @@ export default {
         that.data = res.data.alarmInfoList
         that.pageOptions.total = res.data.totalCount
         that.postData.currentPage = res.data.page
-        that.current = res.data.page
+        that.pageOptions.current = res.data.page
       }).catch(() => {
         // alert('error')
       })
