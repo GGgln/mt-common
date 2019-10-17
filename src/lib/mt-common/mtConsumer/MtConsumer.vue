@@ -530,7 +530,7 @@ export default {
       // 新密码验证
       this.passwordEdit = value
       var mPasswordEdit = /^[!-~]{8,14}$/
-      if (value && !value.match(mPasswordEdit)) {
+      if (value && this.passwordEdit && !value.match(mPasswordEdit)) {
         callback(
           new Error('长度为8-14个字符，支持数字、大小写字母和特殊字符！')
         )
@@ -545,7 +545,7 @@ export default {
         callback(new Error('请输入确认密码'))
         return
       }
-      if (value && this.passwordEdit !== value) {
+      if (value && this.passwordEdit && this.passwordEdit !== value) {
         callback(new Error('两次密码输入不一致!'))
         return
       }
@@ -576,7 +576,7 @@ export default {
     },
     handleConfirmPass (rule, value, callback) {
       // 确认密码验证
-      if (value && this.password !== value) {
+      if (value && this.password && this.password !== value) {
         callback(new Error('两次密码输入不一致!'))
         return
       }
