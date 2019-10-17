@@ -8,21 +8,11 @@ const service = axios.create({
 })
 
 service.interceptors.request.use(config => {
-  let user = sessionStorage.getItem('userInfo')
-  if(user){
-      config.headers['userId'] = user.userId;
-     //  config.headers['userName'] = URLEncoder.encode(user.userName, "UTF-8");
-  }
+  let token = sessionStorage.getItem('token')
+     if(token){
+        config.headers['token'] = token;
+     } 
   return config;
- // if (config.url.indexOf('login') == -1) {
- //     var uuid = sessionStorage.getItem("uuid");
- //     if (!uuid) {
- //         router.push('/login');
- //         return;
- //     }
- //     config.headers['uuid'] = uuid;
- // }
-
 
 }, error => {  //请求错误处理
 
