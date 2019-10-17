@@ -1,7 +1,5 @@
 <template>
   <div id="MtConsumer_component" class="container">
-    <input class="ipt-hid" type="text">
-    <input class="ipt-hid" type="password">
     <a-form class="filter_box" :form="formData" layout="inline">
       <a-form-item>
         <a-input style="width:100%;" v-model="iptContent" placeholder="请输入姓名" />
@@ -54,9 +52,9 @@
             name="confirm_password"
           />
         </a-form-item>
-        <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="角色:">
+        <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="用户组:">
           <a-select
-            v-decorator="['roleTypeId', { rules: [{ required: true, message: '请选择角色' }] }]"
+            v-decorator="['roleTypeId', { rules: [{ required: true, message: '请选择用户组' }] }]"
           >
             <a-select-option
               :value="select.RoleTypeCode"
@@ -96,7 +94,9 @@
           :style="{ display: expand ? 'block' : 'none' }"
         >
           <a-input
-            v-decorator="['mail']"
+            v-decorator="['mail', { rules: [{
+              type: 'email', message: '请输入正确的邮箱格式',
+            }] }]"
           />
         </a-form-item>
       </a-form>
@@ -181,24 +181,10 @@
               name="confirm_password"
             />
           </a-form-item>
-          <a-form-item
-            label="确认密码"
-            class="stepFormText"
-            :label-col="labelCol"
-            :wrapper-col="wrapperCol"
-          >
-            <a-input
-              type="password"
-              v-decorator="['confirm_password_Edit', { rules: [{ validator: handleConfirmPassEdit }] }]"
-              name="confirm_password"
-            />
-          </a-form-item>
-
         </template>
-
-        <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="角色:">
+        <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="用户组:">
           <a-select
-            v-decorator="['roleTypeId', { rules: [{ required: true, message: '请选择角色' }] }]"
+            v-decorator="['roleTypeId', { rules: [{ required: true, message: '请选择用户组' }] }]"
           >
             <a-select-option
               :value="select.RoleTypeCode"
@@ -238,7 +224,9 @@
           :style="{ display: expand ? 'block' : 'none' }"
         >
           <a-input
-            v-decorator="['mail']"
+            v-decorator="['mail', { rules: [{
+              type: 'email', message: '请输入正确的邮箱格式',
+            }] }]"
           />
         </a-form-item>
       </a-form>
@@ -300,8 +288,10 @@ export default {
   },
   data () {
     return {
+      formData: this.$form.createForm(this),
+      form: this.$form.createForm(this), // 新建form
+      formEdit: this.$form.createForm(this), // 编辑form
       password: '', // 新建对比密码
-      passwordEdit: '', // 编辑对比密码
       labelCol: {
         xs: { span: 24 },
         sm: { span: 5 }
@@ -345,12 +335,6 @@ export default {
       }
     }
   },
-  beforeCreate () {
-    this.formData = this.$form.createForm(this)
-    this.form = this.$form.createForm(this) // 新建form
-    this.formEdit = this.$form.createForm(this) // 编辑form
-  },
-
   created () {
     if (sessionStorage.getItem('userInfo')) {
       this.UserId = JSON.parse(sessionStorage.getItem('userInfo')).userId
@@ -382,7 +366,6 @@ export default {
           this.data = res.data.userJsons
         })
         .catch(() => {
-          this.$message.error('获取数据列表失败')
           // alert('error')
         })
     },
@@ -397,7 +380,7 @@ export default {
           this.selects = res.data
         })
         .catch(() => {
-          this.$message.error('获取下拉角色列表失败')
+          this.$message.error('获取下拉列表失败')
           // alert('error')
         })
     },
@@ -442,10 +425,9 @@ export default {
             customerId: this.receiveEdit.customerId
           }
           for (let value in values) {
-            if (value !== 'confirm_password_Edit') {
-              this.formNewDataEdit[value] = values[value]
-            }
+            this.formNewDataEdit[value] = values[value]
           }
+
           request({
             url: `${this_.baseUrl}/Service/API/V1/CHP/user/updateUser`,
             method: 'put',
@@ -495,7 +477,7 @@ export default {
           }, 100)
         })
         .catch(() => {
-          this.$message.error('获取信息失败')
+          // alert('error')
         })
 
       this.selectData() // 调用下拉数据
@@ -528,7 +510,6 @@ export default {
     },
     handlePassEdit (rule, value, callback) {
       // 新密码验证
-      this.passwordEdit = value
       var mPasswordEdit = /^[!-~]{8,14}$/
       if (value && !value.match(mPasswordEdit)) {
         callback(
@@ -538,21 +519,6 @@ export default {
       }
       callback()
     },
-
-    handleConfirmPassEdit (rule, value, callback) {
-      // 确认新密码验证
-      if (this.passwordEdit && !value) {
-        callback(new Error('请输入确认密码'))
-        return
-      }
-      if (value && this.passwordEdit !== value) {
-        callback(new Error('两次密码输入不一致!'))
-        return
-      }
-      // Note: 必须总是返回一个 callback，否则 validateFieldsAndScroll 无法响应
-      callback()
-    },
-
     handleUserId (rule, value, callback) {
       // 用户名验证
       var mUserId = /^[\u4e00-\u9fa5]{1,7}$|^[\dA-Za-z_]{1,14}$/
@@ -676,10 +642,5 @@ export default {
 }
 .container {
   padding: 20px;
-  position: relative;
 }
-.ipt-hid{
-  position: absolute;
-  top: -10000px;
-  }
 </style>
