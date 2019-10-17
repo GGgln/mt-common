@@ -4,7 +4,7 @@
       <div class="con_l">
         <h4>{{title}}</h4>
         <p>{{slogan }}</p>
-        <img src="./login.png" alt />
+        <img :src="logo" alt />
       </div>
       <div class="con_r">
         <h5>Hello!</h5>
@@ -14,10 +14,10 @@
         </p>
         <div class="form_div">
           <a-form class="filter_box" :form="formLogin">
-            <a-form-item label="账号" has-feedback>
+            <a-form-item label="账号" has-feedback >
               <a-input
                 placeholder="请输入用户名"
-                style="height:44px;backgroud:#f2f2f2"
+                style="height:44px;"
                 v-decorator="['userId', { rules: [{ required: true, message: '请输入用户名' }] }]"
               ></a-input>
             </a-form-item>
@@ -49,12 +49,14 @@ export default {
     },
     title: {
       type: String,
-      default: "我们帮助优秀组织创造更大的影响"
+      default: "我们帮助优秀组织创造更大的影响",
+      required:false
     },
     slogan: {
       type: String,
       default:
-        "我们将智慧与技术融合在一起，帮助企业在数字化、自动化转型时代成长。引领工矿业迈入智能化时代，成为行业的创新者与领导者！"
+        "我们将智慧与技术融合在一起，帮助企业在数字化、自动化转型时代成长。引领工矿业迈入智能化时代，成为行业的创新者与领导者！",
+      required:false
     },
     itemName: {
       type: String,
@@ -62,7 +64,7 @@ export default {
     },
     logo: {
       type: String,
-      required: true
+      required:false
     }
   },
   data() {
@@ -171,20 +173,14 @@ export default {
     margin: 40px auto;
     text-align: left;
 
-    .ant-form-item-control {
-      height: 48px;
-      line-height: 48px;
-    }
-    input {
-      background: rgba(248, 249, 253, 1);
-      line-height: 48px;
-    }
+    
+   
     .ant-form-explain {
       margin-top: 4px;
     }
     .login-btn {
       width: 100%;
-      height: 48px;
+      height: 46px;
       font-size: 18px;
       margin-top: 20px;
     }
