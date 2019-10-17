@@ -352,13 +352,13 @@ export default {
   },
 
   created () {
+    this.initData()
     if (sessionStorage.getItem('userInfo')) {
       this.UserId = JSON.parse(sessionStorage.getItem('userInfo')).userId
     } else {
       this.$message.warn('当前状态未登录，请先登录')
       this.$router.push('/login')
     }
-    this.initData()
   },
   methods: {
     toggle () {
@@ -530,7 +530,7 @@ export default {
       // 新密码验证
       this.passwordEdit = value
       var mPasswordEdit = /^[!-~]{8,14}$/
-      if (value && this.passwordEdit && !value.match(mPasswordEdit)) {
+      if (value && !this.passwordEdit.match(mPasswordEdit) && !value.match(mPasswordEdit)) {
         callback(
           new Error('长度为8-14个字符，支持数字、大小写字母和特殊字符！')
         )
@@ -566,7 +566,7 @@ export default {
       // 新建密码验证
       this.password = value
       var mPassword = /^[!-~]{8,14}$/
-      if (value && !value.match(mPassword)) {
+      if (value && !this.password.match(mPassword) && !value.match(mPassword)) {
         callback(
           new Error('长度为8-14个字符，支持数字、大小写字母和特殊字符！')
         )

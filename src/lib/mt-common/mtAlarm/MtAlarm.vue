@@ -190,7 +190,7 @@ export default {
       })
     },
     toSearch () {
-      this.currentPage = 1
+      this.postData.currentPage = 1
       this.formData.validateFields((err, values) => {
         if (!err) {
           this.postData = Object.assign(this.postData, values)
