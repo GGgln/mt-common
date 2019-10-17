@@ -141,7 +141,7 @@
         <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="姓名:">
           <a-input v-decorator="['userName', { rules: [{ required: true, message: '姓名不能为空' }] }]" />
         </a-form-item>
-        <template v-if="UserId ==='root'|| UserId ==='admin'">
+        <template v-if="UserId ==='root'|| UserId ==='administrator'">
           <a-form-item
             label="重置密码"
             class="stepFormText"
@@ -336,13 +336,13 @@ export default {
     }
   },
   created () {
-    this.initData()
     if (sessionStorage.getItem('userInfo')) {
       this.UserId = JSON.parse(sessionStorage.getItem('userInfo')).userId
     } else {
       this.$message.warn('当前状态未登录，请先登录')
       this.$router.push('/login')
     }
+    this.initData()
   },
   methods: {
     toggle () {
@@ -357,7 +357,6 @@ export default {
         method: 'post',
         data: {
           keyWord: this.iptContent,
-          userId: this.UserId,
           currentPage: this.page,
           pageNum: this.pageSize
         }

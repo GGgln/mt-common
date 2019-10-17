@@ -17,14 +17,14 @@
             <a-form-item label="账号" has-feedback >
               <a-input
                 placeholder="请输入用户名"
-                style="height:44px;"
+                style="height:36px;"
                 v-decorator="['userId', { rules: [{ required: true, message: '请输入用户名' }] }]"
               ></a-input>
             </a-form-item>
             <a-form-item label="密码" has-feedback>
               <a-input
                 type="password"
-                style="height:44px"
+                style="height:36px"
                 placeholder="请输入密码"
                 v-decorator="['passWord', { rules: [{ required: true, message: '请输入密码' }] }]"
               ></a-input>
@@ -49,13 +49,13 @@ export default {
     },
     title: {
       type: String,
-      default: "我们帮助优秀组织创造更大的影响",
+      default: "为用户创造价值、团队第一；激情、创新、诚信、奉献！",
       required:false
     },
     slogan: {
       type: String,
       default:
-        "我们将智慧与技术融合在一起，帮助企业在数字化、自动化转型时代成长。引领工矿业迈入智能化时代，成为行业的创新者与领导者！",
+        "引领工矿业迈入智能化时代，成为行业的创新者与领导者，为利益相关方和社会创造价值！",
       required:false
     },
     itemName: {
@@ -104,13 +104,16 @@ export default {
   font-size: 16px !important;
   color: #6e7172;
 }
+.ant-form-item{
+  margin-bottom:10px;
+}
 .login {
   width: 100%;
   height: 100vh;
   position: relative;
   .login_con {
-    width: 828px;
-    height: 546px;
+    width: 662px;
+    height: 436px;
     position: absolute;
     left: 0;
     right: 0;
@@ -120,8 +123,8 @@ export default {
     overflow: hidden;
   }
   .con_l {
-    width: 368px;
-    height: 546px;
+    width: 294px;
+    height: 436px;
     box-sizing: border-box;
     padding: 35px;
     background: url(./bg_l.png) no-repeat center;
@@ -129,40 +132,42 @@ export default {
     color: #fff;
     position: relative;
     h4 {
-      font-size: 28px;
+      font-size: 22px;
       color: #fff;
-      width: 260px;
-      letter-spacing: 3px;
-      margin-top: 30px;
-      line-height: 1.9;
+      width: 230px;
+      letter-spacing: 1px;
+      margin-top: 25px;
+      line-height: 1.8;
+      text-align: justify;
     }
     p {
-      font-size: 16px;
-      line-height: 1.8;
-      margin-top: 66px;
+      font-size: 13px;
+      line-height: 1.9;
+      margin-top: 50px;
       text-align: justify;
     }
     img {
       position: absolute;
       left: 30px;
       bottom: 38px;
+
     }
   }
   .con_r {
-    width: 460px;
-    height: 546px;
+    width: 357px;
+    height: 436px;
     background: #fff;
     float: left;
     text-align: center;
     h5 {
-      font-size: 30px;
+      font-size: 24px;
       color: #35444f;
-      line-height: 42px;
-      margin-top: 46px;
+      line-height: 34px;
+      margin-top: 40px;
       margin-bottom: 15px;
     }
     p {
-      font-size: 18px;
+      font-size: 15px;
       color: #6e7172;
     }
     span {
@@ -170,20 +175,17 @@ export default {
     }
   }
   .form_div {
-    width: 340px;
-    margin: 40px auto;
+    width: 272px;
+    margin: 30px auto;
     text-align: left;
-
-    
-   
     .ant-form-explain {
       margin-top: 4px;
     }
     .login-btn {
       width: 100%;
-      height: 46px;
-      font-size: 18px;
-      margin-top: 20px;
+      height: 36px;
+      font-size: 16px;
+      margin-top: 30px;
     }
   }
 }
