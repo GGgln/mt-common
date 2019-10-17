@@ -352,13 +352,13 @@ export default {
   },
 
   created () {
-    this.initData()
     if (sessionStorage.getItem('userInfo')) {
       this.UserId = JSON.parse(sessionStorage.getItem('userInfo')).userId
     } else {
       this.$message.warn('当前状态未登录，请先登录')
       this.$router.push('/login')
     }
+    this.initData()
   },
   methods: {
     toggle () {
