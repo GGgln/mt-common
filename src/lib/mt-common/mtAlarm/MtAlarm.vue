@@ -257,8 +257,4 @@ form .ant-select {
     background-color: #EB94FE;
   }
 }
-.ant-select-dropdown-menu-item{
-  display: flex !important;
-  align-items: center !important;
-}
 </style>
