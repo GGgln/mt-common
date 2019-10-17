@@ -42,7 +42,7 @@
     <a-table id="table_blue" :columns="columns" :dataSource="data" :pagination="pageOptions" rowKey="alarmId">
       <template slot="alarmGradeId" slot-scope="text, record">
         <!-- <span>{{text == 1 ? '一级' : text == 2 ? '二级' : text == 3 ? '三级' : '-'}}</span> -->
-        <span :class="['status', text == 3 ? 'level3': text? 'level2' :text == 1? 'level1': '']"></span>
+        <span :class="['status', 'status_big', text == 3 ? 'level3': text? 'level2' :text == 1? 'level1': '']"></span>
       </template>
       <template slot="alarmStatus" slot-scope="text, record">
         <span>{{text == 1 ? '报警' : text == 2 ? '消警' : text == 3 ? '待复位' : '-'}}</span>
@@ -60,6 +60,7 @@ const columns = [
   {
     title: '报警级别',
     width: 90,
+    align: 'center',
     dataIndex: 'alarmGradeId',
     scopedSlots: { customRender: 'alarmGradeId' }
   },
@@ -247,6 +248,10 @@ form .ant-select {
   height:12px;
   display: inline-block;
   border-radius: 50%;
+  &.status_big{
+    width: 20px;
+    height: 20px;
+  }
   &.level1{
     background-color: #afe4ff;
   }
@@ -254,7 +259,7 @@ form .ant-select {
     background-color: #FEF100;
   }
   &.level3{
-    background-color: #EB94FE;
+    background-color: rgba(194, 128, 255, 1);
   }
 }
 </style>
