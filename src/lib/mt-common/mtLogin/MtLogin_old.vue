@@ -56,7 +56,9 @@ export default {
 
       let this_ = this;
       this.formLogin.validateFields((err, values) => {
+        console.log(values)
         if (!err) {
+          
           for (let value in values) {
             this.form[value] = values[value];
           }
