@@ -114,8 +114,8 @@ export default {
     },
     validatorCustom(el) {
       if (el.regularExpression) {
-        // let reg = new RegExp('^\\+?[0-9]\d*$');
-        let reg = new RegExp(el.regularExpression);
+        let reg = new RegExp('^[0-9]\\d{0,1}$');
+        // let reg = new RegExp(el.regularExpression);
         return (rule, value, callback) => {
           if (value && !reg.test(value)) {
             callback(new Error(el.ruleDesc));
