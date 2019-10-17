@@ -546,7 +546,7 @@ export default {
 
     handleConfirmPassEdit (rule, value, callback) {
       // 确认新密码验证
-      if (!value && this.abc) {
+      if (!value && this.newPassword) {
         callback(new Error('请输入密码!'))
         return
       }
