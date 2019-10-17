@@ -1,4 +1,4 @@
-<template>
+ <template>
   <div id="MtConsumer_component" class="container">
     <input class="ipt-hid" type="text">
     <input class="ipt-hid" type="password">
@@ -40,6 +40,7 @@
             type="password"
             v-decorator="['passWord', { rules: [{ required: true, message: '请输入密码' }, { validator: handlePass }] }]"
             name="password"
+            @blur="handleConfirmBlur"
           />
         </a-form-item>
         <a-form-item
@@ -177,6 +178,7 @@
           >
             <a-input
               type="password"
+               @blur="handleConfirmBlurEdit"
               v-decorator="['passWord', { rules: [ { validator: handlePassEdit }] }]"
               name="confirm_password"
             />
@@ -300,8 +302,9 @@ export default {
   },
   data () {
     return {
-      password: '', // 新建对比密码
-      passwordEdit: '', // 编辑对比密码
+      newPassword: '',
+      confirmDirty: false,
+      confirmDirtyEdit: false,
       labelCol: {
         xs: { span: 24 },
         sm: { span: 5 }
@@ -383,7 +386,6 @@ export default {
         })
         .catch(() => {
           this.$message.error('获取数据列表失败')
-          // alert('error')
         })
     },
     selectData () {
@@ -398,7 +400,6 @@ export default {
         })
         .catch(() => {
           this.$message.error('获取下拉角色列表失败')
-          // alert('error')
         })
     },
 
@@ -425,7 +426,6 @@ export default {
             })
             .catch(error => {
               this.$message.error(error.msg)
-              // alert('error')
             })
         }
       })
@@ -528,29 +528,36 @@ export default {
     },
     handlePassEdit (rule, value, callback) {
       // 新密码验证
-      this.passwordEdit = value
+      this.newPassword = value
+      const formEdit = this.formEdit
       var mPasswordEdit = /^[!-~]{8,14}$/
-      if (value && !this.passwordEdit.match(mPasswordEdit) && !value.match(mPasswordEdit)) {
+
+      if (value && !value.match(mPasswordEdit)) {
         callback(
           new Error('长度为8-14个字符，支持数字、大小写字母和特殊字符！')
         )
         return
+      }
+      if (value && this.confirmDirtyEdit && value.match(mPasswordEdit)) {
+        formEdit.validateFields(['confirm_password_Edit'], { force: true })
       }
       callback()
     },
 
     handleConfirmPassEdit (rule, value, callback) {
       // 确认新密码验证
-      if (this.passwordEdit && !value) {
-        callback(new Error('请输入确认密码'))
+      if (!value && this.abc) {
+        callback(new Error('请输入密码!'))
         return
       }
-      if (value && this.passwordEdit && this.passwordEdit !== value) {
+
+      const formEdit = this.formEdit
+      if (value && value !== formEdit.getFieldValue('password')) {
         callback(new Error('两次密码输入不一致!'))
         return
+      } else {
+        callback()
       }
-      // Note: 必须总是返回一个 callback，否则 validateFieldsAndScroll 无法响应
-      callback()
     },
 
     handleUserId (rule, value, callback) {
@@ -564,24 +571,37 @@ export default {
     },
     handlePass (rule, value, callback) {
       // 新建密码验证
-      this.password = value
+      const form = this.form
       var mPassword = /^[!-~]{8,14}$/
-      if (value && !this.password.match(mPassword) && !value.match(mPassword)) {
+      if (value && !value.match(mPassword)) {
         callback(
           new Error('长度为8-14个字符，支持数字、大小写字母和特殊字符！')
         )
         return
       }
+      if (value && this.confirmDirty && value.match(mPassword)) {
+        form.validateFields(['confirm_password'], { force: true })
+      }
       callback()
     },
     handleConfirmPass (rule, value, callback) {
       // 确认密码验证
-      if (value && this.password && this.password !== value) {
+
+      const form = this.form
+      if (value && value !== form.getFieldValue('passWord')) {
         callback(new Error('两次密码输入不一致!'))
         return
+      } else {
+        callback()
       }
-      // Note: 必须总是返回一个 callback，否则 validateFieldsAndScroll 无法响应
-      callback()
+    },
+    handleConfirmBlur (e) { // 新建密码状态
+      const value = e.target.value
+      this.confirmDirty = this.confirmDirty || !!value
+    },
+    handleConfirmBlurEdit (e) { // 新密码状态
+      const value = e.target.value
+      this.confirmDirtyEdit = this.confirmDirtyEdit || !!value
     },
     handIphone (rule, value, callback) {
       // 电话验证
