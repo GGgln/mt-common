@@ -69,6 +69,7 @@ export default {
   },
   data() {
     return {
+      form: {},
       formLogin: this.$form.createForm(this) // 新建form
     };
   },
