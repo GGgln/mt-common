@@ -18,6 +18,7 @@
               :xl="spanSmall"
               v-for="(param, j) in group.commenParameters"
               :key="param.id"
+              class="mt-col"
             >
               <a-form-item
                 :label-col="{span:labelCol}"
@@ -61,7 +62,7 @@ export default {
   name: "mt-param",
   data() {
     return {
-      editStatus: false,
+      editStatus: true,
       paramData: {}
     };
   },
@@ -91,7 +92,7 @@ export default {
     },
     wrapperCol: {
       type: Number,
-      default: 10,
+      default: 9,
       required: false
     }
   },
@@ -114,8 +115,9 @@ export default {
     },
     validatorCustom(el) {
       if (el.regularExpression) {
-        let reg = new RegExp('^[0-9]\\d{0,1}$');
-        // let reg = new RegExp(el.regularExpression);
+        let str = '^([1-9]\d\d)$|^([1-4]\d\d\d)$|^([5]\d(?<!5[1-9])\d(?<!50[1-9])\d(?<!500[1-9]))$'
+        
+        let reg = new RegExp(str);
         return (rule, value, callback) => {
           if (value && !reg.test(value)) {
             callback(new Error(el.ruleDesc));
