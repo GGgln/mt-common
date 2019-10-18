@@ -62,7 +62,7 @@ export default {
   name: "mt-param",
   data() {
     return {
-      editStatus: true,
+      editStatus: false,
       paramData: {}
     };
   },
