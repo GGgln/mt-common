@@ -54,6 +54,8 @@
                   <a-form-item>
                     <a-input-number
                       :min="1"
+                      :max='720'
+                      :precision = '0'
                       style="width:100%"
                       placeholder="持续时间"
                       :disabled="!editStatus"
@@ -102,7 +104,7 @@
         rowKey="groupId"
       >
         <div slot="operation" slot-scope="text,record,index">
-          <a-button type="primary" @click="renewClass(index,record)" size="small">恢复</a-button>
+          <a-button type="primary" @click="renewClass(index,record)" size="small" style="margin-right:10px;">恢复</a-button>
           <a-popconfirm title="确定要删除吗?" @confirm="() => removeClass(record)">
             <a-button size="small">删除</a-button>
           </a-popconfirm>
@@ -125,7 +127,7 @@ const columns = [
     title: "操作",
     dataIndex: "operation",
     scopedSlots: { customRender: "operation" },
-    width: "120px"
+    width: "150px"
   }
 ];
 const dataClass = {
