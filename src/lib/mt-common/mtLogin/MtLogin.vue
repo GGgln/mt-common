@@ -18,13 +18,13 @@
               <a-input
                 placeholder="请输入用户名"
                 style="height:36px;"
-                v-decorator="['userId', { rules: [{ required: true, message: '请输入用户名' }] }]"
+                v-decorator="['userCode', { rules: [{ required: true, message: '请输入用户名' }] }]"
                 @pressEnter = 'login'
               ></a-input>
             </a-form-item>
             <a-form-item label="密码" has-feedback>
               <a-input
-                type="password"
+                type="passWord"
                 style="height:36px"
                 placeholder="请输入密码"
                 v-decorator="['passWord', { rules: [{ required: true, message: '请输入密码' }] }]"
@@ -41,24 +41,24 @@
   </div>
 </template>
 <script>
-import request from "../utils/request";
+import request from '../utils/request'
 export default {
-  name: "mt-login",
+  name: 'mt-login',
   props: {
     baseUrl: {
       type: String,
-      default: "/mtComonApi"
+      default: '/mtCommonApi'
     },
     title: {
       type: String,
-      default: "为用户创造价值、团队第一；激情、创新、诚信、奉献！",
-      required:false
+      default: '为用户创造价值、团队第一；激情、创新、诚信、奉献！',
+      required: false
     },
     slogan: {
       type: String,
       default:
-        "引领工矿业迈入智能化时代，成为行业的创新者与领导者，为利益相关方和社会创造价值！",
-      required:false
+        '引领工矿业迈入智能化时代，成为行业的创新者与领导者，为利益相关方和社会创造价值！',
+      required: false
     },
     itemName: {
       type: String,
@@ -66,40 +66,41 @@ export default {
     },
     logo: {
       type: String,
-      required:false
+      required: false
     }
   },
-  data() {
+  data () {
     return {
       form: {},
       formLogin: this.$form.createForm(this) // 新建form
-    };
+    }
   },
   methods: {
-    login(e) {
-      let this_ = this;
+    login (e) {
+      let this_ = this
       this.formLogin.validateFields((err, values) => {
         if (!err) {
           for (let value in values) {
-            this.form[value] = values[value];
+            this.form[value] = values[value]
           }
+          console.log(this.form)
           request({
             url: `${this_.baseUrl}/Service/API/V1/CPH/login`,
-            method: "post",
+            method: 'post',
             data: this.form
           })
             .then(res => {
-              this.$message.success("登录成功");
-              this.$emit("loginToNext", res);
+              this.$message.success('登录成功')
+              this.$emit('loginToNext', res)
             })
             .catch(error => {
-              this.$message.warn(error.msg);
-            });
+              this.$message.warn(error.msg)
+            })
         }
-      });
+      })
     }
   }
-};
+}
 </script>
 <style lang="scss" scoped>
 .ant-form-item-label label {
