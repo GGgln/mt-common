@@ -25,7 +25,6 @@
       </a-form-item>
       <a-form-item>
         <a-button @click="seeAbout" icon="search" type="primary">查询日志</a-button>
-        <a-button icon="plus" style="margin-left:20px;" type="primary">导出日志</a-button>
       </a-form-item>
     </a-form>
 
@@ -38,7 +37,7 @@ const columns = [
   {
     title: '日志时间',
     dataIndex: 'date',
-    width:200
+    width:'20%'
   },
   {
     title: '操作类型',
@@ -46,9 +45,14 @@ const columns = [
     width: '12%'
   },
   {
+    title: '日志类别',
+    dataIndex: 'subType',
+    width: '12%'
+  },
+  {
     title: '日志内容',
     dataIndex: 'logContent',
-    width: '53%'
+    width: '41%'
 
   },
   {
@@ -59,7 +63,12 @@ const columns = [
 ]
 export default {
   name: 'mt-log',
-  props: ['baseUrl'],
+  props: {
+    baseUrl: {
+      type: String,
+      default: '/mtCommonApi'
+    }
+  },
   data () {
     return {
       formData: this.$form.createForm(this),
