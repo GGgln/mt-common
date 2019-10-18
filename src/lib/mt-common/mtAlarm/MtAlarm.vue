@@ -42,7 +42,7 @@
     <a-table id="table_blue" :columns="columns" :dataSource="data" :pagination="pageOptions" rowKey="alarmId">
       <template slot="alarmGradeId" slot-scope="text, record">
         <!-- <span>{{text == 1 ? '一级' : text == 2 ? '二级' : text == 3 ? '三级' : '-'}}</span> -->
-        <span :class="['status', 'status_big', text == 3 ? 'level3': text? 'level2' :text == 1? 'level1': '']"></span>
+        <span :class="['status', 'status_big', text == 3 ? 'level3': text == 2? 'level2' :text == 1? 'level1': '']"></span>
       </template>
       <template slot="alarmStatus" slot-scope="text, record">
         <span>{{text == 1 ? '报警' : text == 2 ? '消警' : text == 3 ? '待复位' : '-'}}</span>
