@@ -59,7 +59,7 @@
                       style="width:100%"
                       placeholder="持续时间"
                       :disabled="!editStatus"
-                      @change="changeContinueHours"
+                      @blur="changeContinueHours"
                       v-decorator="[`scheduleList[${i}].continueHours`,{initialValue:el.continueHours,rules: [{required:true,message:`请输入持续时间`}]}]"
                     />
                   </a-form-item>
@@ -68,6 +68,8 @@
                   <a-form-item>
                     <a-input-number
                       :min="0"
+                      :max='720'
+                      :precision = '0'
                       style="width:100%"
                       placeholder="间隔时间"
                       :disabled="!editStatus"
