@@ -238,8 +238,9 @@ export default {
     },
     handleTableChange(pagination, filters, sorter) {
       // console.log(pagination, filters, sorter)
-      this.postData.currentPage = 1;
+      // this.postData.currentPage = 1;
       ({field: this.postData.sortField, order: this.postData.sortType} = sorter)
+      console.log(this.postData)
       this.requestFormList()
     }
   }
