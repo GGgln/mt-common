@@ -18,7 +18,7 @@
               <a-input
                 placeholder="请输入用户名"
                 style="height:36px;"
-                v-decorator="['userId', { rules: [{ required: true, message: '请输入用户名' }] }]"
+                v-decorator="['userCode', { rules: [{ required: true, message: '请输入用户名' }] }]"
                 @pressEnter = 'login'
               ></a-input>
             </a-form-item>
