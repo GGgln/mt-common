@@ -33,7 +33,7 @@
                     <a-input
                       placeholder="班组名称"
                       :disabled="!editStatus"
-                      v-decorator="[`scheduleList[${i}].groupDesc`,{initialValue:el.groupDesc,rules: [{required:true,message:`请输入班组名称`}]}]"
+                      v-decorator="[`scheduleList[${i}].groupDesc`,{initialValue:el.groupDesc,rules: [{required:true,message:`请输入班组名称`},{max:30,message:'最多输入30个字符'}]}]"
                     />
                   </a-form-item>
                 </a-col>
@@ -54,8 +54,8 @@
                   <a-form-item>
                     <a-input-number
                       :min="1"
-                      :max='720'
-                      :precision = '0'
+                      :max="720"
+                      :precision="0"
                       style="width:100%"
                       placeholder="持续时间"
                       :disabled="!editStatus"
@@ -68,8 +68,8 @@
                   <a-form-item>
                     <a-input-number
                       :min="0"
-                      :max='720'
-                      :precision = '0'
+                      :max="720"
+                      :precision="0"
                       style="width:100%"
                       placeholder="间隔时间"
                       :disabled="!editStatus"
@@ -106,7 +106,12 @@
         rowKey="groupId"
       >
         <div slot="operation" slot-scope="text,record,index">
-          <a-button type="primary" @click="renewClass(index,record)" size="small" style="margin-right:10px;">恢复</a-button>
+          <a-button
+            type="primary"
+            @click="renewClass(index,record)"
+            size="small"
+            style="margin-right:10px;"
+          >恢复</a-button>
           <a-popconfirm title="确定要删除吗?" @confirm="() => removeClass(record)">
             <a-button size="small">删除</a-button>
           </a-popconfirm>
