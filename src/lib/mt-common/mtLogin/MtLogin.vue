@@ -83,7 +83,6 @@ export default {
           for (let value in values) {
             this.form[value] = values[value]
           }
-          console.log(this.form)
           request({
             url: `${this_.baseUrl}/Service/API/V1/CPH/login`,
             method: 'post',
