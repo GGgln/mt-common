@@ -115,9 +115,9 @@ export default {
     },
     validatorCustom(el) {
       if (el.regularExpression) {
-        let str = '^([1-9]\d\d)$|^([1-4]\d\d\d)$|^([5]\d(?<!5[1-9])\d(?<!50[1-9])\d(?<!500[1-9]))$'
-        
-        let reg = new RegExp(str);
+        // let str = '^([1-9]\d\d)$|^([1-4]\d\d\d)$|^([5]\d(?<!5[1-9])\d(?<!50[1-9])\d(?<!500[1-9]))$'
+        let reg = new RegExp(el.regularExpression);
+        console.log(el.regularExpression,reg)
         return (rule, value, callback) => {
           if (value && !reg.test(value)) {
             callback(new Error(el.ruleDesc));
