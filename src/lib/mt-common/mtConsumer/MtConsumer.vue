@@ -2,9 +2,9 @@
   <div id="MtConsumer_component" class="container">
     <input class="ipt-hid" type="text" />
     <input class="ipt-hid" type="password" />
-    <EditTheUser v-if="receiveEditState" :selects="selects" :receiveEdit="receiveEdit" @edit="editModal" @cancelEdit="cancelEditModal"></EditTheUser>
-    <NewTheUser v-if="newUser" :selects="selects" @save="saveModal" @cancel="cancelModal"></NewTheUser>
-    <Particulars :details="details" v-if="detailsState" @show="consumerToggle"></Particulars>
+    <EditTheUser v-if="receiveEditState" :selects="selects" :receiveEdit="receiveEdit" :baseUrl = 'baseUrl' @edit="editModal" @cancelEdit="cancelEditModal"></EditTheUser>
+    <NewTheUser v-if="newUser" :selects="selects" @save="saveModal" :baseUrl = 'baseUrl' @cancel="cancelModal"></NewTheUser>
+    <Particulars :details="details" v-if="detailsState" @show="consumerToggle" :baseUrl = 'baseUrl'></Particulars>
     <div class="big" v-if="consumer">
       <a-form class="filter_box" :form="formData" layout="inline">
         <a-form-item><a-input style="width:100%;" v-model="iptContent" placeholder="请输入姓名" /></a-form-item>
