@@ -11,7 +11,7 @@
         </a-select>
       </a-form-item>
       <a-form-item label="报警状态：">
-        <a-select v-decorator="['stateId', {initialValue: 0}]" placeholder="请选择">
+        <a-select v-decorator="['stateId', {initialValue: 1}]" placeholder="请选择">
           <a-select-option
             v-for="(optionItem, optionIndex) in alarmStatusData"
             :key="optionIndex"
@@ -39,7 +39,7 @@
         <a-button style="margin-left:20px;" @click="toReset">重置</a-button>
       </a-form-item>
     </a-form>
-    <a-table id="table_blue" :columns="columns" :dataSource="data" :pagination="pageOptions" rowKey="alarmId">
+    <a-table id="table_blue" :columns="columns" :dataSource="data" :pagination="pageOptions" rowKey="alarmId" @change="handleTableChange">
       <template slot="alarmGradeId" slot-scope="text, record">
         <!-- <span>{{text == 1 ? '一级' : text == 2 ? '二级' : text == 3 ? '三级' : '-'}}</span> -->
         <span :class="['status', 'status_big', text == 3 ? 'level3': text == 2? 'level2' :text == 1? 'level1': '']"></span>
@@ -59,10 +59,11 @@ import request from '../utils/request'
 const columns = [
   {
     title: '报警级别',
-    width: 90,
+    width: 120,
     align: 'center',
     dataIndex: 'alarmGradeId',
-    scopedSlots: { customRender: 'alarmGradeId' }
+    scopedSlots: { customRender: 'alarmGradeId' },
+    sorter: true
   },
   {
     title: '部件名称',
@@ -82,7 +83,8 @@ const columns = [
   {
     title: '报警时间',
     dataIndex: 'alarmBeginTime',
-    scopedSlots: { customRender: 'alarmBeginTime' }
+    scopedSlots: { customRender: 'alarmBeginTime' },
+    sorter: true
   },
   {
     title: '报警详情',
@@ -92,7 +94,8 @@ const columns = [
   {
     title: '消警时间',
     dataIndex: 'alarmEndTime',
-    scopedSlots: { customRender: 'alarmEndTime' }
+    scopedSlots: { customRender: 'alarmEndTime' },
+    sorter: true
   },
   {
     title: '相关操作',
@@ -132,11 +135,13 @@ export default {
       formData: this.$form.createForm(this),
       postData: {
         alarmTime: [],
-        gradeId: 0,
+        gradeId: 1,
         stateId: 0,
         keyWord: '',
         pageNum: 10,
-        currentPage: 1
+        currentPage: 1,
+        sortField: null,
+        sortType: null
       },
       pageOptions: {
         current: 1,
@@ -230,6 +235,12 @@ export default {
         },
         class: 'test'
       })
+    },
+    handleTableChange(pagination, filters, sorter) {
+      // console.log(pagination, filters, sorter)
+      this.postData.currentPage = 1;
+      ({field: this.postData.sortField, order: this.postData.sortType} = sorter)
+      this.requestFormList()
     }
   }
 }
