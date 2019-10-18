@@ -8,6 +8,7 @@ import param from '@/components/param'
 import login from '@/components/login'
 // =======
 import _class from '@/components/class'
+import set from '@/components/set'
 // >>>>>>> 8b0d576906d8a233108430a1f96cb2490864ee8f
 Vue.use(Router)
 
@@ -34,17 +35,19 @@ export default new Router({
       component: param
     },
     {
-// <<<<<<< HEAD
       path: '/login',
       name: 'login',
       component: login
-      },
-      {
-// =======
+    },
+    {
       path: '/class',
       name: 'class',
       component: _class
-// >>>>>>> 8b0d576906d8a233108430a1f96cb2490864ee8f
+    },
+    {
+      path: '/set',
+      name: 'set',
+      component: set
     }
   ]
 })

@@ -1,4 +1,5 @@
 import mtLog from './mtLog/MtLog'
+import mtSet from './mtPersonalSetting/PersonalSetting'
 import mtAlarm from './mtAlarm/MtAlarm'
 import mtConsumer from './mtConsumer/MtConsumer'
 import mtLogin from './mtLogin/MtLogin'
@@ -16,7 +17,8 @@ const components = [
   mtConsumer,
   mtParam,
   mtLogin,
-  mtClass
+  mtClass,
+  mtSet
 ]
 
 export default {
