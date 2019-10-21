@@ -4,7 +4,8 @@
       <div class="con_l">
         <h4>{{title}}</h4>
         <p>{{slogan }}</p>
-        <img :src="logo" alt />
+        <!-- <img :src="logo" alt /> -->
+        <span style="background-color:#e0e0e0;width:185px;height:48px;display:inline-block;margin-top:40px;" :class="['iconfont_logo', logo]"></span>
       </div>
       <div class="con_r">
         <h5>Hello!</h5>
