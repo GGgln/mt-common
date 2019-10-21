@@ -28,6 +28,13 @@ module.exports = {
         pathRewrite: {
           '^/classCommonApi': '/'
         }
+      },
+      '/Common': {
+        target: 'http://192.168.3.13:8767/',//3.13
+        changeOrigin: true, // 跨域
+        pathRewrite: {
+          '^/Common': '/'
+        }
       }
 
     },
