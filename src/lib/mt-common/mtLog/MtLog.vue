@@ -122,8 +122,7 @@ export default {
           this.details = res.twoType[res.oneType[0]] // 日志详情信息
           this.secondCity = res.twoType[res.oneType[0]][0] // 日志详情默认第一条
         })
-        .catch(() => {
-          // alert('error')
+        .catch((error) => {
         })
     },
     initData () {
@@ -145,8 +144,7 @@ export default {
           this.data = res.result.list
           this.pageOptions.total = res.result.size
         })
-        .catch(() => {
-          // alert('error')
+        .catch((error) => {
         })
     },
     selectChange (value) {

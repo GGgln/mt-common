@@ -17,12 +17,12 @@
       <a-table id="table_blue" :pagination="pageOptions" :columns="columns" :dataSource="data">
         <template slot="action" slot-scope="text, record">
           <a-row>
-            <a-col :span="8"><a v-if="record.deletFlg" href="javascript:;" @click="showModalEdit(record)">编辑</a></a-col>
-            <a-col :span="8"><a v-if="record.deletFlg" href="javascript:;" @click="detailsData(record)">详情</a></a-col>
+            <a-col :span="8"><a v-if="record.deleteFlg" href="javascript:;" @click="showModalEdit(record)">编辑</a></a-col>
+            <a-col :span="8"><a v-if="record.deleteFlg" href="javascript:;" @click="detailsData(record)">详情</a></a-col>
 
             <a-col :span="8">
               <a-popconfirm title="确定要删除该用户吗？" @confirm="deleData(record)" placement="top" okText="确定" cancelText="取消">
-                <a v-if="record.deletFlg" href="javascript:;">删除</a>
+                <a v-if="record.deleteFlg" href="javascript:;">删除</a>
               </a-popconfirm>
             </a-col>
           </a-row>
@@ -39,12 +39,12 @@ import request from '../utils/request'
 const columns = [
   {
     title: '姓名',
-    dataIndex: 'userName',
+    dataIndex: 'employeeName',
     width: '12%'
   },
   {
     title: '用户名',
-    dataIndex: 'userCode',
+    dataIndex: 'userName',
     width: '15%'
   },
 
@@ -183,7 +183,7 @@ export default {
       // 删除model
       let thisName = this // 赋值this
       request({
-        url: `${thisName.baseUrl}/Service/API/V1/CHP/user/delete/${data.userCode}`,
+        url: `${thisName.baseUrl}/Service/API/V1/CHP/user/delete/${data.userId}`,
         method: 'delete'
       })
         .then(res => {
@@ -227,7 +227,7 @@ export default {
         url: `${this_.baseUrl}/Service/API/V1/CHP/user/detail`,
         method: 'post',
         data: {
-          userCode: data.userCode
+          userId: data.userId
         }
       })
         .then(res => {
@@ -271,7 +271,7 @@ export default {
         url: `${this_.baseUrl}/Service/API/V1/CHP/user/detail`,
         method: 'post',
         data: {
-          userCode: data.userCode
+          userId: data.userId
         }
       })
         .then(res => {
