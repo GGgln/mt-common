@@ -10,7 +10,7 @@
     <div class="container-min">
     <a-row class="min-row">
       <a-col :span="5"><p class="row-title">姓名：</p></a-col>
-      <a-col :span="15"><p class="row-center">{{details.customerName}}</p></a-col>
+      <a-col :span="15"><p class="row-center">{{details.employeeName}}</p></a-col>
     </a-row>
     <a-row class="min-row">
       <a-col :span="5"><p class="row-title">角色：</p></a-col>
@@ -30,7 +30,7 @@
     </a-row>
     <a-row class="min-row">
       <a-col :span="5"><p class="row-title">钉钉：</p></a-col>
-      <a-col :span="15"><p class="row-center">{{details.dingDing}}</p></a-col>
+      <a-col :span="15"><p class="row-center">{{details.dingding}}</p></a-col>
     </a-row>
     <a-row class="min-row">
       <a-col :span="5"><p class="row-title">邮箱：</p></a-col>
