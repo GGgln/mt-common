@@ -37,10 +37,13 @@
           <a-input v-decorator="['phone', { initialValue: details.phone, rules: [{ required: true, message: '电话不能为空' }, { validator: handIphone }] }]" />
         </a-form-item>
         <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="智信:"><a-input v-decorator="['zhixin', { initialValue: details.zhixin }]" /></a-form-item>
-        <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="微信:"><a-input v-decorator="['wechat', { initialValue: details.wechat }]" /></a-form-item>
-        <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="钉钉:"><a-input v-decorator="['dingding', { initialValue: details.dingding }]" /></a-form-item>
-        <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="邮箱:"><a-input v-decorator="['mail', { initialValue: details.mail }]" /></a-form-item>
+        <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="微信:" :style="{ display: expand ? 'block' : 'none' }"><a-input v-decorator="['wechat', { initialValue: details.wechat }]" /></a-form-item>
+        <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="钉钉:" :style="{ display: expand ? 'block' : 'none' }"><a-input v-decorator="['dingding', { initialValue: details.dingding }]" /></a-form-item>
+        <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="邮箱:" :style="{ display: expand ? 'block' : 'none' }"><a-input v-decorator="['mail', { initialValue: details.mail }]" /></a-form-item>
       </a-form>
+      <a style="margin-left: 45%;" @click="toggle">
+        <a-icon :style="{fontSize: '30px' }" :type="expand ? 'caret-up' : 'caret-down'" />
+      </a>
     </div>
   </div>
 </template>
@@ -57,6 +60,7 @@ export default {
   },
   data () {
     return {
+      expand: false, // 图标状态
       formNewData:{},
       visible: false, // model状态
       EditDataModel: {}, // 修改密码数据
@@ -98,7 +102,10 @@ export default {
     //       this.$message.error('获取下拉角色列表失败')
     //     })
     // },
-
+   toggle () {
+      // 改变图标状态
+      this.expand = !this.expand
+    },
     showModalEdit (data) {
       // 获取编辑用户的信息
       let this_ = this
