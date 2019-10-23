@@ -147,6 +147,7 @@ export default {
   name: "mt-class",
   data() {
     return {
+      checkFlag: 0,
       columns,
       editStatus: false,
       scheduleList: [],
@@ -157,7 +158,7 @@ export default {
   props: {
     baseUrl: {
       type: String,
-      default: "/mtCommonApi"
+      default: "/classCommonApi"
     }
   },
   beforeCreate() {
@@ -230,7 +231,6 @@ export default {
     },
     save() {
       let self = this;
-      let url = `${this.baseUrl}/Service/API/V1/CHP/Group/updateGroupInfo`;
       this.form.validateFields((err, value) => {
         if (!err) {
           let data = JSON.parse(JSON.stringify(self.scheduleList));
@@ -242,14 +242,51 @@ export default {
 
             return item;
           });
-
-          request.post(url, data).then(res => {
-            self.$message.success("更新成功");
-            this.initClassSchedule();
-            this.initClassList();
-            self.editStatus = false;
+          let indexArr=[], originIndexArr=[],recordArr=[] ,originRecordArr=[];
+          data.forEach((el,j) => {
+            self.classList.forEach((item, index) => {
+              if (el.groupDesc == item.groupDesc) {
+                self.checkFlag = 1;
+                indexArr.push(index)
+                recordArr.push(item);
+                originIndexArr.push(j);
+                originRecordArr.push(el)
+              }
+            });
           });
+          if (self.checkFlag == 1) {
+            self.$confirm({
+              title: "重名提示",
+              content:
+                '输入的名称存在已删除列表，是否恢复？如果不恢复，强制 "更新" 将删除已存在的重名班组。',
+              cancelText: "更新",
+              okText: "恢复",
+              onOk() {
+                self.checkFlag = 0;
+                originIndexArr.forEach((el,i)=>{
+                  let item = Object.assign({},originRecordArr[i],{groupId:recordArr[i].groupId})
+                  data.splice(el,1,item)
+                  self.classList.splice(indexArr[i], 1);
+                })
+                self.scheduleList = data
+              },
+              onCancel() {
+                self.saveHttp(data)
+              }
+            });
+          } else{
+            self.saveHttp(data)
+          }
         }
+      });
+    },
+    saveHttp(data) {
+      let url = `${this.baseUrl}/Service/API/V1/CHP/Group/updateGroupInfo?checkFlag=1`;
+      request.post(url, data).then(res => {
+        this.$message.success("更新成功");
+        this.initClassSchedule();
+        this.initClassList();
+        this.editStatus = false;
       });
     },
     computeDate(timeStr, hours) {

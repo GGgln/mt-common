@@ -22,11 +22,25 @@ module.exports = {
           '^/mtCommonApi': '/'
         }
       },
-      '/classCommonApi': {
+      '/paramCommonApi': {
         target: 'http://192.168.15.183:60002/',//李旭
         changeOrigin: true, // 跨域
         pathRewrite: {
+          '^/paramCommonApi': '/'
+        }
+      },
+      '/classCommonApi': {
+        target: 'http://192.168.12.215:60001/',//峰
+        changeOrigin: true, // 跨域
+        pathRewrite: {
           '^/classCommonApi': '/'
+        }
+      },
+      '/Common': {
+        target: 'http://192.168.3.13:8767/',//3.13
+        changeOrigin: true, // 跨域
+        pathRewrite: {
+          '^/Common': '/'
         }
       }
 
