@@ -42,12 +42,12 @@
 
       <a-form :form="form" >
         <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="姓名:">
-          <a-input v-decorator="['userName', {initialValue:receiveEdit.customerName, rules: [{ required: true, message: '姓名不能为空' }] }]" />
+          <a-input v-decorator="['employeeName', {initialValue:receiveEdit.employeeName, rules: [{ required: true, message: '姓名不能为空' }] }]" />
         </a-form-item>
 
         <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="角色:">
-          <a-select v-decorator="['roleTypeId', {initialValue:receiveEdit.roleTypeCode, rules: [{ required: true, message: '请选择角色' }] }]">
-            <a-select-option :value="select.RoleTypeCode" :key="index" v-for="(select, index) in selects">{{ select.roleTypeName }}</a-select-option>
+          <a-select v-decorator="['roleId', {initialValue:receiveEdit.roleId, rules: [{ required: true, message: '请选择角色' }] }]">
+            <a-select-option :value="select.roleId" :key="index" v-for="(select, index) in selects">{{ select.roleTypeName }}</a-select-option>
           </a-select>
         </a-form-item>
         <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="电话:">
@@ -58,7 +58,7 @@
           <a-input v-decorator="['wechat',{initialValue:receiveEdit.wechat}]" />
         </a-form-item>
         <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="钉钉:" >
-          <a-input v-decorator="['dingDing',{initialValue:receiveEdit.dingDing}]" />
+          <a-input v-decorator="['dingding',{initialValue:receiveEdit.dingding}]" />
         </a-form-item>
         <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="邮箱:" ><a-input v-decorator="['mail',{initialValue:receiveEdit.mail}]" /></a-form-item>
       </a-form>
@@ -109,13 +109,14 @@ export default {
       this.visible = false
     },
     okModel (e) {
+      this.EditDataModel={}, // 修改密码数据
       e.preventDefault()
       this.formModel.validateFields((err, values) => {
         if (!err) {
-          this.EditDataModel = {userCode: this.receiveEdit.userCode, passWord: values.passWord}
+          this.EditDataModel = {userId: this.receiveEdit.userId, passWord: values.passWord}
           let this_ = this
           request({
-            url: `${this_.baseUrl}/Service/API/V1/CHP/user/resetPassword`,
+            url: `${this_.baseUrl}/Service/API/V1/CHP/user/resetPasswordForManager`,
             method: 'post',
             data: this.EditDataModel
           })
@@ -139,10 +140,11 @@ export default {
       this.$emit('cancelEdit')
     },
     editUser (e) {
+      this.EditData={}, // 修改数据
       e.preventDefault()
       this.form.validateFields((err, values) => {
         if (!err) {
-          this.EditData = {userCode: this.receiveEdit.userCode}
+          this.EditData = {userId: this.receiveEdit.userId}
           for (let value in values) {
             this.EditData[value] = values[value]
           }

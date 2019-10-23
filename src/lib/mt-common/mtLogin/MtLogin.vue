@@ -5,6 +5,7 @@
         <h4>{{title}}</h4>
         <p>{{slogan }}</p>
         <img :src="logo" alt />
+        <!-- <span style="background-color:#e0e0e0;width:185px;height:48px;display:inline-block;margin-top:40px;" :class="['iconfont_logo', logo]"></span> -->
       </div>
       <div class="con_r">
         <h5>Hello!</h5>
@@ -18,13 +19,13 @@
               <a-input
                 placeholder="请输入用户名"
                 style="height:36px;"
-                v-decorator="['userCode', { rules: [{ required: true, message: '请输入用户名' }] }]"
+                v-decorator="['userName', { rules: [{ required: true, message: '请输入用户名' }] }]"
                 @pressEnter = 'login'
               ></a-input>
             </a-form-item>
             <a-form-item label="密码" has-feedback>
               <a-input
-                type="passWord"
+                type="password"
                 style="height:36px"
                 placeholder="请输入密码"
                 v-decorator="['passWord', { rules: [{ required: true, message: '请输入密码' }] }]"
@@ -149,6 +150,8 @@ export default {
       text-align: justify;
     }
     img {
+      width: 185px;
+      height: 48px;
       position: absolute;
       left: 30px;
       bottom: 38px;

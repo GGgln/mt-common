@@ -11,10 +11,10 @@
     <div class="container-min">
       <a-form :form="form">
         <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="姓名:">
-          <a-input v-decorator="['userName', { rules: [{ required: true, message: '姓名不能为空' }] }]" />
+          <a-input v-decorator="['employeeName', { rules: [{ required: true, message: '姓名不能为空' }] }]" />
         </a-form-item>
         <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="用户名:">
-          <a-input v-decorator="['userCode', { rules: [{ required: true, message: '用户名不能为空' }, { validator: handleUserId }] }]" />
+          <a-input v-decorator="['userName', { rules: [{ required: true, message: '用户名不能为空' }, { validator: handleUserId }] }]" />
         </a-form-item>
 
         <a-form-item label="密码" class="stepFormText" :label-col="labelCol" :wrapper-col="wrapperCol">
@@ -31,8 +31,8 @@
           />
         </a-form-item>
         <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="角色:">
-          <a-select v-decorator="['roleTypeId', { rules: [{ required: true, message: '请选择角色' }] }]">
-            <a-select-option :value="select.RoleTypeCode" :key="index" v-for="(select, index) in selects">{{ select.roleTypeName }}</a-select-option>
+          <a-select v-decorator="['roleId', { rules: [{ required: true, message: '请选择角色' }] }]">
+            <a-select-option :value="select.roleId" :key="index" v-for="(select, index) in selects">{{ select.roleTypeName }}</a-select-option>
           </a-select>
         </a-form-item>
         <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="电话:">
@@ -43,7 +43,7 @@
           <a-input v-decorator="['wechat']" />
         </a-form-item>
         <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="钉钉:" >
-          <a-input v-decorator="['dingDing']" />
+          <a-input v-decorator="['dingding']" />
         </a-form-item>
         <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="邮箱:" ><a-input v-decorator="['mail']" /></a-form-item>
       </a-form>
