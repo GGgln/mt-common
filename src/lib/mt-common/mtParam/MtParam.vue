@@ -69,7 +69,7 @@ export default {
   props: {
     baseUrl: {
       type: String,
-      default: "/classCommonApi"
+      default: "/paramCommonApi"
     },
     idParametersClass: {
       type: [String, Number],
