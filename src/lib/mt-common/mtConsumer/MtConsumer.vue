@@ -9,7 +9,7 @@
       <a-form class="filter_box" :form="formData" layout="inline">
         <a-form-item><a-input style="width:100%;" v-model="iptContent" placeholder="请输入姓名" /></a-form-item>
         <a-form-item>
-          <a-button icon="search" @click="initData()" type="primary">查询用户</a-button>
+          <a-button icon="search" @click="seeAbout()" type="primary">查询用户</a-button>
           <a-button icon="plus" style="margin-left:20px;" type="primary" @click="showModal">新建用户</a-button>
         </a-form-item>
       </a-form>
@@ -113,6 +113,7 @@ export default {
       page: 1, // 当前页
       pageOptions: {
         // 分页
+        current:1,
         defaultPageSize: 10,
         showQuickJumper: true,
         showSizeChanger: true,
@@ -122,11 +123,13 @@ export default {
           // 每页多少条
           this.pageSize = size
           this.page = current
+          this.pageOptions.current=current
           this.initData()
         },
         onChange: (page, pageSize) => {
           // 跳页
           this.page = page
+          this.pageOptions.current=page
           this.initData()
         }
       }
@@ -161,7 +164,11 @@ export default {
           this.$message.error('获取数据列表失败')
         })
     },
-
+    seeAbout () {
+      this.page=1
+      this.pageOptions.current =1
+      this.initData()
+    },
     // ------------------------------------------------ 下拉列表
     selectData () {
       // 下拉数据接口
