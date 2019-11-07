@@ -37,7 +37,7 @@ const columns = [
   {
     title: '日志时间',
     dataIndex: 'date',
-    width:'20%'
+    width: '20%'
   },
   {
     title: '操作类型',
@@ -90,7 +90,7 @@ export default {
       pageSize: 10, // 条数
       page: 1, // 当前页
       pageOptions: {
-        current:1,
+        current: 1,
         defaultPageSize: 10,
         showQuickJumper: true,
         showSizeChanger: true,
@@ -99,13 +99,13 @@ export default {
         onShowSizeChange: (current, size) => {
           this.pageSize = size
           this.page = current
-          this.pageOptions.current=current
+          this.pageOptions.current = current
           this.initData()
         },
         onChange: (page, pageSize) => {
           // 跳页
           this.page = page
-          this.pageOptions.current=page
+          this.pageOptions.current = page
           this.initData()
         }
       }
@@ -168,8 +168,8 @@ export default {
     // timeOk (value) {
     // },
     seeAbout () {
-      this.page=1
-      this.pageOptions.current =1
+      this.page = 1
+      this.pageOptions.current = 1
       this.initData()
     }
   }
