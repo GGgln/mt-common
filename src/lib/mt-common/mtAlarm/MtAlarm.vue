@@ -2,7 +2,7 @@
   <div calss="MtAlarm_component" class="common-container">
     <a-form class="filter_box" :form="formData" layout="inline">
       <a-form-item label="报警等级：">
-        <a-select v-decorator="['gradeId', {initialValue: 0}]" placeholder="请选择">
+        <a-select v-decorator="['gradeId', {initialValue: 1}]" placeholder="请选择">
           <a-select-option
             v-for="(optionItem, optionIndex) in alarmLevelData"
             :key="optionIndex"
@@ -141,7 +141,7 @@ export default {
       postData: {
         alarmTime: [],
         gradeId: 1,
-        stateId: 0,
+        stateId: 1,
         keyWord: '',
         pageNum: 10,
         currentPage: 1,
@@ -272,13 +272,13 @@ form .ant-select {
     height: 20px;
   }
   &.level1{
-    background-color: #afe4ff;
+    background-color: rgba(194, 128, 255, 1);
   }
   &.level2{
     background-color: #FEF100;
   }
   &.level3{
-    background-color: rgba(194, 128, 255, 1);
+    background-color: #afe4ff;
   }
 }
 </style>

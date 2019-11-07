@@ -5,7 +5,7 @@
       <a-form class="filter_box" :form="formData" layout="inline">
         <a-form-item><a-input style="width:100%;" v-model="iptContent" placeholder="请输入姓名" /></a-form-item>
         <a-form-item>
-          <a-button icon="search" type="primary" @click="initData">查询角色</a-button>
+          <a-button icon="search" type="primary" @click="seeAbout">查询角色</a-button>
           <a-button icon="plus" style="margin-left:20px;" type="primary" @click="showModal">新建角色</a-button>
         </a-form-item>
       </a-form>
@@ -128,6 +128,7 @@ export default {
       pageSize: 10, // 条数
       page: 1, // 当前页
       pageOptions: { // 分页
+      current:1,
         defaultPageSize: 10,
         showQuickJumper: true,
         showSizeChanger: true,
@@ -137,11 +138,13 @@ export default {
           // 每页多少条
           this.pageSize = size
           this.page = current
+          this.pageOptions.current=current
           this.initData()
         },
         onChange: (page, pageSize) => {
           // 跳页
           this.page = page
+          this.pageOptions.current=page
           this.initData()
         }
       }
@@ -250,7 +253,11 @@ export default {
 		    }
 		  })
     },
-
+   seeAbout () {
+      this.page=1
+      this.pageOptions.current =1
+      this.initData()
+    },
 
     initData () { // 获取数据列表
       let this_ = this
