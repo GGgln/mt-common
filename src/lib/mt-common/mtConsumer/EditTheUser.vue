@@ -76,7 +76,7 @@ export default {
   props: {
     baseUrl: {
       type: String,
-      default: '/mtCommonApi'
+      default: '/Common'
     },
     selects: Array,
     receiveEdit: Object
@@ -262,4 +262,6 @@ float: right;
     overflow: hidden;
   }
 }
+
+
 </style>

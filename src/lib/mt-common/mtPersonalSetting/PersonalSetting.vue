@@ -1,11 +1,10 @@
 <template>
   <div id="mt_PersonalSetting" class="container">
     <div class="title-btn">
-      <h2 class="headline">个人设置</h2>
       <div class="child_btn"><a-button style="margin-left:20px;" type="primary" @click="editUser">保存</a-button></div>
     </div>
     <div class="title-psw">
-      <h2 class="subtitle ">基本信息</h2>
+      <h4 class="subtitle">基本信息</h4>
       <a-button class="change-pawword" type="primary" @click="showModal">修改密码</a-button>
     </div>
     <a-modal centered :maskClosable="false" title="修改密码" v-model="visible" @cancel="noModel" @ok="okModel" okText="保存" cancelText="取消">
@@ -55,7 +54,7 @@ export default {
   props: {
     baseUrl: {
       type: String,
-      default: '/mtCommonApi'
+      default: '/Common'
     }
   },
   data () {
@@ -253,6 +252,10 @@ export default {
     height: auto;
     overflow: hidden;
     margin-bottom: 20px;
+    h4{
+      font-size: 16px;
+      font-weight: 600;
+    }
     .subtitle {
       margin: 0 0 0 40px;
       display: block;

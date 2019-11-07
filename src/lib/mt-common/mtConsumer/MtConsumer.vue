@@ -308,4 +308,8 @@ export default {
   position: fixed;
   top: -10000px;
 }
+.ant-form-inline .ant-form-item{
+  margin-left: 16px;
+  margin-right: 0;
+}
 </style>

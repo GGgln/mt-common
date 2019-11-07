@@ -378,4 +378,8 @@ form .ant-select {
   padding: 5px;
   border: 1px solid rgba(232, 232, 232, 1);
 }
+.ant-form-inline .ant-form-item{
+  margin-left: 16px;
+  margin-right: 0;
+}
 </style>
