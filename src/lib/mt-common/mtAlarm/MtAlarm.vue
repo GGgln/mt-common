@@ -2,7 +2,7 @@
   <div calss="MtAlarm_component" class="common-container">
     <a-form class="filter_box" :form="formData" layout="inline">
       <a-form-item label="报警等级：">
-        <a-select v-decorator="['gradeId', {initialValue: 0}]" placeholder="请选择">
+        <a-select v-decorator="['gradeId', {initialValue: 1}]" placeholder="请选择">
           <a-select-option
             v-for="(optionItem, optionIndex) in alarmLevelData"
             :key="optionIndex"
@@ -39,7 +39,7 @@
         <a-button style="margin-left:20px;" @click="toReset">重置</a-button>
       </a-form-item>
     </a-form>
-    <a-table id="table_blue" :columns="columns" :dataSource="data" :pagination="pageOptions" rowKey="alarmId" @change="handleTableChange">
+    <a-table id="table_blue" :columns="columns" :dataSource="data" :pagination="pageOptions" rowKey="alarmId" @change="handleTableChange" :size='size'>
       <template slot="alarmGradeId" slot-scope="text, record">
         <!-- <span>{{text == 1 ? '一级' : text == 2 ? '二级' : text == 3 ? '三级' : '-'}}</span> -->
         <span :class="['status', 'status_big', text == 3 ? 'level3': text == 2? 'level2' :text == 1? 'level1': '']"></span>
@@ -114,6 +114,11 @@ export default {
       baseUrl: {
         type: String,
         default: '/mtCommonApi'
+      },
+      size:{
+        type:String,
+        default:'middle',
+        required:false
       }
   }, // 格式： /baseUrl
   data () {
@@ -136,7 +141,7 @@ export default {
       postData: {
         alarmTime: [],
         gradeId: 1,
-        stateId: 0,
+        stateId: 1,
         keyWord: '',
         pageNum: 10,
         currentPage: 1,
@@ -267,13 +272,13 @@ form .ant-select {
     height: 20px;
   }
   &.level1{
-    background-color: #afe4ff;
+    background-color: rgba(194, 128, 255, 1);
   }
   &.level2{
     background-color: #FEF100;
   }
   &.level3{
-    background-color: rgba(194, 128, 255, 1);
+    background-color: #afe4ff;
   }
 }
 </style>
