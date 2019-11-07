@@ -28,7 +28,7 @@
       </a-form-item>
     </a-form>
 
-    <a-table id="table_blue" :pagination="pageOptions" :columns="columns" :dataSource="data"></a-table>
+    <a-table id="table_blue" :pagination="pageOptions" :columns="columns" :dataSource="data" :size='size'></a-table>
   </div>
 </template>
 <script>
@@ -67,6 +67,11 @@ export default {
     baseUrl: {
       type: String,
       default: '/mtCommonApi'
+    },
+    size:{
+      type:String,
+      default:'middle',
+      required:false
     }
   },
   data () {
