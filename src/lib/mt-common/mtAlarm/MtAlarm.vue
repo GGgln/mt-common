@@ -31,7 +31,7 @@
           @change="changeTime"
         />
       </a-form-item>
-      <a-form-item label="关键字查询：">
+      <a-form-item label="关键字查询：" v-show="isShow">
         <a-input v-decorator="['keyWord']" placeholder="请输入关键字" />
       </a-form-item>
       <a-form-item>
@@ -119,6 +119,11 @@ export default {
         type:String,
         default:'middle',
         required:false
+      },
+      isShow:{
+        type: Boolean,
+        default: true,
+        required: false
       }
   }, // 格式： /baseUrl
   data () {
