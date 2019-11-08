@@ -267,10 +267,11 @@ form .ant-select {
     height: 20px;
   }
   &.level1{
-    background-color: rgba(194, 128, 255, 1);
+    background-color: #FEF100;
   }
   &.level2{
-    background-color: #FEF100;
+    
+    background-color: rgba(194, 128, 255, 1);
   }
   &.level3{
     background-color: #afe4ff;
