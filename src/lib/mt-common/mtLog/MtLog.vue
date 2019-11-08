@@ -28,7 +28,7 @@
       </a-form-item>
     </a-form>
 
-    <a-table id="table_blue" :pagination="pageOptions" :columns="columns" :dataSource="data"></a-table>
+    <a-table id="table_blue" :pagination="pageOptions" :columns="columns" :dataSource="data" :size='size'></a-table>
   </div>
 </template>
 <script>
@@ -37,7 +37,7 @@ const columns = [
   {
     title: '日志时间',
     dataIndex: 'date',
-    width:'20%'
+    width: '20%'
   },
   {
     title: '操作类型',
@@ -67,6 +67,11 @@ export default {
     baseUrl: {
       type: String,
       default: '/mtCommonApi'
+    },
+    size:{
+      type:String,
+      default:'middle',
+      required:false
     }
   },
   data () {
@@ -85,7 +90,7 @@ export default {
       pageSize: 10, // 条数
       page: 1, // 当前页
       pageOptions: {
-        current:1,
+        current: 1,
         defaultPageSize: 10,
         showQuickJumper: true,
         showSizeChanger: true,
@@ -94,13 +99,13 @@ export default {
         onShowSizeChange: (current, size) => {
           this.pageSize = size
           this.page = current
-          this.pageOptions.current=current
+          this.pageOptions.current = current
           this.initData()
         },
         onChange: (page, pageSize) => {
           // 跳页
           this.page = page
-          this.pageOptions.current=page
+          this.pageOptions.current = page
           this.initData()
         }
       }
@@ -163,8 +168,8 @@ export default {
     // timeOk (value) {
     // },
     seeAbout () {
-      this.page=1
-      this.pageOptions.current =1
+      this.page = 1
+      this.pageOptions.current = 1
       this.initData()
     }
   }
@@ -180,5 +185,9 @@ form .ant-select {
 }
 .container {
   padding: 20px;
+}
+.ant-form-inline .ant-form-item{
+  margin-left: 16px;
+  margin-right: 0;
 }
 </style>

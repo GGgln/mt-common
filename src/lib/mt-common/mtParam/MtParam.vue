@@ -28,7 +28,7 @@
               >
                 <a-select
                   v-if="param.parameterTypeID == 3"
-                  :disabled="!editStatus && param.isWrite"
+                  :disabled="!editStatus || !param.isWrite"
                   v-decorator="[`${param.id}`,{initialValue:param.parameterValue,rules: [{required:param.isRequired,message:`请选择${param.parameterDesc}`}]}]"
                   style="100%"
                 >
@@ -41,7 +41,7 @@
 
                 <a-input
                   v-else
-                  :disabled="!editStatus && param.isWrite"
+                  :disabled="!editStatus || !param.isWrite"
                   v-decorator="[
                   `${param.id}`,
                   { initialValue: param.parameterValue ,rules: [{required:param.isRequired,message:`请输入${param.parameterDesc}`},{validator:validatorCustom(param)}]}
@@ -69,7 +69,7 @@ export default {
   props: {
     baseUrl: {
       type: String,
-      default: "/paramCommonApi"
+      default: "/Common"
     },
     idParametersClass: {
       type: [String, Number],
