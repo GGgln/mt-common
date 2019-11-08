@@ -1,15 +1,10 @@
 <template>
     <div class="alarm">
-        <mt-alarm baseUrl="/port8766"></mt-alarm>
+        <mt-alarm baseUrl="/port8766" :isShow="false"></mt-alarm>
         <!-- <a-from :form='form'></a-from> -->
     </div>
 </template>
 <script>
-const requestUrls_default = {
-  getAlarmLevel: '/Service/API/V1/CPH/alarm/dictionary',
-  getAlarmList: '/Service/API/V1/CPH/alarm/getAlarmInfo',
-  setAlarm: '/Service/API/V1/CPH/alarm/resetAlarm'
-}
 const columns = [
   {
     title: '报警级别',
@@ -61,7 +56,6 @@ export default {
   data () {
     return {
       columns,
-      requestUrls_default
     }
   },
   mounted () {}

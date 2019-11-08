@@ -39,8 +39,8 @@
         <a-button style="margin-left:20px;" @click="toReset">重置</a-button>
       </a-form-item>
     </a-form>
-    <a-table id="table_blue" :columns="tableColumns" :dataSource="data" :pagination="pageOptions" rowKey="alarmId" @change="handleTableChange" :size='size'>
-      <template slot="alarmLevel" slot-scope="text, record">
+    <a-table id="table_blue" :columns="columns" :dataSource="data" :pagination="pageOptions" rowKey="alarmId" @change="handleTableChange" :size='size'>
+      <template slot="alarmGradeId" slot-scope="text, record">
         <!-- <span>{{text == 1 ? '一级' : text == 2 ? '二级' : text == 3 ? '三级' : '-'}}</span> -->
         <span :class="['status', 'status_big', text == 3 ? 'level3': text == 2? 'level2' :text == 1? 'level1': '']"></span>
       </template>
@@ -48,7 +48,7 @@
         <span>{{text == 1 ? '报警' : text == 2 ? '消警' : text == 3 ? '待复位' : '-'}}</span>
       </template>
       <template slot="operate" slot-scope="text, record">
-        <a v-if="record.isManualReset" @click="resetAlarm(record)">复位</a>
+        <a v-if="record.IsManualReset" @click="resetAlarm(record)">复位</a>
       </template>
     </a-table>
   </div>
@@ -56,55 +56,60 @@
 <script>
 import moment from 'moment'
 import request from '../utils/request'
-const columns = [
-  {
-    title: '报警级别',
-    width: 120,
-    align: 'center',
-    dataIndex: 'alarmLevel',
-    scopedSlots: { customRender: 'alarmLevel' },
-    sorter: true
-  },
-  {
-    title: '部件名称',
-    dataIndex: 'devName',
-    scopedSlots: { customRender: 'devName' }
-  },
-  {
-    title: '报警状态',
-    dataIndex: 'alarmStatus',
-    scopedSlots: { customRender: 'alarmStatus' }
-  },
-  {
-    title: '报警时间',
-    dataIndex: 'alarmBeginTime',
-    scopedSlots: { customRender: 'alarmBeginTime' },
-    sorter: true
-  },
-  {
-    title: '消警时间',
-    dataIndex: 'alarmEndTime',
-    scopedSlots: { customRender: 'alarmEndTime' },
-    sorter: true
-  },
-  {
-    title: '报警详情',
-    dataIndex: 'alarmDetails',
-    scopedSlots: { customRender: 'alarmDetails' }
-  },
-  {
-    title: '相关操作',
-    dataIndex: 'operate',
-    scopedSlots: { customRender: 'operate' }
-  }
-]
-const requestUrls_default = {
+// const columns = [
+//   {
+//     title: '报警级别',
+//     width: 120,
+//     align: 'center',
+//     dataIndex: 'alarmGradeId',
+//     scopedSlots: { customRender: 'alarmGradeId' },
+//     sorter: true
+//   },
+//   {
+//     title: '部件名称',
+//     dataIndex: 'partDesc',
+//     scopedSlots: { customRender: 'partDesc' }
+//   },
+//   {
+//     title: '报警名称',
+//     dataIndex: 'alarmDesc',
+//     scopedSlots: { customRender: 'alarmDesc' }
+//   },
+//   {
+//     title: '报警状态',
+//     dataIndex: 'alarmStatus',
+//     scopedSlots: { customRender: 'alarmStatus' }
+//   },
+//   {
+//     title: '报警时间',
+//     dataIndex: 'alarmBeginTime',
+//     scopedSlots: { customRender: 'alarmBeginTime' },
+//     sorter: true
+//   },
+//   {
+//     title: '报警详情',
+//     dataIndex: 'alarmDetails',
+//     scopedSlots: { customRender: 'alarmDetails' }
+//   },
+//   {
+//     title: '消警时间',
+//     dataIndex: 'alarmEndTime',
+//     scopedSlots: { customRender: 'alarmEndTime' },
+//     sorter: true
+//   },
+//   {
+//     title: '相关操作',
+//     dataIndex: 'operate',
+//     scopedSlots: { customRender: 'operate' }
+//   }
+// ]
+const requestUrls = {
   getAlarmLevel: '/Service/API/V1/CPH/alarm/dictionary',
-  getAlarmList: '/Service/API/V1/ASHCHP/alarm/getAlarmInfo',
-  setAlarm: '/Service/API/V1/CHP/alarm/reset/'
+  getAlarmList: '/Service/API/V1/CPH/alarm/getAlarmInfo',
+  setAlarm: '/Service/API/V1/CPH/alarm/resetAlarm'
 }
 export default {
-  name: 'mt-alarm',
+  name: 'mt-alarm-old',
   props: {
       baseUrl: {
         type: String,
@@ -119,33 +124,23 @@ export default {
         type: Boolean,
         default: true,
         required: false
-      },
-      tableColumns: {
-        type: Array,
-        default: () => { return columns},
-        required: false
-      },
-      requestUrls: {
-        type: Object,
-        default: () => { return requestUrls_default},
-        required: false
       }
   }, // 格式： /baseUrl
   data () {
     return {
       alarmLevelData: [
-        // { label: '全部', value: 0 },
+        { label: '全部', value: 0 },
         { label: '一级', value: 1 },
         { label: '二级', value: 2 },
         { label: '三级', value: 3 }
       ],
       alarmStatusData: [
-        // { label: '全部', value: 0 },
+        { label: '全部', value: 0 },
         { label: '报警', value: 1 },
         { label: '消警', value: 2 },
         { label: '待复位', value: 3 }
       ],
-      columns,
+      // columns,
       data: [],
       formData: this.$form.createForm(this),
       postData: {
@@ -153,7 +148,7 @@ export default {
         gradeId: 1,
         stateId: 1,
         keyWord: '',
-        pageSize: 10,
+        pageNum: 10,
         currentPage: 1,
         sortField: null,
         sortType: null
@@ -166,18 +161,21 @@ export default {
         pageSizeOptions: ['10', '20', '50'],
         total: 0,
         onShowSizeChange: (current, size) => {
-          this.postData.pageSize = size
+          this.postData.pageNum = size
           this.postData.currentPage = 1
+          this.requestFormList()
         },
         onChange: (page, pageSize) => {
           // 跳页
           this.postData.currentPage = page
+          this.requestFormList()
         }
-      }
+      },
+      requestUrls
     }
   },
   mounted () {
-    // this.getAlarmLevel()
+    this.getAlarmLevel()
     this.requestFormList()
   },
   methods: {
@@ -190,19 +188,26 @@ export default {
         method: 'post',
         data: that.postData
       }).then(res => {
-        that.data = res.data.alarmShowInfos
+        // alert('success')
+        that.data = res.data.alarmInfoList
         that.pageOptions.total = res.data.totalCount
-        that.postData.currentPage = res.data.currentPage
-        that.pageOptions.current = res.data.currentPage
-      }).catch(() => {})
+        that.postData.currentPage = res.data.page
+        that.pageOptions.current = res.data.page
+      }).catch(() => {
+        // alert('error')
+      })
     },
-    // getAlarmLevel () {
-    //   let url = `${this.baseUrl}${this.requestUrls.getAlarmLevel}`
-    //   request({
-    //     url: url,
-    //     method: 'get'
-    //   }).then(res => {}).catch(() => {})
-    // },
+    getAlarmLevel () {
+      let url = `${this.baseUrl}${this.requestUrls.getAlarmLevel}`
+      request({
+        url: url,
+        method: 'get'
+      }).then(res => {
+        // alert('success')
+      }).catch(() => {
+        // alert('error')
+      })
+    },
     toSearch () {
       this.postData.currentPage = 1
       this.formData.validateFields((err, values) => {
@@ -220,26 +225,30 @@ export default {
     changeTime () {},
     resetAlarm (record) {
       let that = this
-      // this.$confirm({
-      //   title: '确认复位',
-      //   content: h => <div><p><span>报警名称：</span><span style="font-size:14px;font-weight:bold;">{record.alarmDesc}</span></p><p><span>判断标准：</span><span style="font-size:14px;font-weight:bold;">{record.decisionRules}</span></p><p>是否确认复位硬件?</p></div>,
-      //   onOk () {
-          let url = `${this.baseUrl}${this.requestUrls.setAlarm}${record.alarmId}`
+      this.$confirm({
+        title: '确认复位',
+        content: h => <div><p><span>报警名称：</span><span style="font-size:14px;font-weight:bold;">{record.alarmDesc}</span></p><p><span>判断标准：</span><span style="font-size:14px;font-weight:bold;">{record.decisionRules}</span></p><p>是否确认复位硬件?</p></div>,
+        onOk () {
+          let url = `${that.baseUrl}${that.requestUrls.setAlarm}`
           request({
             url: url,
-            method: 'get'
+            method: 'post',
+            data: { alarmId: record.alarmId }
           }).then(res => {
             that.requestFormList()
           }).catch(() => {})
-      //   },
-      //   onCancel () {
-      //     console.log('Cancel')
-      //   },
-      //   class: 'test'
-      // })
+        },
+        onCancel () {
+          console.log('Cancel')
+        },
+        class: 'test'
+      })
     },
     handleTableChange(pagination, filters, sorter) {
+      // console.log(pagination, filters, sorter)
+      // this.postData.currentPage = 1;
       ({field: this.postData.sortField, order: this.postData.sortType} = sorter)
+      console.log(this.postData)
       this.requestFormList()
     }
   }

@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import alarm from '@/components/alarm'
+import alarm_dxa from '@/components/alarm_dxa'
 import log from '@/components/log'
 import consumer from '@/components/consumer'
 import param from '@/components/param'
@@ -19,6 +20,11 @@ export default new Router({
       path: '/alarm',
       name: 'alarm',
       component: alarm
+    },
+    {
+      path: '/alarm_dxa',
+      name: 'alarm_dxa',
+      component: alarm_dxa
     },
     {
       path: '/log',

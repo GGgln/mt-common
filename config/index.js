@@ -12,6 +12,14 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       // 保留模板
+      '/port8766': {
+        target: 'http://192.168.14.49:8767',//王超
+        ws: true,
+        changeOrigin: true,
+        pathRewrite: {
+          '^/port8766': ''   //需要rewrite的,
+        }
+      },
       '/mtCommonApi': {
         // target: 'http://192.168.15.183:60002/',//李旭
         // target: 'http://192.168.12.215:60001/',//峰
