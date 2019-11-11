@@ -11,7 +11,7 @@
         </a-select>
       </a-form-item>
       <a-form-item label="报警状态：">
-        <a-select v-decorator="['stateId', {initialValue: 1}]" placeholder="请选择">
+        <a-select v-decorator="['stateId', {initialValue: 0}]" placeholder="请选择">
           <a-select-option
             v-for="(optionItem, optionIndex) in alarmStatusData"
             :key="optionIndex"
@@ -45,7 +45,7 @@
         <span :class="['status', 'status_big', text == 3 ? 'level3': text == 2? 'level2' :text == 1? 'level1': '']"></span>
       </template>
       <template slot="alarmStatus" slot-scope="text, record">
-        <span>{{text == 1 ? '报警' : text == 2 ? '消警' : text == 3 ? '待复位' : '-'}}</span>
+        <span>{{text == 0 ? '报警' : text == 1 ? '消警' : text == 2 ? '待复位' : '-'}}</span>
       </template>
       <template slot="operate" slot-scope="text, record">
         <a v-if="record.isManualReset" @click="resetAlarm(record)">复位</a>
@@ -69,6 +69,11 @@ const columns = [
     title: '部件名称',
     dataIndex: 'devName',
     scopedSlots: { customRender: 'devName' }
+  },
+  {
+    title: '报警名称',
+    dataIndex: 'alarmName',
+    scopedSlots: { customRender: 'alarmName' }
   },
   {
     title: '报警状态',
@@ -100,8 +105,8 @@ const columns = [
 ]
 const requestUrls_default = {
   getAlarmLevel: '/Service/API/V1/CPH/alarm/dictionary',
-  getAlarmList: '/Service/API/V1/ASHCHP/alarm/getAlarmInfo',
-  setAlarm: '/Service/API/V1/CHP/alarm/reset/'
+  getAlarmList: '/Service/API/V1/CPH/alarm/getAlarmInfo',
+  setAlarm: '/Service/API/V1/CPH/alarm/reset/'
 }
 export default {
   name: 'mt-alarm',
@@ -151,7 +156,7 @@ export default {
       postData: {
         alarmTime: [],
         gradeId: 1,
-        stateId: 1,
+        stateId: 0,
         keyWord: '',
         pageSize: 10,
         currentPage: 1,
