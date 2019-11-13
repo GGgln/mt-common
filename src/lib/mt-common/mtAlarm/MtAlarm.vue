@@ -139,7 +139,7 @@ export default {
   data () {
     return {
       alarmLevelData: [
-        // { label: '全部', value: 0 },
+        { label: '全部', value: 0 },
         { label: '一级', value: 1 },
         { label: '二级', value: 2 },
         { label: '三级', value: 3 }
