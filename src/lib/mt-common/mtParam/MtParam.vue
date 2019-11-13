@@ -69,7 +69,7 @@ export default {
   props: {
     baseUrl: {
       type: String,
-      default: "/Common"
+      default: "/port8766"
     },
     idParametersClass: {
       type: [String, Number],
@@ -149,6 +149,7 @@ export default {
           });
           request.post(url, data).then(res => {
             this.$message.success("更新成功");
+            this.init()
             this.editStatus = false;
           });
         }
