@@ -11,7 +11,7 @@
         </a-select>
       </a-form-item>
       <a-form-item label="报警状态：">
-        <a-select v-decorator="['stateId', {initialValue: 0}]" placeholder="请选择">
+        <a-select v-decorator="['stateId', {initialValue: 1}]" placeholder="请选择">
           <a-select-option
             v-for="(optionItem, optionIndex) in alarmStatusData"
             :key="optionIndex"
@@ -39,13 +39,13 @@
         <a-button style="margin-left:20px;" @click="toReset">重置</a-button>
       </a-form-item>
     </a-form>
-    <a-table id="table_blue" :columns="tableColumns" :dataSource="data" :pagination="pageOptions" rowKey="alarmId" @change="handleTableChange" :size='size'>
+    <a-table id="table_blue" :columns="tableColumns" :dataSource="data" :pagination="pageOptions" @change="handleTableChange" :size='size'>
       <template slot="alarmLevel" slot-scope="text, record">
         <!-- <span>{{text == 1 ? '一级' : text == 2 ? '二级' : text == 3 ? '三级' : '-'}}</span> -->
         <span :class="['status', 'status_big', text == 3 ? 'level3': text == 2? 'level2' :text == 1? 'level1': '']"></span>
       </template>
       <template slot="alarmStatus" slot-scope="text, record">
-        <span>{{text == 0 ? '报警' : text == 1 ? '消警' : text == 2 ? '待复位' : '-'}}</span>
+        <span>{{text == 1 ? '报警' : text == 0 ? '消警' : text == 2 ? '待复位' : '-'}}</span>
       </template>
       <template slot="operate" slot-scope="text, record">
         <a v-if="record.isManualReset" @click="resetAlarm(record)">复位</a>
@@ -146,8 +146,8 @@ export default {
       ],
       alarmStatusData: [
         // { label: '全部', value: 0 },
-        { label: '报警', value: 0 },
-        { label: '消警', value: 1 },
+        { label: '消警', value: 0 },
+        { label: '报警', value: 1 },
         { label: '待复位', value: 2 }
       ],
       columns,
@@ -156,7 +156,7 @@ export default {
       postData: {
         alarmTime: [],
         gradeId: 1,
-        stateId: 0,
+        stateId: 1,
         keyWord: '',
         pageSize: 10,
         currentPage: 1,
