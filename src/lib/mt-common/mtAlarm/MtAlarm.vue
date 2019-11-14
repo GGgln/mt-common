@@ -146,8 +146,8 @@ export default {
       ],
       alarmStatusData: [
         // { label: '全部', value: 0 },
-        { label: '消警', value: 0 },
         { label: '报警', value: 1 },
+        { label: '消警', value: 0 },
         { label: '待复位', value: 2 }
       ],
       columns,
