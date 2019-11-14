@@ -2,7 +2,7 @@
   <div calss="MtAlarm_component" class="common-container">
     <a-form class="filter_box" :form="formData" layout="inline">
       <a-form-item label="报警等级：">
-        <a-select v-decorator="['gradeId', {initialValue: 1}]" placeholder="请选择">
+        <a-select v-decorator="['gradeId', {initialValue: 0}]" placeholder="请选择">
           <a-select-option
             v-for="(optionItem, optionIndex) in alarmLevelData"
             :key="optionIndex"
@@ -108,6 +108,18 @@ const requestUrls_default = {
   getAlarmList: '/Service/API/V1/CPH/alarm/getAlarmInfo',
   setAlarm: '/Service/API/V1/CPH/alarm/reset/'
 }
+const levelData = [
+  { label: '全部', value: 0 },
+  { label: '一级', value: 1 },
+  { label: '二级', value: 2 },
+  { label: '三级', value: 3 }
+]
+const  statusData = [
+  // { label: '全部', value: 0 },
+  { label: '报警', value: 1 },
+  { label: '消警', value: 0 },
+  { label: '待复位', value: 2 }
+]
 export default {
   name: 'mt-alarm',
   props: {
@@ -134,28 +146,26 @@ export default {
         type: Object,
         default: () => { return requestUrls_default},
         required: false
+      },
+      alarmLevelData: {
+        type: Array,
+        default: () => { return levelData }
+      },
+      alarmStatusData: {
+        type: Array,
+        default: () => { return statusData }
       }
   }, // 格式： /baseUrl
   data () {
     return {
-      alarmLevelData: [
-        { label: '全部', value: 0 },
-        { label: '一级', value: 1 },
-        { label: '二级', value: 2 },
-        { label: '三级', value: 3 }
-      ],
-      alarmStatusData: [
-        // { label: '全部', value: 0 },
-        { label: '报警', value: 1 },
-        { label: '消警', value: 0 },
-        { label: '待复位', value: 2 }
-      ],
+      levelData,
+      statusData,
       columns,
       data: [],
       formData: this.$form.createForm(this),
       postData: {
         alarmTime: [],
-        gradeId: 1,
+        gradeId: 0,
         stateId: 1,
         keyWord: '',
         pageSize: 10,
