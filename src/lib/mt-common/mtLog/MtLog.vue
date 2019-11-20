@@ -37,22 +37,22 @@ const columns = [
   {
     title: '日志时间',
     dataIndex: 'date',
-    width: '20%'
+    width: '25%'
   },
   {
     title: '操作类型',
     dataIndex: 'operationType',
-    width: '12%'
+    width: '15%'
   },
   {
     title: '日志类别',
     dataIndex: 'subType',
-    width: '12%'
+    width: '15%'
   },
   {
     title: '日志内容',
     dataIndex: 'logContent',
-    width: '41%'
+    width: '30%'
 
   },
   {
@@ -66,11 +66,11 @@ export default {
   props: {
     baseUrl: {
       type: String,
-      default: '/mtCommonApi'
+      default: '/Common'
     },
     size:{
       type:String,
-      default:'middle',
+      default:'large',
       required:false
     }
   },
