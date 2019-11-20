@@ -2,7 +2,7 @@
   <div calss="MtAlarm_component" class="common-container">
     <a-form class="filter_box" :form="formData" layout="inline">
       <a-form-item label="报警等级：">
-        <a-select v-decorator="['gradeId', {initialValue: 0}]" placeholder="请选择">
+        <a-select v-decorator="['gradeId', {initialValue: postData.gradeId}]" placeholder="请选择">
           <a-select-option
             v-for="(optionItem, optionIndex) in alarmLevelData"
             :key="optionIndex"
@@ -11,7 +11,7 @@
         </a-select>
       </a-form-item>
       <a-form-item label="报警状态：">
-        <a-select v-decorator="['stateId', {initialValue: 1}]" placeholder="请选择">
+        <a-select v-decorator="['stateId', {initialValue: postData.stateId}]" placeholder="请选择">
           <a-select-option
             v-for="(optionItem, optionIndex) in alarmStatusData"
             :key="optionIndex"
@@ -47,8 +47,8 @@
       <template slot="alarmStatus" slot-scope="text, record">
         <span>{{text == 1 ? '报警' : text == 0 ? '消警' : text == 2 ? '待复位' : '-'}}</span>
       </template>
-      <template slot="operate" slot-scope="text, record">
-        <a v-if="record.isManualReset" @click="resetAlarm(record)">复位</a>
+      <template slot="resetType" slot-scope="text, record">
+        <a v-if="text != 1" @click="resetAlarm(record)">{{ text == 2 ? '复位' : '确认'}}</a>
       </template>
     </a-table>
   </div>
@@ -99,8 +99,8 @@ const columns = [
   },
   {
     title: '相关操作',
-    dataIndex: 'operate',
-    scopedSlots: { customRender: 'operate' }
+    dataIndex: 'resetType',
+    scopedSlots: { customRender: 'resetType' }
   }
 ]
 const requestUrls_default = {
@@ -118,7 +118,8 @@ const  statusData = [
   // { label: '全部', value: 0 },
   { label: '报警', value: 1 },
   { label: '消警', value: 0 },
-  { label: '待复位', value: 2 }
+  { label: '待复位', value: 2 },
+  { label: '待确认', value: 3 }
 ]
 export default {
   name: 'mt-alarm',

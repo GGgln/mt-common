@@ -13,7 +13,7 @@ module.exports = {
     proxyTable: {
       // 保留模板
       '/port8766': {
-        target: 'http://192.168.3.13:8766',//王超
+        target: 'http://192.168.6.254:5565',//王超
         ws: true,
         changeOrigin: true,
         pathRewrite: {
