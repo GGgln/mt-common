@@ -8,50 +8,52 @@
           <a-button style="margin-left:20px;" type="primary" @click="save()">保存</a-button>
         </div>
       </div>
-      <a-form :form="form" ref="form">
-        <section class="params_group" v-for="(group,i) in paramData.children" :key="i">
-          <h3>{{group.parametersClassDesc}}</h3>
-          <div class="param_list">
-            <a-col
-              :xxl="spanLarge"
-              :lg="spanSmall"
-              :xl="spanSmall"
-              v-for="(param, j) in group.commenParameters"
-              :key="param.id"
-              class="mt-col"
-            >
-              <a-form-item
-                :label-col="{span:labelCol}"
-                :wrapper-col="{span:wrapperCol}"
-                :label="retureLabel(param)"
-                :title="param.tips"
+      <div class="form_wrap">
+        <a-form :form="form" ref="form">
+          <section class="params_group" v-for="(group,i) in paramData.children" :key="i">
+            <h3>{{group.parametersClassDesc}}</h3>
+            <div class="param_list">
+              <a-col
+                :xxl="spanLarge"
+                :lg="spanSmall"
+                :xl="spanSmall"
+                v-for="(param, j) in group.commenParameters"
+                :key="param.id"
+                class="mt-col"
               >
-                <a-select
-                  v-if="param.parameterTypeID == 3"
-                  :disabled="!editStatus || !param.isWrite"
-                  v-decorator="[`${param.id}`,{initialValue:param.parameterValue,rules: [{required:param.isRequired,message:`请选择${param.parameterDesc}`}]}]"
-                  style="100%"
+                <a-form-item
+                  :label-col="{span:labelCol}"
+                  :wrapper-col="{span:wrapperCol}"
+                  :label="retureLabel(param)"
+                  :title="param.tips"
                 >
-                  <a-select-option
-                    :value="el.TypeClassId"
-                    v-for="(el,k) in param.dimTypes"
-                    :key="k"
-                  >{{el.TypeClassDesc}}</a-select-option>
-                </a-select>
+                  <a-select
+                    v-if="param.parameterTypeID == 3"
+                    :disabled="!editStatus || !param.isWrite"
+                    v-decorator="[`${param.id}`,{initialValue:param.parameterValue,rules: [{required:param.isRequired,message:`请选择${param.parameterDesc}`}]}]"
+                    style="100%"
+                  >
+                    <a-select-option
+                      :value="el.TypeClassId"
+                      v-for="(el,k) in param.dimTypes"
+                      :key="k"
+                    >{{el.TypeClassDesc}}</a-select-option>
+                  </a-select>
 
-                <a-input
-                  v-else
-                  :disabled="!editStatus || !param.isWrite"
-                  v-decorator="[
+                  <a-input
+                    v-else
+                    :disabled="!editStatus || !param.isWrite"
+                    v-decorator="[
                   `${param.id}`,
                   { initialValue: param.parameterValue ,rules: [{required:param.isRequired,message:`请输入${param.parameterDesc}`},{validator:validatorCustom(param)}]}
                   ]"
-                />
-              </a-form-item>
-            </a-col>
-          </div>
-        </section>
-      </a-form>
+                  />
+                </a-form-item>
+              </a-col>
+            </div>
+          </section>
+        </a-form>
+      </div>
     </div>
   </div>
 </template>
@@ -117,7 +119,7 @@ export default {
       if (el.regularExpression) {
         // let reg = /^[0-9]([.][0-9]{1,2})?$|^[1-9]\d([.][0-9]{1,2})?$|^10[0]([.]{0})?$/
         let reg = new RegExp(el.regularExpression);
-        console.log(el.regularExpression,reg)
+        console.log(el.regularExpression, reg);
         return (rule, value, callback) => {
           if (value && !reg.test(value)) {
             callback(new Error(el.ruleDesc));
@@ -149,7 +151,7 @@ export default {
           });
           request.post(url, data).then(res => {
             this.$message.success("更新成功");
-            this.init()
+            this.init();
             this.editStatus = false;
           });
         }
