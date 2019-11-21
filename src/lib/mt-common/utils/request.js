@@ -9,10 +9,10 @@ const service = axios.create({
 
 service.interceptors.request.use(config => {
   let token = sessionStorage.getItem('token')
-  if (token) {
-    config.headers['token'] = token;
+  // if (token) {
+    config.headers['token'] = 'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIyIiwiaWF0IjoxNTc0MzA1MDQwLCJzdWIiOiLmnY7kuIkiLCJpc3MiOiJhZG1pbmlzdHJhdG9yIn0.mY7qDPQVw-5bT3i9nGCvDoDfigeLZGK845x5-X83nio';
 
-  }
+  // }
   return config
 }, error => { // 请求错误处理
   Promise.reject(error)
