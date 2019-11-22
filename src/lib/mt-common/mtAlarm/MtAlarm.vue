@@ -13,10 +13,10 @@
       <a-form-item label="报警状态：">
         <a-select v-decorator="['stateId', {initialValue: postData.stateId}]" placeholder="请选择">
           <a-select-option
-            v-for="(optionItem, optionIndex) in alarmStatusData"
-            :key="optionIndex"
-            :value="optionItem.value"
-          >{{ optionItem.label }}</a-select-option>
+            v-for="(optionItem, optionIndex) in statusData"
+            :key="optionItem.TypeClassId"
+            :value="optionItem.TypeClassId"
+          >{{ optionItem.TypeClassDesc }}</a-select-option>
         </a-select>
       </a-form-item>
       <a-form-item label="时间段查询：">
@@ -45,10 +45,11 @@
         <span :class="['status', 'status_big', text == 3 ? 'level3': text == 2? 'level2' :text == 1? 'level1': '']"></span>
       </template>
       <template slot="alarmStatus" slot-scope="text, record">
-        <span>{{text == 1 ? '报警' : text == 0 ? '消警' : text == 2 ? '待复位' : '-'}}</span>
+        <!-- <span>{{text == 1 ? '报警' : text == 0 ? '消警' : text == 2 ? '待复位' : '-'}}</span> -->
+        <span>{{formatAlarmState(text)}}</span>
       </template>
       <template slot="resetType" slot-scope="text, record">
-        <a v-if="text != 1" @click="resetAlarm(record)">{{ text == 2 ? '复位' : '确认'}}</a>
+        <a v-if="text != 1" @click="resetAlarm(record)">{{ text == 2 ? '复位' : text == 4 ? '确认': ''}}</a>
       </template>
     </a-table>
   </div>
@@ -114,13 +115,7 @@ const levelData = [
   { label: '二级', value: 2 },
   { label: '三级', value: 3 }
 ]
-const  statusData = [
-  // { label: '全部', value: 0 },
-  { label: '报警', value: 1 },
-  { label: '消警', value: 0 },
-  { label: '待复位', value: 2 },
-  { label: '待确认', value: 3 }
-]
+// const  statusData = []
 export default {
   name: 'mt-alarm',
   props: {
@@ -152,22 +147,22 @@ export default {
         type: Array,
         default: () => { return levelData }
       },
-      alarmStatusData: {
-        type: Array,
-        default: () => { return statusData }
-      }
+      // alarmStatusData: {
+      //   type: Array,
+      //   default: () => { return statusData }
+      // }
   }, // 格式： /baseUrl
   data () {
     return {
       levelData,
-      statusData,
+      statusData: [],
       columns,
       data: [],
       formData: this.$form.createForm(this),
       postData: {
         alarmTime: [],
         gradeId: 0,
-        stateId: 1,
+        stateId: '99',
         keyWord: '',
         pageSize: 10,
         currentPage: 1,
@@ -194,10 +189,22 @@ export default {
   },
   mounted () {
     // this.getAlarmLevel()
-    this.requestFormList()
+    this.getAlarmStates()
+    this.$nextTick(()=>{
+      this.requestFormList()
+    })
   },
   methods: {
     moment,
+    getAlarmStates(){
+      let url = `${this.baseUrl}/Service/API/V1/CPH/alarm/getStates`
+      request({
+        url:url,
+        method: 'get'
+      }).then(res => {
+        this.statusData = res.data
+      })
+    },
     requestFormList () {
       let that = this
       let url = `${this.baseUrl}${this.requestUrls.getAlarmList}`
@@ -211,6 +218,10 @@ export default {
         that.postData.currentPage = res.data.currentPage
         that.pageOptions.current = res.data.currentPage
       }).catch(() => {})
+    },
+    formatAlarmState (state) {
+      let arr = this.statusData.filter(item => item.TypeClassId == state)
+      return arr[0].TypeClassDesc
     },
     // getAlarmLevel () {
     //   let url = `${this.baseUrl}${this.requestUrls.getAlarmLevel}`
