@@ -220,8 +220,11 @@ export default {
       }).catch(() => {})
     },
     formatAlarmState (state) {
-      let arr = this.statusData.filter(item => item.TypeClassId == state)
-      return arr[0].TypeClassDesc
+      let arr = this.statusData.filter(item => item.TypeClassId == 1)
+      if(arr.length > 0) {
+        return arr[0].TypeClassDesc
+      }
+      return
     },
     // getAlarmLevel () {
     //   let url = `${this.baseUrl}${this.requestUrls.getAlarmLevel}`
