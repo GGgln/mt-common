@@ -298,7 +298,7 @@ export default {
       })
         .then(res => {
             this.data = res.data.list;
-            this.pageOptions.total = res.data.size;
+            this.pageOptions.total = res.data.size|| 0;
         })
         .catch(error => {
           this.$message.error(error.msg);
