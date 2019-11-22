@@ -2,6 +2,7 @@ import mtLog from './mtLog/MtLog'
 import mtSet from './mtPersonalSetting/PersonalSetting'
 import mtRole from './mtRole/RoleManagement'
 import mtAlarm from './mtAlarm/MtAlarm'
+import mtAlarmConfig from './mtAlarm/MtAlarmConfig'
 import mtConsumer from './mtConsumer/MtConsumer'
 import mtLogin from './mtLogin/MtLogin'
 import mtParam from './mtParam/MtParam'
@@ -22,7 +23,8 @@ const components = [
   mtLogin,
   mtClass,
   mtSet,
-  mtRole
+  mtRole,
+  mtAlarmConfig
 ]
 
 export default {

@@ -24,7 +24,7 @@
         <a-input v-model="iptContent" placeholder="请输入日志关键内容" />
       </a-form-item>
       <a-form-item>
-        <a-button @click="seeAbout" icon="search" type="primary">查询日志</a-button>
+        <a-button @click="seeAbout" type="primary">查询日志</a-button>
       </a-form-item>
     </a-form>
 
