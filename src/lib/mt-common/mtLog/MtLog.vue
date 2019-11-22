@@ -150,7 +150,7 @@ export default {
       })
         .then(res => {
           this.data = res.result.list
-          this.pageOptions.total = res.result.size
+          this.pageOptions.total = res.result.size|| 0
         })
         .catch((error) => {
         })

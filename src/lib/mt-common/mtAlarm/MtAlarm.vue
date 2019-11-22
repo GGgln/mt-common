@@ -214,7 +214,7 @@ export default {
         data: that.postData
       }).then(res => {
         that.data = res.data.alarmShowInfos
-        that.pageOptions.total = res.data.totalCount
+        that.pageOptions.total = res.data.totalCount || 0
         that.postData.currentPage = res.data.currentPage
         that.pageOptions.current = res.data.currentPage
       }).catch(() => {})

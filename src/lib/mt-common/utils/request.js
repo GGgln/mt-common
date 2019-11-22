@@ -24,7 +24,7 @@ service.interceptors.response.use(
     //  code为非0是抛错 可结合自己业务进行修改
     const res = response.data
     console.log('HTTP >>>>> ', response.request.responseURL, response.request.status, response.data)
-    if (res.code !== '0') {
+    if (res.code != 0) {
       return Promise.reject(res)
     } else {
       return response.data

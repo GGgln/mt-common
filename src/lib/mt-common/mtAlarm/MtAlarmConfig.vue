@@ -9,7 +9,7 @@
             <template slot="ruleDesc" slot-scope="text, record">
                 <!-- 编辑 -->
                 <span v-if="record.ruleDesc">{{ record.ruleDesc }}</span>
-                <a-icon @click="showModal(record)" style="float: right;font-size: 0.16rem;margin-top: 0.05rem" type="form" />
+                <a-icon @click="showModal(record)" style="float: right;font-size: 16px;margin-top: 5px" type="form" />
             </template>
             <template slot="validTag" slot-scope="text, record">
                 <!-- 启动 -->
@@ -17,11 +17,11 @@
             </template>
             <template slot="ignoreTag" slot-scope="text, record">
                 <!-- 静音 -->
-                <div @click="voice(record)" style="float: right;position: relative;">
-                    <img  style="width: 25px;height:20px;float: right; position: relative;" src="./ht.png" alt="" />
+                <div @click="voice(record)" style="position: relative;">
+                    <img  style="width: 25px;height:20px;position: relative;" src="./ht.png" alt="" />
                     <p
                         v-if="record.ignoreTag"
-                        style="width: 2px;height: 0.25rem;position: absolute;top: 50%;left: 50%;background: red;transform:rotate(-45deg);margin-top:-0.125rem;"
+                        style="width: 2px;height: 25px;position: absolute;top: 50%;left: 50%;background: red;transform:rotate(-45deg);margin-top:-12.5px;"
                     ></p>
                 </div>
             </template>
@@ -130,7 +130,7 @@
                     </a-col>
                     <a-col span="3">
                         <a-form-item v-if="type == 2" :colon="false">
-                            <span style="margin-left: 0.1rem;">{{ editData.alarmRuleVo.unit }}</span>
+                            <span style="margin-left: 10px;">{{ editData.alarmRuleVo.unit }}</span>
                         </a-form-item>
                     </a-col>
                 </a-row>
@@ -466,8 +466,7 @@ export default {
             this.formModel.resetFields(); // model重置
             let this_ = this;
             let url = this.baseUrl+this_.apis.alarmEdit;
-            request
-                .get(url + data.sid)
+            request.get(url + data.sid)
                 .then(response => {
                     response.data.alarmRuleVo.opratorType = Number(response.data.alarmRuleVo.opratorType);
                     this_.editData = response.data;
@@ -485,7 +484,7 @@ export default {
                     this.visible = true;
                 })
                 .catch(error => {
-                    // this_.$message.error('获取本条数据失败');
+                    this_.$message.error('获取本条数据失败');
                 });
         },
         handleOk(e) {
@@ -560,7 +559,7 @@ export default {
                 .post(url, this_.postData)
                 .then(response => {
                     this_.data = response.data.alarmSettingVoList;
-                    this_.pageOptions.total = response.data.totalCount;
+                    this_.pageOptions.total = response.data.totalCount || 0;
                     this_.postData.currPage = response.data.currentPage;
                     this_.pageOptions.current = response.data.currentPage;
                 })

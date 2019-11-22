@@ -157,7 +157,7 @@ export default {
         }
       })
         .then(res => {
-          this.pageOptions.total = res.data.totalCount
+          this.pageOptions.total = res.data.totalCount|| 0
           this.data = res.data.userJsons
         })
         .catch(() => {
