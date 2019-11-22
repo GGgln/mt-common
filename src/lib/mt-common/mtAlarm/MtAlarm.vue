@@ -46,7 +46,7 @@
       </template>
       <template slot="alarmStatus" slot-scope="text, record">
         <!-- <span>{{text == 1 ? '报警' : text == 0 ? '消警' : text == 2 ? '待复位' : '-'}}</span> -->
-        <span>{{formatAlarmState(text)}}</span>
+        <span>{{formatAlarmState(text) || '--'}}</span>
       </template>
       <template slot="resetType" slot-scope="text, record">
         <a v-if="text != 1" @click="resetAlarm(record)">{{ text == 2 ? '复位' : text == 4 ? '确认': ''}}</a>
@@ -220,7 +220,7 @@ export default {
       }).catch(() => {})
     },
     formatAlarmState (state) {
-      let arr = this.statusData.filter(item => item.TypeClassId == 1)
+      let arr = this.statusData.filter(item => item.TypeClassId == state)
       if(arr.length > 0) {
         return arr[0].TypeClassDesc
       }

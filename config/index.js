@@ -13,7 +13,7 @@ module.exports = {
     proxyTable: {
       // 保留模板
       '/port8766': {
-        target: 'http://192.168.6.254:5565',//王超
+        target: 'http://192.168.6.254:5565',//
         ws: true,
         changeOrigin: true,
         pathRewrite: {
@@ -22,9 +22,6 @@ module.exports = {
       },
       '/mtCommonApi': {
         target: 'http://192.168.14.49:60002/',//李旭
-        // target: 'http://192.168.12.215:60001/',//峰
-        // target: 'http://192.168.6.254:60001/', // 名
-        // target: 'http://192.168.3.13:8766/',//峰
         changeOrigin: true, // 跨域
         pathRewrite: {
           '^/mtCommonApi': '/'
