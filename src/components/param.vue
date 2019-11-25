@@ -7,7 +7,7 @@
 export default {
   data () {
     return {
-      idParametersClass: 1
+      idParametersClass: 0
     }
   },
   mounted () {}

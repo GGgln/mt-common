@@ -30,7 +30,7 @@
                   <a-select
                     v-if="param.parameterTypeID == 3"
                     :disabled="!editStatus || !param.isWrite"
-                    v-decorator="[`${param.id}`,{initialValue:param.parameterValue,rules: [{required:param.isRequired,message:`请选择${param.parameterDesc}`}]}]"
+                    v-decorator="[`${param.id}`,{initialValue:param.parameterValue,rules: [{required:param.isRequired && param.isWrite,message:`请选择${param.parameterDesc}`}]}]"
                     style="100%"
                   >
                     <a-select-option
@@ -39,13 +39,16 @@
                       :key="k"
                     >{{el.TypeClassDesc}}</a-select-option>
                   </a-select>
-
+                  <a-switch 
+                     v-else-if='param.parameterTypeID == 4' 
+                    :disabled="!editStatus || !param.isWrite"
+                    v-decorator="[`${param.id}`,{initialValue:param.parameterValue == 1}]" />
                   <a-input
                     v-else
                     :disabled="!editStatus || !param.isWrite"
                     v-decorator="[
                   `${param.id}`,
-                  { initialValue: param.parameterValue ,rules: [{required:param.isRequired,message:`请输入${param.parameterDesc}`},{validator:validatorCustom(param)}]}
+                  { initialValue: param.parameterValue ,rules: [{required:param.isRequired && param.isWrite,message:`请输入${param.parameterDesc}`},{validator:validatorCustom(param)}]}
                   ]"
                   />
                 </a-form-item>
@@ -71,7 +74,7 @@ export default {
   props: {
     baseUrl: {
       type: String,
-      default: "/port8766"
+      default: "/mtCommonApi"
     },
     idParametersClass: {
       type: [String, Number],
@@ -141,11 +144,17 @@ export default {
       let self = this;
       let url = `${this.baseUrl}/api/commenParameter/updateParameter`;
       this.form.validateFields((err, value) => {
+        console.log(value)
         if (!err) {
           let data = JSON.parse(JSON.stringify(self.paramData));
           data.children.map(group => {
             group.commenParameters.map(el => {
-              el.parameterValue = value[el.id];
+              if(el.parameterTypeID == 4){
+                el.parameterValue = value[el.id]?1:0;
+              } else{
+                el.parameterValue = value[el.id];
+              }
+              
               return el;
             });
           });
