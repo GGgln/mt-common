@@ -228,13 +228,13 @@ const columns = [
     {
         title: '报警等级',
         dataIndex: 'errorLevel',
-        width:'15%',
+        width:'16%',
         scopedSlots: { customRender: 'errorLevel' }
     },
     {
         title: '报警名称',
         dataIndex: 'name',
-        width:'15%',
+        width:'18%',
         scopedSlots: { customRender: 'name' }
     },
     {
@@ -264,7 +264,7 @@ const columns = [
         scopedSlots: { customRender: 'ignoreTag' }
     },
     {
-        title: '删除',
+        title: '操作',
         dataIndex: 'deleteTag',
         align: 'center',
         width:'8%',
@@ -645,6 +645,9 @@ export default {
       margin-top: -8px;
 
   }  
+  .ant-table-tbody > tr > td{
+        word-break: break-all;
+   }
 }
 
 </style>
