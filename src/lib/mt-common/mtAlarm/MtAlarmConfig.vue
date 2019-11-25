@@ -214,8 +214,8 @@
                         </a-form-item>
                     </a-col>
                 </a-row>
-        
-                 
+
+
             </a-form>
         </a-modal>
     </div>
@@ -228,11 +228,13 @@ const columns = [
     {
         title: '报警等级',
         dataIndex: 'errorLevel',
+        width:'15%',
         scopedSlots: { customRender: 'errorLevel' }
     },
     {
         title: '报警名称',
         dataIndex: 'name',
+        width:'15%',
         scopedSlots: { customRender: 'name' }
     },
     {
@@ -243,6 +245,7 @@ const columns = [
     {
         title: '报警设置',
         dataIndex: 'ruleDesc',
+        width:'18%',
         scopedSlots: { customRender: 'ruleDesc' }
     },
 
@@ -250,18 +253,21 @@ const columns = [
         title: '启用',
         dataIndex: 'validTag',
         align: 'center',
+        width:'8%',
         scopedSlots: { customRender: 'validTag' }
     },
     {
         title: '声音',
         dataIndex: 'ignoreTag',
         align: 'center',
+        width:'8%',
         scopedSlots: { customRender: 'ignoreTag' }
     },
     {
         title: '删除',
         dataIndex: 'deleteTag',
         align: 'center',
+        width:'8%',
         scopedSlots: { customRender: 'deleteTag' }
     }
 ];
@@ -347,7 +353,7 @@ export default {
                     this.requestFormList();
                 }
             },
-            
+
         };
     },
     mounted() {
@@ -452,7 +458,7 @@ export default {
                 }else{
                 this.switchData[var1] = false;
                     }
-                
+
             }
             this.formModel.resetFields(); // model重置
             this.visible = true;
