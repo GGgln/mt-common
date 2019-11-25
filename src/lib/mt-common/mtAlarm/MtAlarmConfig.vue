@@ -1,5 +1,5 @@
 <template>
-    <div class="param-alam">
+    <div class="param-alarm">
         <a-form class="filter_box" :form="formData" layout="inline">
             <a-form-item label="关键字查询：" style="float: left;"><a-input class="inp-gjc" v-decorator="['name']" placeholder="请输入关键字" /></a-form-item>
             <a-form-item style="float: right;margin-left: 10px;"><a-button  type="primary" @click="toSearch">查询</a-button></a-form-item>
@@ -214,8 +214,8 @@
                         </a-form-item>
                     </a-col>
                 </a-row>
-        
-                 
+
+
             </a-form>
         </a-modal>
     </div>
@@ -228,11 +228,13 @@ const columns = [
     {
         title: '报警等级',
         dataIndex: 'errorLevel',
+        width:'15%',
         scopedSlots: { customRender: 'errorLevel' }
     },
     {
         title: '报警名称',
         dataIndex: 'name',
+        width:'15%',
         scopedSlots: { customRender: 'name' }
     },
     {
@@ -243,6 +245,7 @@ const columns = [
     {
         title: '报警设置',
         dataIndex: 'ruleDesc',
+        width:'18%',
         scopedSlots: { customRender: 'ruleDesc' }
     },
 
@@ -250,18 +253,21 @@ const columns = [
         title: '启用',
         dataIndex: 'validTag',
         align: 'center',
+        width:'8%',
         scopedSlots: { customRender: 'validTag' }
     },
     {
         title: '声音',
         dataIndex: 'ignoreTag',
         align: 'center',
+        width:'8%',
         scopedSlots: { customRender: 'ignoreTag' }
     },
     {
         title: '删除',
         dataIndex: 'deleteTag',
         align: 'center',
+        width:'8%',
         scopedSlots: { customRender: 'deleteTag' }
     }
 ];
@@ -347,7 +353,7 @@ export default {
                     this.requestFormList();
                 }
             },
-            
+
         };
     },
     mounted() {
@@ -452,7 +458,7 @@ export default {
                 }else{
                 this.switchData[var1] = false;
                     }
-                
+
             }
             this.formModel.resetFields(); // model重置
             this.visible = true;
@@ -627,15 +633,18 @@ export default {
 </script>
 
 <style lang="scss">
-.ant-form-inline .ant-form-item {
-    margin-right: 0 !important;
-}
-.filter_box {
-    width: 100%;
-    overflow: hidden;
-    margin-bottom: 16px;
-    line-height: 32px !important;
-    margin-top: -8px;
+.param-alarm{
+  .ant-form-inline .ant-form-item {
+      margin-right: 0 !important;
+  }
+  .filter_box {
+      width: 100%;
+      overflow: hidden;
+      margin-bottom: 16px;
+      line-height: 32px !important;
+      margin-top: -8px;
 
+  }  
 }
+
 </style>
