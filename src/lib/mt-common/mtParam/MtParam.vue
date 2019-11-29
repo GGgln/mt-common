@@ -42,7 +42,8 @@
                   <a-switch 
                      v-else-if='param.parameterTypeID == 4' 
                     :disabled="!editStatus || !param.isWrite"
-                    v-decorator="[`${param.id}`,{initialValue:param.parameterValue == 1}]" />
+                    
+                    v-decorator="[`${param.id}`,{initialValue:param.parameterValue == 1,valuePropName:'checked'}]" />
                   <a-input
                     v-else
                     :disabled="!editStatus || !param.isWrite"
@@ -74,7 +75,7 @@ export default {
   props: {
     baseUrl: {
       type: String,
-      default: "/mtCommonApi"
+      default: "http://192.168.6.9:8198"
     },
     idParametersClass: {
       type: [String, Number],
@@ -150,6 +151,7 @@ export default {
           data.children.map(group => {
             group.commenParameters.map(el => {
               if(el.parameterTypeID == 4){
+                console.log(value[el.id],el)
                 el.parameterValue = value[el.id]?1:0;
               } else{
                 el.parameterValue = value[el.id];
