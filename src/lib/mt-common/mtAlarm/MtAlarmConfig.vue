@@ -393,8 +393,8 @@ export default {
   props: {
     baseUrl: {
       type: String,
-      // default: 'http://192.168.6.16:5565/'
-      default: 'http://192.168.6.149:5565/'
+      default: 'http://192.168.6.16:5565/'
+      // default: 'http://192.168.6.149:5565/'
     },
     apis: {
       type: Object,
