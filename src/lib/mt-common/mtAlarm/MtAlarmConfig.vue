@@ -87,6 +87,30 @@
             </a-form-item>
           </a-col>
         </a-row>
+        <a-row :gutter="24">
+          <a-col span="24">
+            <a-form-item label="报警分类：" :label-col="{ span: 6 }" :wrapper-col="{ span: 17 }">
+              <a-select
+                v-decorator="[
+                  'alarmType',
+                  {
+                    initialValue: type === 2 ? editData.alarmType : '',
+                    rules: [{ required: true, message: '请选择报警分类' }]
+                  }
+                ]"
+                placeholder="请选择"
+              >
+                <a-select-option :key="alarms.id" :value="alarms.id" v-for="alarms in alarmType">{{ alarms.desc }}</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+        </a-row>
+        <a-form-item label="筛选条件表达式" class="stepFormText" :label-col="{ span: 6 }" :wrapper-col="{ span: 17 }">
+          <a-input
+            type="text"
+            v-decorator="['filterExpress', { initialValue: type === 2 ? editData.filterExpress : '', rules: [{ required: true, message: '请输入筛选条件表达式' }] }]"
+          />
+        </a-form-item>
         <a-row :gutter="20">
           <a-col span="18">
             <a-form-item label="错误码：" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }">
@@ -307,9 +331,9 @@ const apis = {
   alarmUpdate: `api/standardization/cn/alarm/alarmSpec/update`, // 报警设置//编辑单个
   alarmLevel: `api/standardization/cn/alarm/alarmSpec/errorLevel/`, // 报警设置//根据报警码获取报警级别
   alarmArtificial: `api/standardization/cn/alarm/alarmSpec/resetType` ,// 报警设置//人工复位类型
-  alarmArtificial: `api/standardization/cn/alarm/alarmSpec/resetType` ,// 报警设置//人工复位类型
  alarmRadio: `/api/standardization/cn/alarm/rule/type` ,// 报警设置//单选类型
  alarmApiUrl: `/api/standardization/cn/alarm/alarmSpec/refresh` ,// 报警设置//刷新后台
+ alarmTypeUrlApi: `/api/standardization/cn/alarm/alarmType` ,// 报警设置//获取报警类型
 }
 export default {
   name: 'mt-alarm-config',
@@ -326,6 +350,7 @@ export default {
       alarmSetpropertyData: [], // 部件属性
       alarmSetcontrastData: [], // 对比数据
       artificialType: [], // 人工复位类型
+      alarmType: [], // 报警类型
       radioType: [], // 单选类型
       visible: false, // model显示隐藏
       formData: this.$form.createForm(this),
@@ -347,6 +372,8 @@ export default {
         ignoreTag: false,
         validTag: false,
         standbyEffective: false,
+        alarmType:null,
+        filterExpress:null,
         alarmRuleVo: {
           componentPropertyId: null,
           opratorType: null,
@@ -389,6 +416,7 @@ export default {
     this.alarmSetcontrast()
     this.manualReduction()
     this.radioApi()
+    this.alarmTypeWay ()
   },
   props: {
     baseUrl: {
@@ -423,6 +451,18 @@ export default {
           })
         }
       }
+    },
+    alarmTypeWay () {
+      // 报警类型
+      let this_ = this
+      let url = this.baseUrl + this_.apis.alarmTypeUrlApi
+      request
+        .get(url)
+        .then(response => {
+          this_.alarmType = response.data
+        })
+        .catch(error => {
+        })
     },
     manualReduction () {
       // 人工复位类型
@@ -531,6 +571,7 @@ export default {
         .get(url + data.sid)
         .then(response => {
           response.data.alarmRuleVo.opratorType = Number(response.data.alarmRuleVo.opratorType)
+          response.data.alarmType = String(response.data.alarmType)
           this_.editData = response.data
           this_.switchData.validTag = response.data.validTag
           this_.switchData.affectStartTag = response.data.affectStartTag
@@ -559,6 +600,8 @@ export default {
             this.addData.desc = values.desc
             this.addData.errorCode = values.errorCode
             this.addData.resetType = values.resetType
+            this.addData.alarmType = values.alarmType
+            this.addData.filterExpress = values.filterExpress
             this.addData.alarmRuleVo.componentPropertyId = values.componentPropertyId
             this.addData.alarmRuleVo.opratorType = values.opratorType
             this.addData.alarmRuleVo.threshold = values.threshold
@@ -585,6 +628,8 @@ export default {
             this.editData.alarmRuleVo.threshold = values.threshold
             this.editData.errorCode = values.errorCode
             this.editData.resetType = values.resetType
+            this.editData.alarmType = values.alarmType
+            this.editData.filterExpress = values.filterExpress
             this.editData.alarmRuleVo.type = values.type
             this.editData.alarmRuleVo.ruleClass = values.ruleClass
             var param = this.editData
