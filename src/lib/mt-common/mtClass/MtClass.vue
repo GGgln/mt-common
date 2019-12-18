@@ -158,7 +158,7 @@ export default {
   props: {
     baseUrl: {
       type: String,
-      default: "/classCommonApi"
+      default: "http://192.168.6.16:8198/"
     }
   },
   beforeCreate() {
@@ -236,6 +236,7 @@ export default {
           let data = JSON.parse(JSON.stringify(self.scheduleList));
           data = data.map((item, i) => {
             let newItem = value.scheduleList[i];
+            newItem.groupDesc = newItem.groupDesc.trim()
             item = Object.assign({}, item, newItem, {
               startTimeStr: util.formatTime(newItem.startTimeStr._d).timeToS
             });
@@ -246,7 +247,7 @@ export default {
           data.forEach((el,j) => {
             self.classList.forEach((item, index) => {
               if (el.groupDesc == item.groupDesc) {
-                self.checkFlag = 1;
+                console.log(el.groupDesc,'-----相同的名字')
                 indexArr.push(index)
                 recordArr.push(item);
                 originIndexArr.push(j);
@@ -254,7 +255,7 @@ export default {
               }
             });
           });
-          if (self.checkFlag == 1) {
+          if (indexArr.length > 0) {
             self.$confirm({
               title: "重名提示",
               content:
@@ -262,12 +263,14 @@ export default {
               cancelText: "更新",
               okText: "恢复",
               onOk() {
-                self.checkFlag = 0;
                 originIndexArr.forEach((el,i)=>{
                   let item = Object.assign({},originRecordArr[i],{groupId:recordArr[i].groupId})
                   data.splice(el,1,item)
-                  self.classList.splice(indexArr[i], 1);
                 })
+                self.classList = self.classList.filter((el,i)=>{
+                  return indexArr.indexOf(i) == -1
+                })
+
                 self.scheduleList = data
               },
               onCancel() {
@@ -287,6 +290,10 @@ export default {
         this.initClassSchedule();
         this.initClassList();
         this.editStatus = false;
+      }).catch(err=>{
+        this.$message.success("更新失败");
+        this.initClassSchedule();
+        this.initClassList();
       });
     },
     computeDate(timeStr, hours) {
