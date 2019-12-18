@@ -1,6 +1,10 @@
 {
   "name": "mt-common",
+<<<<<<< HEAD
   "version": "1.3.14",
+=======
+  "version": "1.3.16",
+>>>>>>> 2ffb2d5be4c7fcbb4b5c489c4aeea9bfc0529b06
   "description": "报警，日志，班组，登录，参数等公共组件",
   "main": "index.js",
   "scripts": {
@@ -18,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/GGgln/mt-common/issues"
   },
-  "homepage": "https://github.com/GGgln/mt-common#readme"
+  "homepage": "https://github.com/GGgln/mt-common#readme",
+  "dependencies": {
+    "mt-common": "^1.3.12"
+  }
 }
