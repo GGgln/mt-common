@@ -8,6 +8,7 @@ import mtLogin from './mtLogin/MtLogin'
 import mtParam from './mtParam/MtParam'
 import mtClass from './mtClass/MtClass'
 import moduleComponents from './modules'
+import mtPlcDebug from './mtPlcDebug/PlcDebug'
 
 
 
@@ -24,7 +25,8 @@ const components = [
   mtClass,
   mtSet,
   mtRole,
-  mtAlarmConfig
+  mtAlarmConfig,
+  mtPlcDebug
 ]
 
 export default {

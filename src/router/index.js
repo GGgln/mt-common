@@ -10,10 +10,16 @@ import login from '@/components/login'
 import _class from '@/components/class'
 import set from '@/components/set'
 import role from '@/components/role'
+import pclDebug from '@/components/plcDebug'
 Vue.use(Router)
 
 export default new Router({
   routes: [
+    {
+      path: '/pclDebug',
+      name: 'pclDebug',
+      component: pclDebug
+    },
     {
       path: '/alarmConfig',
       name: 'alarmConfig',
