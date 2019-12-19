@@ -144,7 +144,7 @@
                   }
                 ]"
               >
-                <a-radio :value="el.id" :key="el.id" v-for=" el in radioType">{{el.name}}</a-radio>
+                <a-radio :value="el.id" :key="el.id" v-for="el in radioType">{{el.name}}</a-radio>
               </a-radio-group>
             </a-form-item>
           </a-col>
@@ -331,9 +331,9 @@ const apis = {
   alarmUpdate: `api/standardization/cn/alarm/alarmSpec/update`, // 报警设置//编辑单个
   alarmLevel: `api/standardization/cn/alarm/alarmSpec/errorLevel/`, // 报警设置//根据报警码获取报警级别
   alarmArtificial: `api/standardization/cn/alarm/alarmSpec/resetType` ,// 报警设置//人工复位类型
- alarmRadio: `api/standardization/cn/alarm/rule/type` ,// 报警设置//单选类型
- alarmApiUrl: `api/standardization/cn/alarm/alarmSpec/refresh` ,// 报警设置//刷新后台
- alarmTypeUrlApi: `api/standardization/cn/alarm/alarmType` ,// 报警设置//获取报警类型
+  alarmRadio: `api/standardization/cn/alarm/rule/type` ,// 报警设置//单选类型
+  alarmApiUrl: `api/standardization/cn/alarm/alarmSpec/refresh` ,// 报警设置//刷新后台
+  alarmTypeUrlApi: `api/standardization/cn/alarm/alarmType` ,// 报警设置//获取报警类型
 }
 export default {
   name: 'mt-alarm-config',
