@@ -49,7 +49,8 @@
         <span>{{formatAlarmState(text) || '--'}}</span>
       </template>
       <template slot="resetType" slot-scope="text, record">
-        <a v-if="text != 1" @click="resetAlarm(record)">{{ text == 2 ? '复位' : text == 4 ? '确认': ''}}</a>
+        <a style="margin-right:10px;" v-if="text != 1" @click="resetAlarm(record)">{{ text == 2 ? '复位' : text == 4 ? '确认': ''}}</a>
+         <span style="color:#2c9ae6;cursor:pointer;" v-if="record.isReadyFlg" @click="showVideo(record)">视频回放</span>
       </template>
     </a-table>
   </div>
@@ -271,6 +272,9 @@ export default {
     handleTableChange(pagination, filters, sorter) {
       ({field: this.postData.sortField, order: this.postData.sortType} = sorter)
       this.requestFormList()
+    },
+    showVideo(data){
+      this.$emit('showVideoDialog', data)
     }
   }
 }

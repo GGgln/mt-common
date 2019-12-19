@@ -21,7 +21,7 @@ module.exports = {
         }
       },
       '/mtCommonApi': {
-        target: 'http://192.168.14.49:60002/',//李旭
+        target: 'http://192.168.15.70:5565/',//李旭
         changeOrigin: true, // 跨域
         pathRewrite: {
           '^/mtCommonApi': '/'

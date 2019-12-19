@@ -1,6 +1,6 @@
 <template>
     <div class="alarm">
-        <mt-alarm baseUrl="/port8766"></mt-alarm>
+        <mt-alarm baseUrl="/port8766" @showVideoDialog="show"></mt-alarm>
         <!-- <a-from :form='form'></a-from> -->
     </div>
 </template>
@@ -64,6 +64,11 @@ export default {
       requestUrls_default
     }
   },
-  mounted () {}
+  mounted () {},
+  methods:{
+    show(data){
+      console.log('data alarm-------', data)
+    }
+  }
 }
 </script>
