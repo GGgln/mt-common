@@ -1,11 +1,14 @@
 <template>
   <div id="mt_PersonalSetting" class="container">
     <div class="title-btn">
-      <div class="child_btn"><a-button style="margin-left:20px;" type="primary" @click="editUser">保存</a-button></div>
+      <div class="child_btn">
+         <a-button class="change-pawword" type="default" @click="showModal">修改密码</a-button>
+        <a-button style="margin-left:20px;" type="primary" @click="editUser">保存设置</a-button>
+        </div>
     </div>
     <div class="title-psw">
       <h4 class="subtitle">基本信息</h4>
-      <a-button class="change-pawword" type="primary" @click="showModal">修改密码</a-button>
+     
     </div>
     <a-modal centered :maskClosable="false" title="修改密码" v-model="visible" @cancel="noModel" @ok="okModel" okText="保存" cancelText="取消">
       <a-form :form="formModel">
