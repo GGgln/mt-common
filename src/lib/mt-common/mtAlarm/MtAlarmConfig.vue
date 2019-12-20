@@ -6,7 +6,7 @@
       <a-form-item style="margin-left: 20px;"><a-button @click="newShowModal()" type="primary">添加</a-button></a-form-item>
       <a-form-item style="margin-left: 20px;"><a-button @click="refreshApi" type="primary">刷新</a-button></a-form-item>
     </a-form>
-    <a-table :columns="columns" :dataSource="data" :pagination="pageOptions" rowKey="sid">
+    <a-table id="table_blue" :columns="columns" :dataSource="data" :pagination="pageOptions" rowKey="sid">
       <template slot="ruleDesc" slot-scope="text, record">
         <!-- 编辑 -->
         <span v-if="record.ruleDesc">{{ record.ruleDesc }}</span>

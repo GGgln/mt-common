@@ -5,8 +5,8 @@
       <a-form class="filter_box" :form="formData" layout="inline">
         <a-form-item><a-input style="width:100%;"  v-decorator="['name']" placeholder="请输入姓名" /></a-form-item>
         <a-form-item>
-          <a-button icon="search" type="primary" @click="seeAbout">查询角色</a-button>
-          <a-button icon="plus" style="margin-left:20px;" type="primary" @click="showModal">新建角色</a-button>
+          <a-button type="primary" @click="seeAbout">查询</a-button>
+          <a-button style="margin-left:20px;" type="primary" @click="showModal">新建</a-button>
         </a-form-item>
       </a-form>
       <!-- 新建 -->
@@ -48,15 +48,10 @@
       <!-- table表格 -->
       <a-table id="table_blue" :pagination="pageOptions" :columns="columns" :dataSource="data">
         <template slot="action" slot-scope="text, record">
-          <a-row>
-            <a-col :span="8"><a href="javascript:;" @click="showModalEdit(record)">编辑</a></a-col>
-
-            <a-col :span="8">
-              <a-popconfirm :title="alertMin" @confirm="deleData(record)" placement="top" okText="确定" cancelText="取消">
+          <a href="javascript:;" @click="showModalEdit(record)" style="margin-right:10px;">编辑</a>
+          <a-popconfirm :title="alertMin" @confirm="deleData(record)" placement="top" okText="确定" cancelText="取消">
                 <a href="javascript:;" @click="deleCkeck(record)">删除</a>
               </a-popconfirm>
-            </a-col>
-          </a-row>
         </template>
       </a-table>
     </div>
