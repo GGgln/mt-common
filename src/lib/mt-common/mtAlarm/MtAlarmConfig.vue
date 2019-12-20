@@ -744,9 +744,8 @@ export default {
   .filter_box {
     width: 100%;
     overflow: hidden;
-    margin-bottom: 16px;
+    margin-bottom: 20px;
     line-height: 32px !important;
-    margin-top: -8px;
     text-align: right;
   }
   .ant-table-tbody > tr > td {

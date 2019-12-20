@@ -9,23 +9,18 @@
       <a-form class="filter_box" :form="formData" layout="inline">
         <a-form-item><a-input style="width:100%;" v-model="iptContent" placeholder="请输入姓名" /></a-form-item>
         <a-form-item>
-          <a-button icon="search" @click="seeAbout()" type="primary">查询用户</a-button>
-          <a-button icon="plus" style="margin-left:20px;" type="primary" @click="showModal">新建用户</a-button>
+          <a-button @click="seeAbout()" type="primary">查询</a-button>
+          <a-button style="margin-left:20px;" type="primary" @click="showModal">新建</a-button>
         </a-form-item>
       </a-form>
 
       <a-table id="table_blue" :pagination="pageOptions" :columns="columns" :dataSource="data">
         <template slot="action" slot-scope="text, record">
-          <a-row>
-            <a-col :span="8"><a v-if="record.deleteFlg" href="javascript:;" @click="showModalEdit(record)">编辑</a></a-col>
-            <a-col :span="8"><a v-if="record.deleteFlg" href="javascript:;" @click="detailsData(record)">详情</a></a-col>
-
-            <a-col :span="8">
-              <a-popconfirm title="确定要删除该用户吗？" @confirm="deleData(record)" placement="top" okText="确定" cancelText="取消">
+          <a v-if="record.deleteFlg" href="javascript:;"  style="margin-right:10px;" @click="showModalEdit(record)">编辑</a>
+          <a v-if="record.deleteFlg" href="javascript:;" style="margin-right:10px;" @click="detailsData(record)">详情</a>
+          <a-popconfirm title="确定要删除该用户吗？" @confirm="deleData(record)" placement="top" okText="确定" cancelText="取消">
                 <a v-if="record.deleteFlg" href="javascript:;">删除</a>
               </a-popconfirm>
-            </a-col>
-          </a-row>
         </template>
       </a-table>
     </div>
