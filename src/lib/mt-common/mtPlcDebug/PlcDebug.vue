@@ -193,6 +193,7 @@ export default {
     border-bottom: 1px solid rgba(239, 239, 239, 1);
     margin-bottom: 25px;
     ul {
+      padding: 0;
       list-style: none;
       overflow: hidden;
       height: 50px;
