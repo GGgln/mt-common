@@ -99,7 +99,6 @@ export default {
       if (el.regularExpression) {
         // let reg = /^[0-9]([.][0-9]{1,2})?$|^[1-9]\d([.][0-9]{1,2})?$|^10[0]([.]{0})?$/
         let reg = new RegExp(el.regularExpression);
-        console.log(el.regularExpression, reg);
         return (rule, value, callback) => {
           if (value && !reg.test(value)) {
             callback(new Error(el.ruleDesc));

@@ -28,17 +28,13 @@
               <h3>
                 <span>{{group.parametersClassDesc}}</span>
               </h3>
-              <div class="third_tit">
-                <span
-                  v-for="(title,indexSubTitle) in group.children"
-                  :class="group.currentIndex == indexSubTitle?'on':''"
-                  :key="indexSubTitle"
-                  @click="group.currentIndex = indexSubTitle"
-                >{{title.parametersClassDesc}}</span>
-              </div>
               <div v-for="(groupThird,indexThird) in group.children">
+                <div class="sub_div">
+                  <span>{{groupThird.parametersClassDesc}}</span>
+                  <h6 @click='opeaParam(i,indexThird,groupThird.isOpen)'>{{groupThird.isOpen?'折叠':'展开'}}</h6>
+                </div>
                 <param-temp
-                  v-show="indexThird == group.currentIndex"
+                  v-show='groupThird.isOpen'
                   :editStatus="editStatus"
                   :labelCol="labelCol"
                   :wrapperCol="wrapperCol"
@@ -106,7 +102,12 @@ export default {
       let url = `${this.baseUrl}/api/commenParameter/getParameter?idParametersClass=${this.idParametersClass}`;
       request.get(url).then(res => {
         res.data.children.map(el => {
-          el.currentIndex = 0;
+          if(el.children && el.children.length){
+            el.children.map(param=>{
+              param.isOpen = true
+              return param
+            })
+          }
           return el;
         });
         this.paramData = res.data;
@@ -116,7 +117,9 @@ export default {
       this.form.resetFields();
       this.editStatus = false;
     },
-    assignment(el) {},
+    opeaParam(i,j,val) {
+      this.paramData.children[i].children[j].isOpen = !val;
+    },
     save() {
       let self = this;
       let url = `${this.baseUrl}/api/commenParameter/updateParameter`;
@@ -146,11 +149,17 @@ export default {
             this.editStatus = false;
           });
         } else {
+          let indexSet = new Set()
           let errorArr = Object.keys(errors);
-          let [id, type, groupIndex, groupSubIndex] = errorArr[0].split('-');
-          if (groupSubIndex >= 0) {
-            this.paramData.children[groupIndex].currentIndex = groupSubIndex;
-          }
+          errorArr.forEach(item=>{
+            let [id, type, groupIndex, groupSubIndex] = item.split('-');
+            indexSet.add(groupIndex+'-'+groupSubIndex)
+          })
+          Array.from(indexSet).forEach(el=>{
+            let [i,j] = el.split('-')
+            this.paramData.children[i].children[j].isOpen = true;
+          })
+         
         }
       });
     }

@@ -21,8 +21,8 @@ module.exports = {
         }
       },
       '/mtCommonApi': {
-        // target: 'http://192.168.14.49:60002/',//李旭
-        target: 'http://192.168.6.16:8198/',//李旭
+        target: 'http://192.168.14.49:60002/',//李旭
+        // target: 'http://192.168.6.16:8198/',//李旭
         changeOrigin: true, // 跨域
         pathRewrite: {
           '^/mtCommonApi': '/'
@@ -47,6 +47,13 @@ module.exports = {
         changeOrigin: true, // 跨域
         pathRewrite: {
           '^/Common': '/'
+        }
+      },
+      '/http_711': {
+        target: 'http://192.168.7.11:8766/',//7.11
+        changeOrigin: true, // 跨域
+        pathRewrite: {
+          '^/http_711': '/'
         }
       }
 
