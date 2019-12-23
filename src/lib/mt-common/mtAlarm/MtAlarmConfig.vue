@@ -108,7 +108,7 @@
         <a-form-item label="筛选条件表达式" class="stepFormText" :label-col="{ span: 6 }" :wrapper-col="{ span: 17 }">
           <a-input
             type="text"
-            v-decorator="['filterExpress', { initialValue: type === 2 ? editData.filterExpress : '', rules: [{ required: true, message: '请输入筛选条件表达式' }] }]"
+            v-decorator="['filterExpress', { initialValue: type === 2 ? editData.filterExpress : ''}]"
           />
         </a-form-item>
         <a-row :gutter="20">
