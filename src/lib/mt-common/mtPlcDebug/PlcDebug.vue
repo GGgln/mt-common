@@ -6,7 +6,7 @@
           {{ title.desc }}
         </li>
       </ul>
-      <a-button style="float: right;margin:6px  44px 0 0;" type="primary" icon="sync">刷新</a-button>
+      <a-button @click="listData" style="float: right;margin:6px  44px 0 0;" type="primary" icon="sync">刷新</a-button>
     </div>
     <div class="table-data">
       <div class="table-data-min">
@@ -193,6 +193,7 @@ export default {
     border-bottom: 1px solid rgba(239, 239, 239, 1);
     margin-bottom: 25px;
     ul {
+      padding: 0;
       list-style: none;
       overflow: hidden;
       height: 50px;

@@ -105,12 +105,7 @@
             </a-form-item>
           </a-col>
         </a-row>
-        <a-form-item label="筛选条件表达式" class="stepFormText" :label-col="{ span: 6 }" :wrapper-col="{ span: 17 }">
-          <a-input
-            type="text"
-            v-decorator="['filterExpress', { initialValue: type === 2 ? editData.filterExpress : '', rules: [{ required: true, message: '请输入筛选条件表达式' }] }]"
-          />
-        </a-form-item>
+   
         <a-row :gutter="20">
           <a-col span="18">
             <a-form-item label="错误码：" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }">
@@ -234,7 +229,12 @@
             </a-form-item>
           </a-col>
         </a-row>
-
+     <a-form-item label="筛选条件表达式" class="stepFormText" :label-col="{ span: 6 }" :wrapper-col="{ span: 17 }">
+          <a-input
+            type="text"
+            v-decorator="['filterExpress', { initialValue: type === 2 ? editData.filterExpress : ''}]"
+          />
+        </a-form-item>
         <a-row :gutter="24">
           <a-col span="12">
             <a-form-item label="是否启用" class="stepFormText" :label-col="{ span: 13 }" :wrapper-col="{ span: 11 }">
@@ -421,7 +421,7 @@ export default {
   props: {
     baseUrl: {
       type: String,
-      default: 'http://192.168.6.16:5565/'
+      default: 'http://192.168.6.16:8198/'
       // default: 'http://192.168.6.149:5565/'
     },
     apis: {
