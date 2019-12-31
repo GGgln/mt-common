@@ -43,7 +43,7 @@ module.exports = {
         }
       },
       '/Common': {
-        target: 'http://192.168.3.13:8767/',//3.13
+        target: 'http://192.168.14.49:60002/',//3.13
         changeOrigin: true, // 跨域
         pathRewrite: {
           '^/Common': '/'
