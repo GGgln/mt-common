@@ -41,17 +41,19 @@
     </a-form>
     <a-table id="table_blue" :columns="tableColumns" :dataSource="data" :pagination="pageOptions" @change="handleTableChange" :size='size'>
       <template slot="alarmLevel" slot-scope="text, record">
-        <!-- <span>{{text == 1 ? '一级' : text == 2 ? '二级' : text == 3 ? '三级' : '-'}}</span> -->
         <span :class="['status', 'status_big', text == 3 ? 'level3': text == 2? 'level2' :text == 1? 'level1': '']"></span>
       </template>
       <template slot="alarmStatus" slot-scope="text, record">
-        <!-- <span>{{text == 1 ? '报警' : text == 0 ? '消警' : text == 2 ? '待复位' : '-'}}</span> -->
         <span>{{formatAlarmState(text) || '--'}}</span>
       </template>
       <template slot="resetType" slot-scope="text, record">
         <a style="margin-right:10px;" v-if="text != 1" @click="resetAlarm(record)">{{ text == 2 ? '复位' : text == 4 ? '确认': ''}}</a>
         <span style="color:#2c9ae6;cursor:pointer;margin-right:10px;" v-if="record.isReadyFlg" @click="showVideo(record)">视频回放</span>
         <span style="color:#2c9ae6;cursor:pointer;" v-if="record.picURL" @click="showPic(record)">查看图片</span>
+        <slot name="mtTableListButtonsAfter" :row="record" />
+      </template>
+      <template :slot="defineTableCell.key" slot-scope="text, record">
+        <slot :name="defineTableCell.key" :row="record" />
       </template>
     </a-table>
   </div>
@@ -149,6 +151,10 @@ export default {
         type: Array,
         default: () => { return levelData }
       },
+      defineTableCell: {
+        type: Object,
+        default: () => { return {}}
+      }
       // alarmStatusData: {
       //   type: Array,
       //   default: () => { return statusData }
