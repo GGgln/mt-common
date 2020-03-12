@@ -11,7 +11,7 @@
     <div class="container-min">
       <a-form :form="form">
         <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="姓名:">
-          <a-input v-decorator="['employeeName', { rules: [{ required: true, message: '姓名不能为空' }] }]" />
+          <a-input v-decorator="['employeeName', { rules: [{ required: true, message: '姓名不能为空' }, { validator: constraintLengthTwo }] }]" />
         </a-form-item>
         <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="用户名:">
           <a-input v-decorator="['userName', { rules: [{ required: true, message: '用户名不能为空' }, { validator: handleUserId }] }]" />
@@ -38,14 +38,14 @@
         <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="电话:">
           <a-input v-decorator="['phone', { rules: [{ required: true, message: '电话不能为空' }, { validator: handIphone }] }]" />
         </a-form-item>
-        <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="智信:"><a-input v-decorator="['zhixin']" /></a-form-item>
+        <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="智信:"><a-input v-decorator="['zhixin', { rules: [{ validator: constraintLengthFive }] }]" /></a-form-item>
         <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="微信:" >
-          <a-input v-decorator="['wechat']" />
+          <a-input v-decorator="['wechat', { rules: [{ validator: constraintLengthFive }] }]" />
         </a-form-item>
         <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="钉钉:" >
-          <a-input v-decorator="['dingding']" />
+          <a-input v-decorator="['dingding', { rules: [{ validator: constraintLengthFive }] }]" />
         </a-form-item>
-        <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="邮箱:" ><a-input v-decorator="['mail']" /></a-form-item>
+        <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="邮箱:" ><a-input v-decorator="['mail', { rules: [{ validator: constraintLengthFive }] }]" /></a-form-item>
       </a-form>
     </div>
   </div>
@@ -118,6 +118,22 @@ export default {
       var mUserId = /^[\u4e00-\u9fa5]{1,7}$|^[\dA-Za-z_]{1,14}$/
       if (value && !value.match(mUserId)) {
         callback(new Error('中英文均可，最长14个英文或者7个汉字！'))
+        return
+      }
+      callback()
+    },
+    constraintLengthTwo(rule, value, callback) {
+      // 长度20
+      if (value && value.length>20) {
+        callback(new Error('长度不能超过20个字符！'))
+        return
+      }
+      callback()
+    },
+    constraintLengthFive(rule, value, callback) {
+      // 长度50
+      if (value && value.length>50) {
+        callback(new Error('长度不能超过50个字符！'))
         return
       }
       callback()

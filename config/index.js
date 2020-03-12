@@ -12,50 +12,39 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       // 保留模板
+      '/port8765': {
+        target: 'http://192.168.7.21:8765',
+        ws: true,
+        changeOrigin: true,
+        pathRewrite: {
+          '^/port8765': ''   //需要rewrite的,
+        }
+      },
       '/port8766': {
-        target: 'http://192.168.6.254:5565',//
+        target: 'http://192.168.7.21:8766',
         ws: true,
         changeOrigin: true,
         pathRewrite: {
           '^/port8766': ''   //需要rewrite的,
         }
       },
-      '/mtCommonApi': {
-        target: 'http://192.168.14.49:60002/',//李旭
-        // target: 'http://192.168.6.16:8198/',//李旭
-        changeOrigin: true, // 跨域
+      '/port8767': {
+        target: 'http://192.168.7.21:8767',
+        ws: true,
+        changeOrigin: true,
         pathRewrite: {
-          '^/mtCommonApi': '/'
+          '^/port8767': ''   //需要rewrite的,
         }
       },
-      '/paramCommonApi': {
-        target: 'http://192.168.15.183:60002/',//李旭
-        changeOrigin: true, // 跨域
+      '/port8768': {
+        target: 'http://192.168.7.21:8768',
+        ws: true,
+        changeOrigin: true,
         pathRewrite: {
-          '^/paramCommonApi': '/'
+          '^/pmserver': ''   //需要rewrite的,
         }
       },
-      '/classCommonApi': {
-        target: 'http://192.168.12.215:60001/',//峰
-        changeOrigin: true, // 跨域
-        pathRewrite: {
-          '^/classCommonApi': '/'
-        }
-      },
-      '/Common': {
-        target: 'http://192.168.3.13:8767/',//3.13
-        changeOrigin: true, // 跨域
-        pathRewrite: {
-          '^/Common': '/'
-        }
-      },
-      '/http_711': {
-        target: 'http://192.168.7.11:8766/',//7.11
-        changeOrigin: true, // 跨域
-        pathRewrite: {
-          '^/http_711': '/'
-        }
-      }
+      
 
     },
 

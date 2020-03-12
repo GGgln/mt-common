@@ -1,6 +1,16 @@
 <template>
     <div class="alarm">
-        <mt-alarm baseUrl="/port8766" @showVideoDialog="show"></mt-alarm>
+        <mt-alarm :defineTableCell="defineTableCell" :tableColumns="columns" baseUrl="/port8766" @showVideoDialog="show">
+          <template slot="mtTableListButtonsAfter" slot-scope="data">
+              <span @click="showNewData(data)">自定义</span>
+          </template>
+          <template slot="alarmStatus" slot-scope="data">
+              <span >报警状态</span>
+          </template>
+          <template slot="operate">
+            <span>123</span>
+          </template>
+        </mt-alarm>
         <!-- <a-from :form='form'></a-from> -->
     </div>
 </template>
@@ -61,13 +71,19 @@ export default {
   data () {
     return {
       columns,
-      requestUrls_default
+      requestUrls_default,
+      defineTableCell: {
+        key: 'alarmStatus'
+      }
     }
   },
   mounted () {},
   methods:{
     show(data){
       console.log('data alarm-------', data)
+    },
+    showNewData(data) {
+      console.log('data----', data)
     }
   }
 }
