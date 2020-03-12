@@ -20,6 +20,8 @@
                 :labelCol="labelCol"
                 :wrapperCol="wrapperCol"
                 :spanSmall="spanSmall"
+                :spanLarge="spanLarge"
+                :spanMini="spanMini"
                 :params="group.commenParameters"
                 :groupIndex="i"
               />
