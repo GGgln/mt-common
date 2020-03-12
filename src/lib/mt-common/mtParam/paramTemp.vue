@@ -1,6 +1,7 @@
 <template>
   <div class="param_list">
     <a-col
+      :md='spanMini'
       :xxl="spanLarge"
       :lg="spanSmall"
       :xl="spanSmall"
@@ -74,6 +75,11 @@ export default {
     spanLarge: {
       type: Number,
       default: 6,
+      required: false
+    },
+    spanMini: {
+      type: Number,
+      default: 12,
       required: false
     },
     labelCol: {
