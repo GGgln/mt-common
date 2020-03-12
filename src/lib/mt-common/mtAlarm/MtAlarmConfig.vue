@@ -2,9 +2,9 @@
   <div class="param-alarm">
     <a-form class="filter_box" :form="formData" layout="inline">
       <a-form-item style="margin-left: 20px;" label="关键字查询："><a-input class="inp-gjc" v-decorator="['name']" placeholder="请输入关键字" /></a-form-item>
-      <a-form-item style="margin-left: 20px;"><a-button type="primary" @click="toSearch">查询</a-button></a-form-item>
-      <a-form-item style="margin-left: 20px;"><a-button @click="newShowModal()" type="primary">添加</a-button></a-form-item>
-      <a-form-item style="margin-left: 20px;"><a-button @click="refreshApi" type="primary">刷新</a-button></a-form-item>
+      <a-form-item class='margin_l_20'><a-button type="primary" @click="toSearch">查询</a-button></a-form-item>
+      <a-form-item class='margin_l_20'><a-button @click="newShowModal()" type="primary">添加</a-button></a-form-item>
+      <a-form-item class='margin_l_20'><a-button @click="refreshApi" type="primary">刷新</a-button></a-form-item>
     </a-form>
     <a-table id="table_blue" :columns="columns" :dataSource="data" :pagination="pageOptions" rowKey="sid">
       <template slot="ruleDesc" slot-scope="text, record">
@@ -751,5 +751,8 @@ export default {
   .ant-table-tbody > tr > td {
     word-break: break-all;
   }
+}
+.margin_l_20{
+  margin-left: 20px;
 }
 </style>

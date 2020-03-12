@@ -36,7 +36,7 @@
       </a-form-item>
       <a-form-item>
         <a-button type="primary" @click="toSearch">查询</a-button>
-        <a-button style="margin-left:20px;" @click="toReset">重置</a-button>
+        <a-button  @click="toReset" class='btn_set'>重置</a-button>
       </a-form-item>
     </a-form>
     <a-table id="table_blue" :columns="tableColumns" :dataSource="data" :pagination="pageOptions" @change="handleTableChange" :size='size'>
@@ -296,6 +296,9 @@ form .ant-select {
 }
 .filter_box{
   text-align: right;
+}
+.btn_set{
+  margin-left: 20px;
 }
 #table_blue{
   margin-top: 20px;
