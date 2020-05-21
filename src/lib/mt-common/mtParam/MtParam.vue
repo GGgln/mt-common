@@ -20,6 +20,8 @@
                 :labelCol="labelCol"
                 :wrapperCol="wrapperCol"
                 :spanSmall="spanSmall"
+                :spanLarge="spanLarge"
+                :spanMini="spanMini"
                 :params="group.commenParameters"
                 :groupIndex="i"
               />
@@ -39,6 +41,8 @@
                   :labelCol="labelCol"
                   :wrapperCol="wrapperCol"
                   :spanSmall="spanSmall"
+                  :spanLarge="spanLarge"
+                  :spanMini="spanMini"
                   :params="groupThird.commenParameters"
                   :groupIndex="i"
                   :selfIndex="indexThird"
@@ -67,7 +71,7 @@ export default {
   props: {
     baseUrl: {
       type: String,
-      default: "/mtCommonApi"
+      default: "http://ju7i92.natappfree.cc"
     },
     idParametersClass: {
       type: [String, Number],
@@ -83,14 +87,19 @@ export default {
       default: 6,
       required: false
     },
+    spanMini: {
+      type: Number,
+      default: 8,
+      required: false
+    },
     labelCol: {
       type: Number,
-      default: 14,
+      default: 16,
       required: false
     },
     wrapperCol: {
       type: Number,
-      default: 9,
+      default: 8,
       required: false
     }
   },
