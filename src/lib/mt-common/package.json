@@ -1,6 +1,6 @@
 {
   "name": "mt-common",
-  "version": "1.3.29",
+  "version": "1.4.1",
   "description": "报警，日志，班组，登录，参数等公共组件",
   "main": "index.js",
   "scripts": {

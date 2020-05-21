@@ -13,7 +13,7 @@ module.exports = {
     proxyTable: {
       // 保留模板
       '/port8765': {
-        target: 'http://192.168.7.21:8765',
+        target: 'http://192.168.7.16:8765',
         ws: true,
         changeOrigin: true,
         pathRewrite: {
@@ -21,7 +21,7 @@ module.exports = {
         }
       },
       '/port8766': {
-        target: 'http://192.168.7.21:8766',
+        target: 'http://192.168.7.16:8766',
         ws: true,
         changeOrigin: true,
         pathRewrite: {
@@ -29,7 +29,7 @@ module.exports = {
         }
       },
       '/port8767': {
-        target: 'http://192.168.7.21:8767',
+        target: 'http://192.168.7.16:8767',
         ws: true,
         changeOrigin: true,
         pathRewrite: {
@@ -37,7 +37,7 @@ module.exports = {
         }
       },
       '/port8768': {
-        target: 'http://192.168.7.21:8768',
+        target: 'http://192.168.7.16:8768',
         ws: true,
         changeOrigin: true,
         pathRewrite: {
