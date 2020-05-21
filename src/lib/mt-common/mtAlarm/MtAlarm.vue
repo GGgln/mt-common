@@ -14,9 +14,9 @@
         <a-select v-decorator="['stateId', {initialValue: postData.stateId}]" placeholder="请选择">
           <a-select-option
             v-for="(optionItem, optionIndex) in statusData"
-            :key="optionItem.TypeClassId"
-            :value="optionItem.TypeClassId"
-          >{{ optionItem.TypeClassDesc }}</a-select-option>
+            :key="optionItem.id"
+            :value="optionItem.id"
+          >{{ optionItem.name }}</a-select-option>
         </a-select>
       </a-form-item>
       <a-form-item label="时间段查询：">
@@ -43,9 +43,9 @@
       <template slot="alarmLevel" slot-scope="text, record">
         <span :class="['status', 'status_big', text == 3 ? 'level3': text == 2? 'level2' :text == 1? 'level1': '']"></span>
       </template>
-      <template slot="alarmStatus" slot-scope="text, record">
+      <!-- <template slot="alarmStatus" slot-scope="text, record">
         <span>{{formatAlarmState(text) || '--'}}</span>
-      </template>
+      </template> -->
       <template slot="resetType" slot-scope="text, record">
         <a style="margin-right:10px;" v-if="text != 1" @click="resetAlarm(record)">{{ text == 2 ? '复位' : text == 4 ? '确认': ''}}</a>
         <span style="color:#2c9ae6;cursor:pointer;margin-right:10px;" v-if="record.isReadyFlg" @click="showVideo(record)">视频回放</span>
@@ -170,7 +170,7 @@ export default {
       postData: {
         alarmTime: [],
         gradeId: 0,
-        stateId: '99',
+        stateId: '13',
         keyWord: '',
         pageSize: 10,
         currentPage: 1,
@@ -211,6 +211,11 @@ export default {
         method: 'get'
       }).then(res => {
         this.statusData = res.data
+        this.statusData.forEach(item => {
+          if(item.name === '报警'){
+            this.postData.stateId = item.id
+          }
+        })
       })
     },
     requestFormList () {

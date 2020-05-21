@@ -1,17 +1,20 @@
 <template>
     <div class="alarm">
-        <mt-alarm :defineTableCell="defineTableCell" :tableColumns="columns" baseUrl="/port8766" @showVideoDialog="show">
+      <mt-main>
+        <template slot="mt-main-content">
+        <mt-alarm  baseUrl="/port8766" @showVideoDialog="show">
           <template slot="mtTableListButtonsAfter" slot-scope="data">
               <span @click="showNewData(data)">自定义</span>
           </template>
           <template slot="alarmStatus" slot-scope="data">
-              <span >报警状态</span>
+              <span></span>
           </template>
           <template slot="operate">
             <span>123</span>
           </template>
         </mt-alarm>
-        <!-- <a-from :form='form'></a-from> -->
+        </template>
+        </mt-main>
     </div>
 </template>
 <script>
@@ -37,7 +40,7 @@ const columns = [
   {
     title: '报警名称',
     dataIndex: 'alarmDesc',
-    scopedSlots: { customRender: 'alarmDesc' }
+    scopedSlots: { customRender: 'alarmName' }
   },
   {
     title: '报警状态',
