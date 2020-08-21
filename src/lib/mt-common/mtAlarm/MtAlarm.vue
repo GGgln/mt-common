@@ -17,8 +17,11 @@
             :key="optionItem.id"
             :value="optionItem.id"
           >{{ optionItem.name }}</a-select-option>
+          
         </a-select>
       </a-form-item>
+      
+      <!-- v-decorator="['alarmTime']" -->
       <a-form-item label="时间段查询：">
         <a-range-picker 
         style="text-align:left"
@@ -260,7 +263,9 @@ export default {
       this.formData.resetFields()
       this.requestFormList()
     },
-    changeTime () {},
+    changeTime (val, str) {
+      // this.postData.alarmTime = str
+    },
     resetAlarm (record) {
       let that = this
       // this.$confirm({

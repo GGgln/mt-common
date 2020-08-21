@@ -21,6 +21,11 @@ export default new Router({
       component: pclDebug
     },
     {
+      path: '/analyze',
+      name: 'analyze',
+      component: () => import('@/components/analyze')
+    },
+    {
       path: '/alarmConfig',
       name: 'alarmConfig',
       component: alarmConfig

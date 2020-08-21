@@ -10,7 +10,7 @@ import mtClass from './mtClass/MtClass'
 import moduleComponents from './modules'
 import mtPlcDebug from './mtPlcDebug/PlcDebug'
 import mtMain from './mtMain/MtMain'
-
+import mtAnalyze from './mtAnalyze/MtAnalyze'
 
 let { MtFilter, MtTableList, MtTableSection } = moduleComponents
 const components = [
@@ -27,7 +27,8 @@ const components = [
   mtRole,
   mtAlarmConfig,
   mtPlcDebug,
-  mtMain
+  mtMain,
+  mtAnalyze
 ]
 
 export default {
